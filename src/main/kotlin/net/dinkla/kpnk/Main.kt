@@ -1,7 +1,5 @@
 package net.dinkla.kpnk
 
-import org.jetbrains.kotlin.spec.grammar.tools.parseKotlinCode
-import org.jetbrains.kotlin.spec.grammar.tools.tokenizeKotlinCode
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -10,14 +8,11 @@ fun main(args: Array<String>) {
         System.exit(-1)
     } else {
         val files = getAllKotlinFilesInDirectory(directory)
-        println(files)
         for (file in files) {
             println(file)
             val text = File(file).readText()
-            val tokens = tokenizeKotlinCode(text)
-            val parseTree = parseKotlinCode(tokens)
-            println(parseTree)
-            parseTree.type
+            val parseTree = parse(text)
+            walk(parseTree, 0)
         }
     }
 }
