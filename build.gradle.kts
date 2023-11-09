@@ -10,9 +10,11 @@ version = "0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools:0.1")
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
@@ -31,5 +33,6 @@ application {
 }
 
 tasks.named<org.gradle.api.tasks.JavaExec>("run") {
-    args = listOf("src/main/kotlin")
+    args = listOf("src/test/resources/example")
+    // args = listOf("src/main/kotlin")
 }
