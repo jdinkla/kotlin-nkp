@@ -1,7 +1,5 @@
 package net.dinkla.kpnk
 
-import java.io.File
-
 fun main(args: Array<String>) {
     val directory = parseArgs(args)
     if (directory == null) {
@@ -10,9 +8,8 @@ fun main(args: Array<String>) {
         val files = getAllKotlinFilesInDirectory(directory)
         for (file in files) {
             println(file)
-            val text = File(file).readText()
-            val parseTree = parse(text)
-            walk(parseTree, 0)
+            val tree = fromFile(file)
+            walk(tree, 0)
         }
     }
 }

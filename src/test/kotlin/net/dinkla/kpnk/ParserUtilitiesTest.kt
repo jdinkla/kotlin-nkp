@@ -4,7 +4,7 @@ import io.kotest.matchers.collections.shouldContain
 
 class ParserUtilitiesTest : StringSpec({
     "parse" {
-        val parseTree = parse("fun f(x: Int) = x*x")
+        val parseTree = fromText("fun f(x: Int) = x*x")
         walk(parseTree, 0)
         parseTree.children.map { it.name } shouldContain "topLevelObject"
     }
