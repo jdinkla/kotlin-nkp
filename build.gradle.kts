@@ -34,5 +34,10 @@ application {
 }
 
 tasks.named<JavaExec>("run") {
-    args = listOf("src/test/resources/example")
+    doFirst {
+        if (!project.hasProperty("args")) {
+            args = listOf("src/test/resources/example")
+        }
+        args = (project.property("args") as String).split(",")
+    }
 }

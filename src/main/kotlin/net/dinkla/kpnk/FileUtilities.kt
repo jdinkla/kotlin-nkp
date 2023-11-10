@@ -15,3 +15,7 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     }
     return files.toList()
 }
+
+fun fileNameWithoutDirectory(directory: String, fileName: String): String {
+    return fileName.substring(directory.length + 1)
+}

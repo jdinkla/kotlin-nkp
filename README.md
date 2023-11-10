@@ -2,8 +2,17 @@
 
 Analyse Kotlin source code.
 
-WIP
+## Run
 
+An example for Windows
+
+```sh
+./gradlew run -Pargs="C:\directory\project\src\commonMain\kotlin"
+```
+
+## Build
+
+```sh
 This project is using the following libraries to parse Kotlin source code:
 
 https://github.com/Kotlin/grammar-tools
@@ -19,7 +28,6 @@ $ git clone https://github.com/Kotlin/grammar-tools
 $ cd grammar-tools
 $ ./gradlew publishToMavenLocal
 $ cd ..
-
 ```
 
 (c) 2023 Jörn Dinkla https://www.dinkla.net
