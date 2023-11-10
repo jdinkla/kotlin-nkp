@@ -6,10 +6,11 @@ fun main(args: Array<String>) {
         System.exit(-1)
     } else {
         val files = getAllKotlinFilesInDirectory(directory)
-        for (file in files) {
-            println(file)
-            val tree = fromFile(file)
-            walk(tree, 0)
+        for (fileName in files) {
+            println(fileName)
+            val tree = fromFile(fileName)
+            val fileInfo = traverse(tree)
+            println(fileInfo)
         }
     }
 }

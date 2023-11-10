@@ -33,6 +33,6 @@ application {
     mainClass.set("net.dinkla.kpnk.MainKt")
 }
 
-tasks.named<org.gradle.api.tasks.JavaExec>("run") {
+tasks.named<JavaExec>("run") {
     args = listOf("src/test/resources/example")
 }
