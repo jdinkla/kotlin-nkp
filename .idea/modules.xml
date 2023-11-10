@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin-pnk.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin-pnk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin-pnk.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin-pnk.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin-pnk.test.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin-pnk.test.iml" />
+    </modules>
+  </component>
+</project>

@@ -2,6 +2,7 @@ val kotestVersion = "5.8.0"
 
 plugins {
     kotlin("jvm") version "1.9.20"
+    id("io.gitlab.arturbosch.detekt") version "1.23.3"
     application
 }
 
@@ -34,5 +35,4 @@ application {
 
 tasks.named<org.gradle.api.tasks.JavaExec>("run") {
     args = listOf("src/test/resources/example")
-    // args = listOf("src/main/kotlin")
 }
