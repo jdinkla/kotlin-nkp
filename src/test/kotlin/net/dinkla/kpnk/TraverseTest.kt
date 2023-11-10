@@ -25,12 +25,19 @@ private val function2 = FunctionSignature(
     listOf(),
 )
 
+private val class1 = ClassSignature(
+    "HelloWorld",
+    listOf(Parameter("many", "Int")),
+    listOf(FunctionSignature("toString", "String", listOf())),
+)
+
 class TraverseTest : StringSpec({
     "traverse should return all information" {
         val file = traverse(tree)
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactly listOf(function1, function2)
+        file.classes shouldContainExactly listOf(class1)
     }
 
     "extractPackageName should return the package name" {
@@ -46,5 +53,10 @@ class TraverseTest : StringSpec({
     "extractFunctions should return all functions" {
         val functions = extractFunctions(tree)
         functions shouldContainExactly listOf(function1, function2)
+    }
+
+    "extractClasses should return all classes" {
+        val classes = extractClasses(tree)
+        classes shouldContainExactly listOf(class1)
     }
 })

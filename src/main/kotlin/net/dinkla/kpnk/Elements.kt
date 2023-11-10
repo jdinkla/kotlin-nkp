@@ -9,12 +9,13 @@ data class File(
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
+    val classes: List<ClassSignature> = listOf(),
 ) {
     override fun toString(): String = """
 package $packageName
-
 ${imports.joinToString("\n")}
 ${functions.joinToString("\n")}
+${classes.joinToString("\n")}
     """.trimIndent()
 }
 
@@ -35,6 +36,16 @@ data class FunctionSignature(val name: String, val returnType: String, val param
         get() = if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.toString() }
 }
 
-data class ObjectSignature(val name: String)
+data class ObjectSignature(val name: String, val parameters: List<Parameter>, val functions: List<FunctionSignature>)
 
-data class ClassSignature(val name: String, val functions: List<FunctionSignature>)
+data class ClassSignature(val name: String, val parameters: List<Parameter>, val functions: List<FunctionSignature>) {
+    override fun toString(): String {
+        return "class $name($prettyParameters) {\n${prettyFunctions.joinToString("\n")}\n}"
+    }
+
+    private val prettyParameters: String
+        get() = if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.toString() }
+
+    private val prettyFunctions: List<String>
+        get() = functions.map { "    $it" }
+}

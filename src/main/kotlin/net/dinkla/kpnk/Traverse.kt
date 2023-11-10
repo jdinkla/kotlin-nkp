@@ -7,7 +7,8 @@ fun traverse(tree: KotlinParseTree): File {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = extractFunctions(tree)
-    return File(packageName, imports, functions)
+    val classes = extractClasses(tree)
+    return File(packageName, imports, functions, classes)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
@@ -48,13 +49,56 @@ internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> {
 }
 
 private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
-    val name = extractIdentifier(tree.children[1])
-    val parameters = tree.children[2].children
+    val modifier = if (tree.children[0].name == "modifiers") 1 else 0
+    val name = extractIdentifier(tree.children[1 + modifier])
+    val parameters = tree.children[2 + modifier].children
         .filter { it.name == "functionValueParameter" }
         .map { it.children[0] }
         .map(::extractParameter)
     val returnType = extractReturnType(tree.children.find { it.name == "type" })
     return FunctionSignature(name, returnType, parameters)
+}
+
+internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
+    val result = mutableListOf<ClassSignature>()
+    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
+    for (topLevelObject in topLevelObjects) {
+        assert(topLevelObject.children[0].name == "declaration")
+        val declaration = topLevelObject.children[0].children[0]
+        if (declaration.name == "classDeclaration") {
+            result += extractClass(declaration)
+        }
+    }
+    return result
+}
+
+private fun extractClass(tree: KotlinParseTree): ClassSignature {
+    val modifier = if (tree.children[0].name == "modifiers") 1 else 0
+    val name = extractIdentifier(tree.children[1 + modifier])
+    val classParameters = tree.children[2 + modifier].children[0]
+    val params = classParameters.children
+        .filter { it.name == "classParameter" }
+        .map {
+            val paramName = extractIdentifier(it.children[1])
+            val paramType = extractIdentifier(extractType(it.children[3]))
+            Parameter(paramName, paramType)
+        }
+    val body = tree.children[3 + modifier]
+    val classMemberDeclarations = body.children.find { it.name == "classMemberDeclarations" }
+    val functions = classMemberDeclarations?.children?.map { classMemberDeclaration ->
+        val declaration = classMemberDeclaration.children[0]
+        if (declaration.name != "declaration") {
+            null
+        } else {
+            val functionDeclaration = declaration.children[0]
+            if (functionDeclaration.name == "functionDeclaration") {
+                extractFunction(functionDeclaration)
+            } else {
+                null
+            }
+        }
+    }?.filterNotNull() ?: listOf()
+    return ClassSignature(name, params, functions)
 }
 
 private fun extractReturnType(returnTypeNode: KotlinParseTree?): String = if (returnTypeNode == null) {
