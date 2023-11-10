@@ -2,6 +2,7 @@ package net.dinkla.kpnk
 
 data class File(
     val imports: List<Import> = listOf(),
+    val functions: List<FunctionSignature> = listOf(),
 )
 
 @JvmInline
