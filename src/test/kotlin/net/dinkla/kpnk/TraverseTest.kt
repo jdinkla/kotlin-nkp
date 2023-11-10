@@ -2,23 +2,24 @@ package net.dinkla.kpnk
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 
-const val KOTLIN_EXAMPLE_FILE = "src/test/resources/example/HelloWorld.kt"
+private const val KOTLIN_EXAMPLE_FILE = "src/test/resources/example/HelloWorld.kt"
 
-val tree = fromFile(KOTLIN_EXAMPLE_FILE)
+private val tree = fromFile(KOTLIN_EXAMPLE_FILE)
 
-val expectedImports = listOf(
+private val expectedImports = listOf(
     Import(FullyQualifiedName("java.lang.Boolean.FALSE")),
     Import(FullyQualifiedName("java.lang.Boolean.TRUE")),
 )
 
-val function1 = FunctionSignature(
+private val function1 = FunctionSignature(
     "topLevelFunction",
     "String",
     listOf(Parameter("n", "Int"), Parameter("hw", "HelloWorld")),
 )
 
-val function2 = FunctionSignature(
+private val function2 = FunctionSignature(
     "main",
     "Unit",
     listOf(),
@@ -27,8 +28,14 @@ val function2 = FunctionSignature(
 class TraverseTest : StringSpec({
     "traverse should return all information" {
         val file = traverse(tree)
+        file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactly listOf(function1, function2)
+    }
+
+    "extractPackageName should return the package name" {
+        val packageName = extractPackageName(fromText("package my.example.test"))
+        packageName shouldBe FullyQualifiedName("my.example.test")
     }
 
     "extractImports should return all imports" {

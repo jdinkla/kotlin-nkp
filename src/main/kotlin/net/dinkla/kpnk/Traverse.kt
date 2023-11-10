@@ -4,9 +4,24 @@ import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import java.lang.IllegalArgumentException
 
 fun traverse(tree: KotlinParseTree): File {
+    val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = extractFunctions(tree)
-    return File(imports, functions)
+    return File(packageName, imports, functions)
+}
+
+internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
+    val packageHeader = tree.children.find { it.name == "packageHeader" }
+    return FullyQualifiedName(
+        if (packageHeader != null) {
+            packageHeader.children[1].children
+                .filter { it.name == "simpleIdentifier" }
+                .map { extractIdentifier(it) }
+                .joinToString(".")
+        } else {
+            ""
+        },
+    )
 }
 
 internal fun extractImports(tree: KotlinParseTree): List<Import> =

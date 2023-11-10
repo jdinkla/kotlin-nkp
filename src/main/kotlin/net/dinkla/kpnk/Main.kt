@@ -1,5 +1,7 @@
 package net.dinkla.kpnk
 
+private const val SCREEN_WIDTH = 120
+
 fun main(args: Array<String>) {
     val directory = parseArgs(args)
     if (directory == null) {
@@ -17,11 +19,10 @@ fun main(args: Array<String>) {
             } catch (e: Exception) {
                 println("ERROR: " + e.message)
             }
-            println()
+            println("-".repeat(SCREEN_WIDTH))
         }
     }
 }
-
 
 internal fun parseArgs(args: Array<String>): String? = if (args.size != 1) {
     println("Usage: kpnk <directory>")

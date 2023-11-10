@@ -1,13 +1,21 @@
 package net.dinkla.kpnk
 
-data class File(
-    val imports: List<Import> = listOf(),
-    val functions: List<FunctionSignature> = listOf(),
-)
-
 @JvmInline
 value class FullyQualifiedName(private val name: String) {
     override fun toString(): String = name
+}
+
+data class File(
+    val packageName: FullyQualifiedName,
+    val imports: List<Import> = listOf(),
+    val functions: List<FunctionSignature> = listOf(),
+) {
+    override fun toString(): String = """
+package $packageName
+
+${imports.joinToString("\n")}
+${functions.joinToString("\n")}
+    """.trimIndent()
 }
 
 data class Import(val name: FullyQualifiedName) {
@@ -20,7 +28,7 @@ data class Parameter(val name: String, val type: String) {
 
 data class FunctionSignature(val name: String, val returnType: String, val parameters: List<Parameter>) {
     override fun toString(): String {
-        return "fun $name(${prettyParameters}): $returnType"
+        return "fun $name($prettyParameters): $returnType"
     }
 
     private val prettyParameters: String
