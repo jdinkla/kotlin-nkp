@@ -94,14 +94,14 @@ internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
 
 private fun extractClass(tree: KotlinParseTree): ClassSignature {
     val type = extractObjectType(tree)
-    val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
+    val name = extractSimpleIdentifier(tree)!!
     val params = extractParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
     val declarations = extractBody(tree)
     return ClassSignature(name, params, declarations, inheritedFrom, type = type)
 }
 
-private fun extractObjectType(tree: KotlinParseTree) =
+private fun extractObjectType(tree: KotlinParseTree): ObjectType =
     tree.children.find { it.name == "modifiers" }?.let {
         val theChild = it.children[0].children[0].children[0]
         when (theChild.name) {
@@ -113,17 +113,24 @@ private fun extractObjectType(tree: KotlinParseTree) =
         ObjectType.INTERFACE
     } ?: ObjectType.CLASS
 
-private fun extractParameters(tree: KotlinParseTree) =
-    tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
+private fun extractParameters(tree: KotlinParseTree): List<Parameter> {
+    return tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
         val it = primaryConstructor.children[0]
         it.children
             .filter { it.name == "classParameter" }
             .map {
-                val paramName = extractIdentifier(it.children[1])
-                val paramType = extractIdentifier(extractType(it.children[3]))
-                Parameter(paramName, paramType)
+                extractParameter(it)
             }
     } ?: listOf()
+}
+
+private fun extractParameter(it: KotlinParseTree): Parameter {
+    val paramName = extractSimpleIdentifier(it) ?: "ERROR PARAM NAME"
+    val paramType = it.children.find { it.name == "type" }?.let {
+        extractIdentifier(extractType(it))
+    } ?: "ERROR PARAM TYPE"
+    return Parameter(paramName, paramType)
+}
 
 private fun extractSuperClasses(tree: KotlinParseTree) =
     tree.children.find { it.name == "delegationSpecifiers" }?.let {
@@ -149,7 +156,7 @@ private fun extractBody(tree: KotlinParseTree) =
     } ?: listOf()
 
 private fun extractObject(tree: KotlinParseTree): ClassSignature {
-    val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
+    val name = extractSimpleIdentifier(tree)!!
     val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
             extractIdentifier(it.children[0].children[0].children[0].children[0])
@@ -172,8 +179,11 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
         }?.filterNotNull()
         functions
     } ?: listOf()
-
     return ClassSignature(name, listOf(), functions, inheritedFrom, type = ObjectType.OBJECT)
+}
+
+private fun extractSimpleIdentifier(tree: KotlinParseTree): String? {
+    return tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }
 }
 
 private fun extractReturnType(tree: KotlinParseTree?): String? = if (tree == null) {
@@ -182,7 +192,7 @@ private fun extractReturnType(tree: KotlinParseTree?): String? = if (tree == nul
     extractIdentifier(tree.children[0].children[0].children[0].children[0])
 }
 
-private fun extractIdentifier(tree: KotlinParseTree) = when (tree.name) {
+private fun extractIdentifier(tree: KotlinParseTree): String = when (tree.name) {
     "simpleIdentifier" -> tree.children[0].text!!
     "DOT" -> "."
     else -> throw IllegalArgumentException("Unknown child '${tree.name}'")
@@ -190,9 +200,3 @@ private fun extractIdentifier(tree: KotlinParseTree) = when (tree.name) {
 
 private fun extractType(tree: KotlinParseTree): KotlinParseTree =
     tree.children[0].children[0].children[0].children[0]
-
-private fun extractParameter(tree: KotlinParseTree): Parameter {
-    val paramName = extractIdentifier(tree.children[0])
-    val paramType = extractIdentifier(extractType(tree.children[2]))
-    return Parameter(paramName, paramType)
-}

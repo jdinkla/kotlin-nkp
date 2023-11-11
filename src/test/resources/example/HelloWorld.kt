@@ -12,7 +12,7 @@ interface Gen {
 }
 
 enum class AB { A, B }
-enum class ABC(val i: Int) { A(1), B(2), C(3) }
+enum class ABC(internal val i: Int) { A(1), B(2), C(3) }
 
 class GenImpl(val many: Int) : Gen {
     override fun gen(n: Int): String = "many hello worlds ${many * n}"
@@ -33,5 +33,8 @@ fun main() {
     topLevelFunction(3, HelloWorld(3))
     GenImpl(1)
     AB.A
+    AB.B
     ABC.A
+    ABC.B
+    ABC.C
 }

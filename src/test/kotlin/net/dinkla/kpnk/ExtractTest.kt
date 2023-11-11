@@ -109,10 +109,13 @@ class ExtractTest : StringSpec({
 
     "extractClasses should handle a data class with one constructor argument with two methods f and g" {
         val classes =
-            extractClasses(fromText("""
+            extractClasses(
+                fromText(
+                    """
                 data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2; class X(val y: Int) { fun h() = 3 } }
-                """.trimIndent()
-            ))
+                    """.trimIndent(),
+                ),
+            )
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
@@ -217,6 +220,19 @@ class ExtractTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "ABC",
+                listOf(Parameter("i", "Int")),
+                listOf(),
+                listOf(),
+                type = ObjectType.ENUM,
+            ),
+        )
+    }
+
+    "extractClasses should handle an enum with internal constructor parameter" {
+        val classes = extractClasses(fromText("enum class A(internal val i: Int) { A(1) }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "A",
                 listOf(Parameter("i", "Int")),
                 listOf(),
                 listOf(),
