@@ -10,4 +10,12 @@ class FileUtilitiesTest : StringSpec({
         files[0].endsWith("HelloWorld.kt") shouldBe true
         files[1].endsWith("HelloWorld2.kt") shouldBe true
     }
+
+    "basename should return the name of the file given a full path" {
+        basename("src/test/resources/example/HelloWorld.kt") shouldBe "HelloWorld.kt"
+    }
+
+    "basename should return the name of the file on Windows" {
+        basename("C:\\src\\test\\resources\\example\\HelloWorld.kt") shouldBe "HelloWorld.kt"
+    }
 })

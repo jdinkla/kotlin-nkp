@@ -9,7 +9,13 @@ sealed interface FileInfo {
     data class Parsed(
         val fileName: String,
         val elements: Elements,
-    ) : FileInfo
+    ) : FileInfo {
+        fun basename(): String {
+            val name = basename(fileName).replace(".kt", "")
+            val fullName = elements.packageName.toString() + "." + name
+            return fullName
+        }
+    }
 
     data class Error(val fileName: String, val message: String) : FileInfo
 }
@@ -30,6 +36,15 @@ ${classes.joinToString("\n")}
 
 data class Import(val name: FullyQualifiedName) {
     override fun toString(): String = "import $name"
+    fun packageName(): String {
+        val name = name.toString()
+        val index = name.lastIndexOf(".")
+        return if (index >= 0) {
+            name.substring(0, index)
+        } else {
+            name
+        }
+    }
 }
 
 data class Parameter(val name: String, val type: String) {

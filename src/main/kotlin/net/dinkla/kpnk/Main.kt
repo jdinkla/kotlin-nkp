@@ -8,11 +8,17 @@ fun main(args: Array<String>) {
         System.exit(-1)
     } else {
         val infos = readFiles(directory)
+        println("-".repeat(SCREEN_WIDTH))
+        println("Reports")
+        println("-".repeat(SCREEN_WIDTH))
         println(
             infos.groupBy { it.javaClass }.forEach {
                 println("${it.key}: ${it.value.size}")
             },
         )
+        println()
+        val deps = dependencies(infos)
+        println(deps)
     }
 }
 
