@@ -66,7 +66,7 @@ internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> {
 }
 
 private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
-    // TODO visibility
+    val visibility = extractVisibility(tree)
     val name = extractSimpleIdentifier(tree)!!
     val parameters =
         tree.children
@@ -79,7 +79,7 @@ private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
     val receiverType = tree.children.find { it.name == "receiverType" }?.let {
         extractIdentifier(it.children[0].children[0].children[0].children[0])
     }
-    return FunctionSignature(name, returnType, parameters, receiverType)
+    return FunctionSignature(name, returnType, parameters, receiverType, visibility)
 }
 
 internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
@@ -118,6 +118,16 @@ private fun extractObjectType(tree: KotlinParseTree): ObjectType =
     } ?: tree.children.find { it.name == "INTERFACE" }?.let {
         ObjectType.INTERFACE
     } ?: ObjectType.CLASS
+
+private fun extractVisibility(tree: KotlinParseTree): Visibility =
+    tree.children.find { it.name == "modifiers" }?.let {
+        val theChild = it.children[0].children[0].children[0]
+        when (theChild.name) {
+            "PRIVATE" -> Visibility.PRIVATE
+            "INTERNAL" -> Visibility.INTERNAL
+            else -> Visibility.PUBLIC
+        }
+    } ?: Visibility.PUBLIC
 
 private fun extractParameters(tree: KotlinParseTree): List<Parameter> {
     return tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->

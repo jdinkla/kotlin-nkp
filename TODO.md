@@ -1,6 +1,5 @@
 # TODO
 
-extension functions
 companion objects
 local classes
 anonymous objects ?

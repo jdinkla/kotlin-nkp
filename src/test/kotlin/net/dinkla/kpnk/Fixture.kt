@@ -13,6 +13,7 @@ internal val function1 = FunctionSignature(
     "topLevelFunction",
     "String",
     listOf(Parameter("n", "Int"), Parameter("hw", "HelloWorld")),
+    visibility = Visibility.INTERNAL,
 )
 
 internal val function2 = FunctionSignature(
@@ -24,6 +25,7 @@ internal val function3 = FunctionSignature(
     "String",
     listOf(),
     "HelloWorld",
+    visibility = Visibility.PRIVATE,
 )
 
 internal val class1 = ClassSignature(

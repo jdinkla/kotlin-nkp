@@ -64,12 +64,26 @@ class ExtractTest : StringSpec({
 
     "extractFunctions should handle internal function with parameters and simple return type" {
         val functions = extractFunctions(fromText("internal fun f(x: Int): Int = x+1"))
-        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
+        functions shouldBe listOf(
+            FunctionSignature(
+                "f",
+                "Int",
+                listOf(Parameter("x", "Int")),
+                visibility = Visibility.INTERNAL,
+            ),
+        )
     }
 
     "extractFunctions should handle private function with parameters and simple return type" {
         val functions = extractFunctions(fromText("private fun f(x: Int): Int = x+1"))
-        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
+        functions shouldBe listOf(
+            FunctionSignature(
+                "f",
+                "Int",
+                listOf(Parameter("x", "Int")),
+                visibility = Visibility.PRIVATE,
+            ),
+        )
     }
 
     "extractFunctions should handle operator functions like plus" {

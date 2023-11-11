@@ -59,13 +59,15 @@ data class FunctionSignature(
     val returnType: String? = null,
     val parameters: List<Parameter> = listOf(),
     val extensionOf: String? = null,
+    val visibility: Visibility = Visibility.PUBLIC,
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val prettyReturnType = if (returnType == null) "" else ": $returnType"
         val prettyParameters: String =
             if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
         val ext = if (extensionOf == null) "" else "$extensionOf."
-        return "fun $ext$name($prettyParameters)$prettyReturnType"
+        val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.toString().lowercase()} "
+        return "${visibility}fun $ext$name($prettyParameters)$prettyReturnType"
     }
 }
 
