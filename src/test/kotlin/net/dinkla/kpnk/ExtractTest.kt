@@ -11,7 +11,7 @@ class ExtractTest : StringSpec({
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactly listOf(function1, function2)
-        file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4)
+        file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, enum1, enum2)
     }
 
     "extractPackageName should return the fully qualified package name" {
@@ -108,7 +108,11 @@ class ExtractTest : StringSpec({
     }
 
     "extractClasses should handle a data class with one constructor argument with two methods f and g" {
-        val classes = extractClasses(fromText("data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2; class X(val y: Int) { fun h() = 3}}"))
+        val classes =
+            extractClasses(fromText("""
+                data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2; class X(val y: Int) { fun h() = 3 } }
+                """.trimIndent()
+            ))
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
@@ -195,8 +199,34 @@ class ExtractTest : StringSpec({
         )
     }
 
+    "extractClasses should handle the enum AB" {
+        val classes = extractClasses(fromText("enum class AB { A, B }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "AB",
+                listOf(),
+                listOf(),
+                listOf(),
+                type = ObjectType.ENUM,
+            ),
+        )
+    }
+
+    "extractClasses should handle the enum ABC" {
+        val classes = extractClasses(fromText("enum class ABC(val i: Int) { A(1), B(2), C(3) }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "ABC",
+                listOf(Parameter("i", "Int")),
+                listOf(),
+                listOf(),
+                type = ObjectType.ENUM,
+            ),
+        )
+    }
+
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
-        classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4)
+        classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, enum1, enum2)
     }
 })

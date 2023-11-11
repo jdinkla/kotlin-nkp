@@ -65,14 +65,12 @@ data class FunctionSignature(val name: String, val returnType: String?, val para
         if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
 }
 
-data class ObjectSignature(val name: String, val parameters: List<Parameter>, val functions: List<FunctionSignature>)
-
 enum class Visibility {
     PUBLIC, PRIVATE, INTERNAL
 }
 
 enum class ObjectType {
-    CLASS, OBJECT, DATA_CLASS, INTERFACE
+    CLASS, OBJECT, DATA_CLASS, INTERFACE, ENUM
 }
 
 data class ClassSignature(

@@ -45,8 +45,17 @@ internal val class3 = ClassSignature(
 
 internal val class4 = ClassSignature(
     "MathUtils",
-    listOf(),
-    listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
-    listOf(),
+    functions = listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
     type = ObjectType.OBJECT,
+)
+
+internal val enum1 = ClassSignature(
+    "AB",
+    type = ObjectType.ENUM,
+)
+
+internal val enum2 = ClassSignature(
+    "ABC",
+    listOf(Parameter("i", "Int")),
+    type = ObjectType.ENUM,
 )

@@ -93,14 +93,28 @@ internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
 }
 
 private fun extractClass(tree: KotlinParseTree): ClassSignature {
-    val type = tree.children.find { it.name == "modifiers" }?.let {
+    val type = extractObjectType(tree)
+    val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
+    val params = extractParameters(tree)
+    val inheritedFrom = extractSuperClasses(tree)
+    val declarations = extractBody(tree)
+    return ClassSignature(name, params, declarations, inheritedFrom, type = type)
+}
+
+private fun extractObjectType(tree: KotlinParseTree) =
+    tree.children.find { it.name == "modifiers" }?.let {
         val theChild = it.children[0].children[0].children[0]
-        if (theChild.name == "DATA") ObjectType.DATA_CLASS else ObjectType.CLASS
+        when (theChild.name) {
+            "DATA" -> ObjectType.DATA_CLASS
+            "ENUM" -> ObjectType.ENUM
+            else -> ObjectType.CLASS
+        }
     } ?: tree.children.find { it.name == "INTERFACE" }?.let {
         ObjectType.INTERFACE
     } ?: ObjectType.CLASS
-    val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
-    val params = tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
+
+private fun extractParameters(tree: KotlinParseTree) =
+    tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
         val it = primaryConstructor.children[0]
         it.children
             .filter { it.name == "classParameter" }
@@ -110,12 +124,16 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
                 Parameter(paramName, paramType)
             }
     } ?: listOf()
-    val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
+
+private fun extractSuperClasses(tree: KotlinParseTree) =
+    tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
             extractIdentifier(it.children[0].children[0].children[0].children[0])
         }
     } ?: listOf()
-    val declarations = tree.children.find { it.name == "classBody" }?.let {
+
+private fun extractBody(tree: KotlinParseTree) =
+    tree.children.find { it.name == "classBody" }?.let {
         it.children.filter { it.name == "classMemberDeclarations" }
             .flatMap {
                 it.children.filter { it.name == "classMemberDeclaration" }
@@ -129,8 +147,6 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
                     }
             }.filterNotNull()
     } ?: listOf()
-    return ClassSignature(name, params, declarations, inheritedFrom, type = type)
-}
 
 private fun extractObject(tree: KotlinParseTree): ClassSignature {
     val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
