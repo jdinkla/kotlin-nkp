@@ -10,7 +10,7 @@ class ExtractTest : StringSpec({
         val file = extract(tree)
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
-        file.functions shouldContainExactly listOf(function1, function2)
+        file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
         file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, enum1, enum2)
     }
 
@@ -27,6 +27,11 @@ class ExtractTest : StringSpec({
     "extractImports should return all imports" {
         val imports = extractImports(fromText("package example; import a.b.c; import d.e.f"))
         imports shouldContainExactly listOf(Import(FullyQualifiedName("a.b.c")), Import(FullyQualifiedName("d.e.f")))
+    }
+
+    "extractFunctions should return all functions in example code" {
+        val functions = extractFunctions(tree)
+        functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
     }
 
     "extractFunctions should return all functions" {

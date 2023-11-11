@@ -17,8 +17,13 @@ internal val function1 = FunctionSignature(
 
 internal val function2 = FunctionSignature(
     "main",
-    null,
+)
+
+internal val function3 = FunctionSignature(
+    "extensionFun",
+    "String",
     listOf(),
+    "HelloWorld",
 )
 
 internal val class1 = ClassSignature(

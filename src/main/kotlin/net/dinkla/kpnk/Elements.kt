@@ -54,15 +54,19 @@ data class Parameter(val name: String, val type: String) : PrettyPrint {
     override fun prettyPrint(): String = "$name: $type"
 }
 
-data class FunctionSignature(val name: String, val returnType: String?, val parameters: List<Parameter>) : PrettyPrint {
+data class FunctionSignature(
+    val name: String,
+    val returnType: String? = null,
+    val parameters: List<Parameter> = listOf(),
+    val extensionOf: String? = null,
+) : PrettyPrint {
     override fun prettyPrint(): String {
-        return "fun $name($prettyParameters)$prettyReturnType"
+        val prettyReturnType = if (returnType == null) "" else ": $returnType"
+        val prettyParameters: String =
+            if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
+        val ext = if (extensionOf == null) "" else "$extensionOf."
+        return "fun $ext$name($prettyParameters)$prettyReturnType"
     }
-
-    private val prettyReturnType = if (returnType == null) "" else ": $returnType"
-
-    private val prettyParameters: String =
-        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
 }
 
 enum class Visibility {
@@ -83,11 +87,9 @@ data class ClassSignature(
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")
+        val prettyFunctions: List<String> = functions.map { "    ${it.prettyPrint()}" }
+        val prettyParameters: String =
+            if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
         return "class $name($prettyParameters) $inherited {\n${prettyFunctions.joinToString("\n")}\n}"
     }
-
-    private val prettyParameters: String =
-        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-
-    private val prettyFunctions: List<String> = functions.map { "    ${it.prettyPrint()}" }
 }

@@ -27,6 +27,8 @@ fun topLevelFunction(n: Int, hw: HelloWorld): String {
     return FALSE.toString() + TRUE.toString() + hw.toString().repeat(n)
 }
 
+fun HelloWorld.extensionFun(): String = this.many.toString()
+
 fun main() {
     println("has no args and returns Unit implicitly")
     MathUtils.isZero(2.3)
