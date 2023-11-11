@@ -2,6 +2,7 @@ package net.dinkla.kpnk
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 
 class ExtractTest : StringSpec({
@@ -10,7 +11,7 @@ class ExtractTest : StringSpec({
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactly listOf(function1, function2)
-        file.classes shouldContainExactly listOf(class1, class2, class3)
+        file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4)
     }
 
     "extractPackageName should return the fully qualified package name" {
@@ -150,8 +151,21 @@ class ExtractTest : StringSpec({
         )
     }
 
+    "extractClasses should handle an object" {
+        val classes = extractClasses(fromText("object HelloWorld { fun f(x: Int) = x+1 }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(),
+                listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                listOf(),
+                true,
+            ),
+        )
+    }
+
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
-        classes shouldContainExactly listOf(class1, class2, class3)
+        classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4)
     }
 })

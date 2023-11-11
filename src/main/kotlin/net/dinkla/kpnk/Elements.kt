@@ -72,6 +72,7 @@ data class ClassSignature(
     val parameters: List<Parameter> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
     val inheritedFrom: List<String> = listOf(),
+    val isObject: Boolean = false,
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")

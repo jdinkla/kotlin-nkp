@@ -85,6 +85,9 @@ internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
         if (declaration.name == "classDeclaration") {
             result += extractClass(declaration)
         }
+        if (declaration.name == "objectDeclaration") {
+            result += extractObject(declaration)
+        }
     }
     return result
 }
@@ -101,14 +104,8 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
             Parameter(paramName, paramType)
         }
     val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
-        println("delegated")
-        println(it)
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
-            println("annotatedDelegationSpecifier")
-            println(it)
-            val id = extractIdentifier(it.children[0].children[0].children[0].children[0])
-            println("*** $id")
-            id
+            extractIdentifier(it.children[0].children[0].children[0].children[0])
         }
     } ?: listOf()
     val hasBody = tree.children.size >= 4 + modifier
@@ -131,6 +128,34 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
         }
     }?.filterNotNull() ?: listOf()
     return ClassSignature(name, params, functions, inheritedFrom)
+}
+
+private fun extractObject(tree: KotlinParseTree): ClassSignature {
+    val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
+    val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
+        it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
+            extractIdentifier(it.children[0].children[0].children[0].children[0])
+        }
+    } ?: listOf()
+    val functions = tree.children.find { it.name == "classBody" }?.let {
+        val classMemberDeclarations = it.children.find { it.name == "classMemberDeclarations" }
+        val functions = classMemberDeclarations?.children?.map { classMemberDeclaration ->
+            val declaration = classMemberDeclaration.children[0]
+            if (declaration.name != "declaration") {
+                null
+            } else {
+                val functionDeclaration = declaration.children[0]
+                if (functionDeclaration.name == "functionDeclaration") {
+                    extractFunction(functionDeclaration)
+                } else {
+                    null
+                }
+            }
+        }?.filterNotNull()
+        functions
+    } ?: listOf()
+
+    return ClassSignature(name, listOf(), functions, inheritedFrom, true)
 }
 
 private fun extractReturnType(returnTypeNode: KotlinParseTree?): String? = if (returnTypeNode == null) {

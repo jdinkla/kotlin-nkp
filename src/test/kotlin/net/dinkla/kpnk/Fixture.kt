@@ -35,3 +35,11 @@ internal val class3 = ClassSignature(
     listOf(),
     listOf("Gen"),
 )
+
+internal val class4 = ClassSignature(
+    "MathUtils",
+    listOf(),
+    listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
+    listOf(),
+    true
+)

@@ -1,6 +1,5 @@
 package example
 
-import example.MathUtils.isZero
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 
@@ -27,7 +26,7 @@ fun topLevelFunction(n: Int, hw: HelloWorld): String {
 
 fun main() {
     println("has no args and returns Unit implicitly")
-    isZero(2.3)
+    MathUtils.isZero(2.3)
     topLevelFunction(3, HelloWorld(3))
     GenImpl(1)
 }
