@@ -17,7 +17,7 @@ internal val function1 = FunctionSignature(
 
 internal val function2 = FunctionSignature(
     "main",
-    "Unit",
+    null,
     listOf(),
 )
 

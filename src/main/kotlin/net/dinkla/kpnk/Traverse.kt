@@ -101,8 +101,8 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
     return ClassSignature(name, params, functions)
 }
 
-private fun extractReturnType(returnTypeNode: KotlinParseTree?): String = if (returnTypeNode == null) {
-    "Unit"
+private fun extractReturnType(returnTypeNode: KotlinParseTree?): String? = if (returnTypeNode == null) {
+    null
 } else {
     extractIdentifier(returnTypeNode.children[0].children[0].children[0].children[0])
 }

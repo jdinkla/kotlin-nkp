@@ -36,7 +36,7 @@ data class Parameter(val name: String, val type: String) {
     override fun toString(): String = "$name: $type"
 }
 
-data class FunctionSignature(val name: String, val returnType: String, val parameters: List<Parameter>) {
+data class FunctionSignature(val name: String, val returnType: String?, val parameters: List<Parameter>) {
     override fun toString(): String {
         return "fun $name($prettyParameters): $returnType"
     }

@@ -13,19 +13,73 @@ class TraverseTest : StringSpec({
         file.classes shouldContainExactly listOf(class1)
     }
 
-    "extractPackageName should return the package name" {
+    "extractPackageName should return the fully qualified package name" {
         val packageName = extractPackageName(fromText("package my.example.test"))
         packageName shouldBe FullyQualifiedName("my.example.test")
     }
 
+    "extractPackageName should return the simple package name" {
+        val packageName = extractPackageName(fromText("package example"))
+        packageName shouldBe FullyQualifiedName("example")
+    }
+
     "extractImports should return all imports" {
-        val imports = extractImports(tree)
-        imports shouldContainExactly expectedImports
+        val imports = extractImports(fromText("package example; import a.b.c; import d.e.f"))
+        imports shouldContainExactly listOf(Import(FullyQualifiedName("a.b.c")), Import(FullyQualifiedName("d.e.f")))
     }
 
     "extractFunctions should return all functions" {
-        val functions = extractFunctions(tree)
-        functions shouldContainExactly listOf(function1, function2)
+        val functions = extractFunctions(fromText("fun f(x: Int): Int = x+1; fun g() = 3"))
+        functions shouldContainExactly listOf(
+            FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))),
+            FunctionSignature("g", null, listOf()),
+        )
+    }
+
+    "extractFunctions should handle function with parameters and return type" {
+        val functions = extractFunctions(fromText("fun f(x: Int): Int = x+1"))
+        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
+    }
+
+    "extractFunctions should handle function with parameters without explicit simple return type" {
+        val functions = extractFunctions(fromText("fun f(x: Int) = x+1"))
+        functions shouldBe listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int"))))
+    }
+
+    "extractFunctions should handle function without parameters but with explicit simple return type" {
+        val functions = extractFunctions(fromText("fun f(): Int = 1"))
+        functions shouldBe listOf(FunctionSignature("f", "Int", listOf()))
+    }
+
+    "extractFunctions should handle function without parameters and without explicit simple return type" {
+        val functions = extractFunctions(fromText("fun f() = 1"))
+        functions shouldBe listOf(FunctionSignature("f", null, listOf()))
+    }
+
+    "extractFunctions should handle internal function with parameters and simple return type" {
+        val functions = extractFunctions(fromText("internal fun f(x: Int): Int = x+1"))
+        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
+    }
+
+    "extractFunctions should handle private function with parameters and simple return type" {
+        val functions = extractFunctions(fromText("private fun f(x: Int): Int = x+1"))
+        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
+    }
+
+    "extractFunctions should handle operator functions like plus" {
+        val functions = extractFunctions(fromText("operator fun plus(x: Int, y: Int): Int = x+y"))
+        functions shouldBe listOf(
+            FunctionSignature(
+                "plus",
+                "Int",
+                listOf(Parameter("x", "Int"), Parameter("y", "Int")),
+            ),
+        )
+    }
+
+    "extractFunctions should handle function with Any as parameter and Any as return type" {
+        val functions = extractFunctions(fromText("fun f(x: Any): Any = x"))
+        functions shouldBe listOf(FunctionSignature("f", "Any", listOf(Parameter("x", "Any"))))
     }
 
     "extractClasses should return all classes" {
