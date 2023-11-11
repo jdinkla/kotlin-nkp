@@ -3,13 +3,14 @@ package net.dinkla.kpnk
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
+import kotlin.system.exitProcess
 
 private const val SCREEN_WIDTH = 120
 
 fun main(args: Array<String>) {
     val directory = parseArgs(args)
     if (directory == null) {
-        System.exit(-1)
+        exitProcess(-1)
     } else {
         println("Directory: $directory")
         println()

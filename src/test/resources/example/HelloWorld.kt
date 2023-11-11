@@ -1,5 +1,6 @@
 package example
 
+import example.MathUtils.isZero
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 
@@ -12,11 +13,11 @@ interface Gen {
 }
 
 data class GenImpl(val many: Int) : Gen {
-    override fun gen(n: Int): String = "many hello worlds ${many*n}"
+    override fun gen(n: Int): String = "many hello worlds ${many * n}"
 }
 
 object MathUtils {
-    const val K_EPSILON = 0.01
+    private const val K_EPSILON = 0.01
     fun isZero(x: Double): Boolean = x > -K_EPSILON && x < K_EPSILON
 }
 
@@ -26,4 +27,7 @@ fun topLevelFunction(n: Int, hw: HelloWorld): String {
 
 fun main() {
     println("has no args and returns Unit implicitly")
+    isZero(2.3)
+    topLevelFunction(3, HelloWorld(3))
+    GenImpl(1)
 }

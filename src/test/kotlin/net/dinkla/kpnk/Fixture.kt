@@ -33,5 +33,5 @@ internal val class3 = ClassSignature(
     "GenImpl",
     listOf(Parameter("many", "Int")),
     listOf(),
-    listOf("Gen")
+    listOf("Gen"),
 )

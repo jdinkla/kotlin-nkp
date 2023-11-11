@@ -16,8 +16,7 @@ sealed interface FileInfo {
     ) : FileInfo {
         fun basename(): String {
             val name = basename(fileName).replace(".kt", "")
-            val fullName = elements.packageName.toString() + "." + name
-            return fullName
+            return elements.packageName.toString() + "." + name
         }
     }
 
