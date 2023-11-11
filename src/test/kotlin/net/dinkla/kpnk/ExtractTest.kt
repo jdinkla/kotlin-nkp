@@ -260,6 +260,28 @@ class ExtractTest : StringSpec({
         )
     }
 
+    "extractClasses should handle a private class" {
+        val classes = extractClasses(fromText("private class C()"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                visibility = Visibility.PRIVATE,
+                type = ObjectType.CLASS,
+            ),
+        )
+    }
+
+    "extractClasses should handle an internal class" {
+        val classes = extractClasses(fromText("internal class C()"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                visibility = Visibility.INTERNAL,
+                type = ObjectType.CLASS,
+            ),
+        )
+    }
+
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
         classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, enum1, enum2)

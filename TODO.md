@@ -9,7 +9,6 @@ properties
 delegated properties
 value classes
 sealed classes
-class/object/interface visibility modifiers
 
 value class ClassName
 

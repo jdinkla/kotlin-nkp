@@ -99,21 +99,24 @@ internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
 }
 
 private fun extractClass(tree: KotlinParseTree): ClassSignature {
+    val visibility = extractVisibility(tree)
     val type = extractObjectType(tree)
     val name = extractSimpleIdentifier(tree)!!
     val params = extractParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
     val declarations = extractBody(tree)
-    return ClassSignature(name, params, declarations, inheritedFrom, type = type)
+    return ClassSignature(name, params, declarations, inheritedFrom, visibility = visibility, type = type)
 }
 
 private fun extractObjectType(tree: KotlinParseTree): ObjectType =
     tree.children.find { it.name == "modifiers" }?.let {
-        val theChild = it.children[0].children[0].children[0]
-        when (theChild.name) {
-            "DATA" -> ObjectType.DATA_CLASS
-            "ENUM" -> ObjectType.ENUM
-            else -> ObjectType.CLASS
+        it.children.find { it.name == "modifier" && it.children[0].name == "classModifier" }?.let {
+            val theChild = it.children[0].children[0]
+            when (theChild.name) {
+                "DATA" -> ObjectType.DATA_CLASS
+                "ENUM" -> ObjectType.ENUM
+                else -> ObjectType.CLASS
+            }
         }
     } ?: tree.children.find { it.name == "INTERFACE" }?.let {
         ObjectType.INTERFACE
@@ -121,11 +124,13 @@ private fun extractObjectType(tree: KotlinParseTree): ObjectType =
 
 private fun extractVisibility(tree: KotlinParseTree): Visibility =
     tree.children.find { it.name == "modifiers" }?.let {
-        val theChild = it.children[0].children[0].children[0]
-        when (theChild.name) {
-            "PRIVATE" -> Visibility.PRIVATE
-            "INTERNAL" -> Visibility.INTERNAL
-            else -> Visibility.PUBLIC
+        it.children.find { it.name == "modifier" && it.children[0].name == "visibilityModifier" }?.let {
+            val theChild = it.children[0].children[0]
+            when (theChild.name) {
+                "PRIVATE" -> Visibility.PRIVATE
+                "INTERNAL" -> Visibility.INTERNAL
+                else -> Visibility.PUBLIC
+            }
         }
     } ?: Visibility.PUBLIC
 

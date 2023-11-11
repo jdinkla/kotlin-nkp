@@ -3,11 +3,11 @@ package example
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 
-data class HelloWorld(val many: Int) {
+internal data class HelloWorld(val many: Int) {
     override fun toString(): String = "many hello worlds $many"
 }
 
-interface Gen {
+private interface Gen {
     fun gen(n: Int): String
 }
 
@@ -32,11 +32,13 @@ private fun HelloWorld.extensionFun(): String = this.many.toString()
 fun main() {
     println("has no args and returns Unit implicitly")
     MathUtils.isZero(2.3)
-    topLevelFunction(3, HelloWorld(3))
+    val hw = HelloWorld(3)
+    topLevelFunction(3, hw)
     GenImpl(1)
     AB.A
     AB.B
     ABC.A
     ABC.B
     ABC.C
+    hw.extensionFun()
 }

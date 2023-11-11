@@ -32,6 +32,7 @@ internal val class1 = ClassSignature(
     "HelloWorld",
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("toString", "String", listOf())),
+    visibility = Visibility.INTERNAL,
     type = ObjectType.DATA_CLASS,
 )
 
@@ -39,6 +40,7 @@ internal val class2 = ClassSignature(
     "Gen",
     listOf(),
     listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
+    visibility = Visibility.PRIVATE,
     type = ObjectType.INTERFACE,
 )
 
@@ -47,6 +49,7 @@ internal val class3 = ClassSignature(
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
     listOf("Gen"),
+    visibility = Visibility.PUBLIC,
     type = ObjectType.CLASS,
 )
 
