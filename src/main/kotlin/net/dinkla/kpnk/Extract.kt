@@ -3,7 +3,7 @@ package net.dinkla.kpnk
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import java.lang.IllegalArgumentException
 
-fun traverse(tree: KotlinParseTree): Elements {
+fun extract(tree: KotlinParseTree): Elements {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = extractFunctions(tree)

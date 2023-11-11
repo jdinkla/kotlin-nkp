@@ -4,9 +4,9 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 
-class TraverseTest : StringSpec({
-    "traverse should return all information" {
-        val file = traverse(tree)
+class ExtractTest : StringSpec({
+    "extract should return all information" {
+        val file = extract(tree)
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactly listOf(function1, function2)
