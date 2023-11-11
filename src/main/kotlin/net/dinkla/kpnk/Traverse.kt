@@ -3,12 +3,12 @@ package net.dinkla.kpnk
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import java.lang.IllegalArgumentException
 
-fun traverse(tree: KotlinParseTree): File {
+fun traverse(tree: KotlinParseTree): Elements {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = extractFunctions(tree)
     val classes = extractClasses(tree)
-    return File(packageName, imports, functions, classes)
+    return Elements(packageName, imports, functions, classes)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {

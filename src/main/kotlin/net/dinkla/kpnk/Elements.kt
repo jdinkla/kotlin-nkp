@@ -5,7 +5,16 @@ value class FullyQualifiedName(private val name: String) {
     override fun toString(): String = name
 }
 
-data class File(
+sealed interface FileInfo {
+    data class Parsed(
+        val fileName: String,
+        val elements: Elements,
+    ) : FileInfo
+
+    data class Error(val fileName: String, val message: String) : FileInfo
+}
+
+data class Elements(
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
