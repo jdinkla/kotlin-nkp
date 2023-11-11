@@ -3,6 +3,23 @@ package net.dinkla.kpnk
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import java.lang.IllegalArgumentException
 
+fun saveExtract(tree: KotlinParseTree): Elements {
+    val packageName = extractPackageName(tree)
+    val imports = extractImports(tree)
+    val functions = tc(::extractFunctions, tree) ?: listOf()
+    val classes = tc(::extractClasses, tree) ?: listOf()
+    return Elements(packageName, imports, functions, classes)
+}
+
+fun <T> tc(f: (KotlinParseTree) -> T, tree: KotlinParseTree): T? {
+    try {
+        return f(tree)
+    } catch (e: Exception) {
+        println("ERROR: " + e.message)
+        return null
+    }
+}
+
 fun extract(tree: KotlinParseTree): Elements {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)

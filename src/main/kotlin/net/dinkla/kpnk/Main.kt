@@ -11,7 +11,10 @@ fun main(args: Array<String>) {
     if (directory == null) {
         System.exit(-1)
     } else {
-        val infos = readFiles(directory)
+        println("Directory: $directory")
+        println()
+        val files = getAllKotlinFilesInDirectory(directory)
+        val infos = fileInfos(files, directory, false)
         println("-".repeat(SCREEN_WIDTH))
         println("Reports")
         println("-".repeat(SCREEN_WIDTH))
@@ -24,28 +27,21 @@ fun main(args: Array<String>) {
         val deps = dependencies(infos)
         val dependencies = Dependencies.from(deps)
         val string = Json.encodeToString(dependencies)
-        println(string)
         File("dependencies.json").writeText(string)
     }
-}
-
-private fun readFiles(directory: String): List<FileInfo> {
-    println("Directory: $directory")
-    println()
-    val files = getAllKotlinFilesInDirectory(directory)
-    return fileInfos(files, directory)
 }
 
 private fun fileInfos(
     files: List<String>,
     directory: String,
+    safe: Boolean = true,
 ): List<FileInfo> {
     val results = mutableListOf<FileInfo>()
     for (fileName in files) {
         try {
             println("File: " + fileNameWithoutDirectory(directory, fileName))
             val tree = fromFile(fileName)
-            val fileInfo = extract(tree)
+            val fileInfo = if (safe) saveExtract(tree) else extract(tree)
             results += FileInfo.Parsed(fileName, fileInfo)
             println(fileInfo)
         } catch (e: Exception) {
