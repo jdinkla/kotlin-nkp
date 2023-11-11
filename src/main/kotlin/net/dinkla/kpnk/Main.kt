@@ -8,9 +8,11 @@ fun main(args: Array<String>) {
         System.exit(-1)
     } else {
         val infos = readFiles(directory)
-        println(infos.groupBy { it.javaClass }.forEach {
-            println("${it.key}: ${it.value.size}")
-        })
+        println(
+            infos.groupBy { it.javaClass }.forEach {
+                println("${it.key}: ${it.value.size}")
+            },
+        )
     }
 }
 
@@ -23,7 +25,7 @@ private fun readFiles(directory: String): List<FileInfo> {
 
 private fun fileInfos(
     files: List<String>,
-    directory: String
+    directory: String,
 ): List<FileInfo> {
     val results = mutableListOf<FileInfo>()
     for (fileName in files) {
