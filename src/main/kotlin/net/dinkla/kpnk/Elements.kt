@@ -66,17 +66,17 @@ data class FunctionSignature(
         val prettyParameters: String =
             if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
         val ext = if (extensionOf == null) "" else "$extensionOf."
-        val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.toString().lowercase()} "
+        val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.text} "
         return "${visibility}fun $ext$name($prettyParameters)$prettyReturnType"
     }
 }
 
-enum class Visibility {
-    PUBLIC, PRIVATE, INTERNAL
+enum class Visibility(val text: String) {
+    PUBLIC(""), PRIVATE("private"), INTERNAL("internal")
 }
 
-enum class ObjectType {
-    CLASS, OBJECT, DATA_CLASS, INTERFACE, ENUM
+enum class ObjectType(val text: String) {
+    CLASS("class"), OBJECT("object"), DATA_CLASS("data class"), INTERFACE("interface"), ENUM("enum")
 }
 
 data class ClassSignature(
@@ -92,6 +92,7 @@ data class ClassSignature(
         val prettyFunctions: List<String> = functions.map { "    ${it.prettyPrint()}" }
         val prettyParameters: String =
             if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-        return "class $name($prettyParameters) $inherited {\n${prettyFunctions.joinToString("\n")}\n}"
+        val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.text} "
+        return "${visibility}${type.text} $name($prettyParameters) $inherited {\n${prettyFunctions.joinToString("\n")}\n}"
     }
 }
