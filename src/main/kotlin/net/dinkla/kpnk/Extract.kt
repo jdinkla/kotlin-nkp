@@ -12,11 +12,11 @@ fun saveExtract(tree: KotlinParseTree): Elements {
 }
 
 fun <T> tc(f: (KotlinParseTree) -> T, tree: KotlinParseTree): T? {
-    try {
-        return f(tree)
+    return try {
+        f(tree)
     } catch (e: Exception) {
         println("ERROR: " + e.message)
-        return null
+        null
     }
 }
 
