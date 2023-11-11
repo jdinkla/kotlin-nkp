@@ -42,7 +42,7 @@ private fun fileInfos(
         try {
             println("File: " + fileNameWithoutDirectory(directory, fileName))
             val tree = fromFile(fileName)
-            val fileInfo = if (safe) saveExtract(tree) else extract(tree)
+            val fileInfo = if (safe) safeExtract(tree) else extract(tree)
             results += FileInfo.Parsed(fileName, fileInfo)
             println(fileInfo.prettyPrint())
         } catch (e: Exception) {

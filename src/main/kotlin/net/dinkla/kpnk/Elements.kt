@@ -67,12 +67,21 @@ data class FunctionSignature(val name: String, val returnType: String?, val para
 
 data class ObjectSignature(val name: String, val parameters: List<Parameter>, val functions: List<FunctionSignature>)
 
+enum class Visibility {
+    PUBLIC, PRIVATE, INTERNAL
+}
+
+enum class ObjectType {
+    CLASS, OBJECT, DATA_CLASS, INTERFACE
+}
+
 data class ClassSignature(
     val name: String,
     val parameters: List<Parameter> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
     val inheritedFrom: List<String> = listOf(),
-    val isObject: Boolean = false,
+    val visibility: Visibility = Visibility.PUBLIC,
+    val type: ObjectType = ObjectType.CLASS,
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")

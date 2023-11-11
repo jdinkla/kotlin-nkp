@@ -25,15 +25,22 @@ internal val class1 = ClassSignature(
     "HelloWorld",
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("toString", "String", listOf())),
+    type = ObjectType.DATA_CLASS,
 )
 
-internal val class2 = ClassSignature("Gen", listOf(), listOf())
+internal val class2 = ClassSignature(
+    "Gen",
+    listOf(),
+    listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
+    type = ObjectType.INTERFACE,
+)
 
 internal val class3 = ClassSignature(
     "GenImpl",
     listOf(Parameter("many", "Int")),
-    listOf(),
+    listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
     listOf("Gen"),
+    type = ObjectType.CLASS,
 )
 
 internal val class4 = ClassSignature(
@@ -41,5 +48,5 @@ internal val class4 = ClassSignature(
     listOf(),
     listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
     listOf(),
-    true
+    type = ObjectType.OBJECT,
 )

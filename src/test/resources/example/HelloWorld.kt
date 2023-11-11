@@ -11,7 +11,7 @@ interface Gen {
     fun gen(n: Int): String
 }
 
-data class GenImpl(val many: Int) : Gen {
+class GenImpl(val many: Int) : Gen {
     override fun gen(n: Int): String = "many hello worlds ${many * n}"
 }
 

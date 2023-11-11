@@ -3,7 +3,7 @@ package net.dinkla.kpnk
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import java.lang.IllegalArgumentException
 
-fun saveExtract(tree: KotlinParseTree): Elements {
+fun safeExtract(tree: KotlinParseTree): Elements {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = tc(::extractFunctions, tree) ?: listOf()
@@ -93,41 +93,43 @@ internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
 }
 
 private fun extractClass(tree: KotlinParseTree): ClassSignature {
-    val modifier = if (tree.children[0].name == "modifiers") 1 else 0
-    val name = extractIdentifier(tree.children[1 + modifier])
-    val classParameters = tree.children[2 + modifier].children[0]
-    val params = classParameters.children
-        .filter { it.name == "classParameter" }
-        .map {
-            val paramName = extractIdentifier(it.children[1])
-            val paramType = extractIdentifier(extractType(it.children[3]))
-            Parameter(paramName, paramType)
-        }
+    val type = tree.children.find { it.name == "modifiers" }?.let {
+        val theChild = it.children[0].children[0].children[0]
+        if (theChild.name == "DATA") ObjectType.DATA_CLASS else ObjectType.CLASS
+    } ?: tree.children.find { it.name == "INTERFACE" }?.let {
+        ObjectType.INTERFACE
+    } ?: ObjectType.CLASS
+    val name = tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }!!
+    val params = tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
+        val it = primaryConstructor.children[0]
+        it.children
+            .filter { it.name == "classParameter" }
+            .map {
+                val paramName = extractIdentifier(it.children[1])
+                val paramType = extractIdentifier(extractType(it.children[3]))
+                Parameter(paramName, paramType)
+            }
+    } ?: listOf()
     val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
             extractIdentifier(it.children[0].children[0].children[0].children[0])
         }
     } ?: listOf()
-    val hasBody = tree.children.size >= 4 + modifier
-    if (!hasBody) {
-        return ClassSignature(name, params, listOf())
-    }
-    val body = tree.children[3 + modifier]
-    val classMemberDeclarations = body.children.find { it.name == "classMemberDeclarations" }
-    val functions = classMemberDeclarations?.children?.map { classMemberDeclaration ->
-        val declaration = classMemberDeclaration.children[0]
-        if (declaration.name != "declaration") {
-            null
-        } else {
-            val functionDeclaration = declaration.children[0]
-            if (functionDeclaration.name == "functionDeclaration") {
-                extractFunction(functionDeclaration)
-            } else {
-                null
-            }
-        }
-    }?.filterNotNull() ?: listOf()
-    return ClassSignature(name, params, functions, inheritedFrom)
+    val declarations = tree.children.find { it.name == "classBody" }?.let {
+        it.children.filter { it.name == "classMemberDeclarations" }
+            .flatMap {
+                it.children.filter { it.name == "classMemberDeclaration" }
+                    .map { classMemberDeclaration ->
+                        val declaration = classMemberDeclaration.children[0]
+                        val child = declaration.children[0]
+                        when (child.name) {
+                            "functionDeclaration" -> extractFunction(child)
+                            else -> null
+                        }
+                    }
+            }.filterNotNull()
+    } ?: listOf()
+    return ClassSignature(name, params, declarations, inheritedFrom, type = type)
 }
 
 private fun extractObject(tree: KotlinParseTree): ClassSignature {
@@ -155,13 +157,13 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
         functions
     } ?: listOf()
 
-    return ClassSignature(name, listOf(), functions, inheritedFrom, true)
+    return ClassSignature(name, listOf(), functions, inheritedFrom, type = ObjectType.OBJECT)
 }
 
-private fun extractReturnType(returnTypeNode: KotlinParseTree?): String? = if (returnTypeNode == null) {
+private fun extractReturnType(tree: KotlinParseTree?): String? = if (tree == null) {
     null
 } else {
-    extractIdentifier(returnTypeNode.children[0].children[0].children[0].children[0])
+    extractIdentifier(tree.children[0].children[0].children[0].children[0])
 }
 
 private fun extractIdentifier(tree: KotlinParseTree) = when (tree.name) {

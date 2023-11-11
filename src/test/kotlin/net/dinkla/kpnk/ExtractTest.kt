@@ -83,24 +83,38 @@ class ExtractTest : StringSpec({
         functions shouldBe listOf(FunctionSignature("f", "Any", listOf(Parameter("x", "Any"))))
     }
 
-    "extractClasses should handle a data class with one constructor argument many: Int without any methods" {
+    "extractClasses should handle a data class with one constructor argument and without a body" {
         val classes = extractClasses(fromText("data class HelloWorld(val many: Int)"))
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
+                type = ObjectType.DATA_CLASS,
             ),
         )
     }
 
-    "extractClasses should handle a data class with one constructor argument many: Int with one method f(x) = x+1" {
+    "extractClasses should handle a data class with one constructor argument with one method f(x) = x+1" {
         val classes = extractClasses(fromText("data class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                type = ObjectType.DATA_CLASS,
+            ),
+        )
+    }
+
+    "extractClasses should handle a data class with one constructor argument with two methods f and g" {
+        val classes = extractClasses(fromText("data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2; class X(val y: Int) { fun h() = 3}}"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(FunctionSignature("f", null, listOf()), FunctionSignature("g", null, listOf())),
+                type = ObjectType.DATA_CLASS,
             ),
         )
     }
@@ -112,6 +126,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
+                type = ObjectType.CLASS,
             ),
         )
     }
@@ -123,6 +138,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                type = ObjectType.CLASS,
             ),
         )
     }
@@ -135,6 +151,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A"),
+                type = ObjectType.CLASS,
             ),
         )
     }
@@ -147,6 +164,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A", "B"),
+                type = ObjectType.CLASS,
             ),
         )
     }
@@ -159,7 +177,20 @@ class ExtractTest : StringSpec({
                 listOf(),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
                 listOf(),
-                true,
+                type = ObjectType.OBJECT,
+            ),
+        )
+    }
+
+    "extractClasses should handle an interface" {
+        val classes = extractClasses(fromText("interface Interface { fun f(x: Int): Int }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "Interface",
+                listOf(),
+                listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
+                listOf(),
+                type = ObjectType.INTERFACE,
             ),
         )
     }
