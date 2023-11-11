@@ -5,6 +5,10 @@ value class FullyQualifiedName(private val name: String) {
     override fun toString(): String = name
 }
 
+interface PrettyPrint {
+    fun prettyPrint(): String
+}
+
 sealed interface FileInfo {
     data class Parsed(
         val fileName: String,
@@ -25,17 +29,17 @@ data class Elements(
     val imports: List<Import> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
     val classes: List<ClassSignature> = listOf(),
-) {
-    override fun toString(): String = """
+) : PrettyPrint {
+    override fun prettyPrint(): String = """
 package $packageName
-${imports.joinToString("\n")}
-${functions.joinToString("\n")}
-${classes.joinToString("\n")}
+${imports.joinToString("\n") { it.prettyPrint() }}
+${functions.joinToString("\n") { it.prettyPrint() }}
+${classes.joinToString("\n") { it.prettyPrint() }}
     """.trimIndent()
 }
 
-data class Import(val name: FullyQualifiedName) {
-    override fun toString(): String = "import $name"
+data class Import(val name: FullyQualifiedName) : PrettyPrint {
+    override fun prettyPrint(): String = "import $name"
     fun packageName(): String {
         val name = name.toString()
         val index = name.lastIndexOf(".")
@@ -47,29 +51,36 @@ data class Import(val name: FullyQualifiedName) {
     }
 }
 
-data class Parameter(val name: String, val type: String) {
-    override fun toString(): String = "$name: $type"
+data class Parameter(val name: String, val type: String) : PrettyPrint {
+    override fun prettyPrint(): String = "$name: $type"
 }
 
-data class FunctionSignature(val name: String, val returnType: String?, val parameters: List<Parameter>) {
-    override fun toString(): String {
-        return "fun $name($prettyParameters): $returnType"
+data class FunctionSignature(val name: String, val returnType: String?, val parameters: List<Parameter>) : PrettyPrint {
+    override fun prettyPrint(): String {
+        return "fun $name($prettyParameters)$prettyReturnType"
     }
 
-    private val prettyParameters: String
-        get() = if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.toString() }
+    private val prettyReturnType = if (returnType == null) "" else ": $returnType"
+
+    private val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
 }
 
 data class ObjectSignature(val name: String, val parameters: List<Parameter>, val functions: List<FunctionSignature>)
 
-data class ClassSignature(val name: String, val parameters: List<Parameter>, val functions: List<FunctionSignature>) {
-    override fun toString(): String {
-        return "class $name($prettyParameters) {\n${prettyFunctions.joinToString("\n")}\n}"
+data class ClassSignature(
+    val name: String,
+    val parameters: List<Parameter> = listOf(),
+    val functions: List<FunctionSignature> = listOf(),
+    val inheritedFrom: List<String> = listOf(),
+) : PrettyPrint {
+    override fun prettyPrint(): String {
+        val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")
+        return "class $name($prettyParameters) $inherited {\n${prettyFunctions.joinToString("\n")}\n}"
     }
 
-    private val prettyParameters: String
-        get() = if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.toString() }
+    private val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
 
-    private val prettyFunctions: List<String>
-        get() = functions.map { "    $it" }
+    private val prettyFunctions: List<String> = functions.map { "    ${it.prettyPrint()}" }
 }

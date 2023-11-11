@@ -43,7 +43,7 @@ private fun fileInfos(
             val tree = fromFile(fileName)
             val fileInfo = if (safe) saveExtract(tree) else extract(tree)
             results += FileInfo.Parsed(fileName, fileInfo)
-            println(fileInfo)
+            println(fileInfo.prettyPrint())
         } catch (e: Exception) {
             println("ERROR: " + e.message)
             results += FileInfo.Error(fileName, e.message!!)
