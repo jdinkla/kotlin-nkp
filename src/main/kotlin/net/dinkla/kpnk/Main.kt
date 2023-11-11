@@ -1,5 +1,9 @@
 package net.dinkla.kpnk
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.File
+
 private const val SCREEN_WIDTH = 120
 
 fun main(args: Array<String>) {
@@ -18,7 +22,10 @@ fun main(args: Array<String>) {
         )
         println()
         val deps = dependencies(infos)
-        println(deps)
+        val dependencies = Dependencies.from(deps)
+        val string = Json.encodeToString(dependencies)
+        println(string)
+        File("dependencies.json").writeText(string)
     }
 }
 

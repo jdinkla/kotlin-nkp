@@ -1,5 +1,22 @@
 package net.dinkla.kpnk
 
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Dependency(val name: String, val dependencies: Set<String>)
+
+@Serializable
+data class Dependencies(val dependencies: List<Dependency>) {
+    companion object {
+        fun from(dependencies: Map<String, Set<String>>): Dependencies =
+            Dependencies(
+                dependencies.map { (key, value) ->
+                    Dependency(key, value)
+                },
+            )
+    }
+}
+
 fun dependencies(infos: List<FileInfo>): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
     val parsed = infos.filterIsInstance<FileInfo.Parsed>()
