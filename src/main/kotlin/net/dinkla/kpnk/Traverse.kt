@@ -83,6 +83,9 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
             val paramType = extractIdentifier(extractType(it.children[3]))
             Parameter(paramName, paramType)
         }
+    if (tree.children.size < 4 + modifier) {
+        return ClassSignature(name, params, listOf())
+    }
     val body = tree.children[3 + modifier]
     val classMemberDeclarations = body.children.find { it.name == "classMemberDeclarations" }
     val functions = classMemberDeclarations?.children?.map { classMemberDeclaration ->

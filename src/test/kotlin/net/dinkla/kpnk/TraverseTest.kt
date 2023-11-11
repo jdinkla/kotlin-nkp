@@ -82,6 +82,72 @@ class TraverseTest : StringSpec({
         functions shouldBe listOf(FunctionSignature("f", "Any", listOf(Parameter("x", "Any"))))
     }
 
+    "extractClasses should handle a data class with one constructor argument many: Int without any methods" {
+        val classes = extractClasses(fromText("data class HelloWorld(val many: Int)"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(),
+            ),
+        )
+    }
+
+    "extractClasses should handle a data class with one constructor argument many: Int with one method f(x) = x+1" {
+        val classes = extractClasses(fromText("data class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+            ),
+        )
+    }
+
+    "extractClasses should handle a class with one constructor argument many: Int without any methods" {
+        val classes = extractClasses(fromText("class HelloWorld(val many: Int)"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(),
+            ),
+        )
+    }
+
+    "extractClasses should handle a class with one constructor argument many: Int with one method f(x) = x+1" {
+        val classes = extractClasses(fromText("class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+            ),
+        )
+    }
+
+    "extractClasses should handle a class that inherits from class A" {
+        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(),
+            ),
+        )
+    }
+
+    "extractClasses should handle a class that inherits from classes A and B" {
+        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A, B"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(),
+            ),
+        )
+    }
+
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
         classes shouldContainExactly listOf(class1)
