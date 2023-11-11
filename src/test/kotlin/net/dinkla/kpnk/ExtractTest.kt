@@ -10,7 +10,7 @@ class ExtractTest : StringSpec({
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactly listOf(function1, function2)
-        file.classes shouldContainExactly listOf(class1)
+        file.classes shouldContainExactly listOf(class1, class2, class3)
     }
 
     "extractPackageName should return the fully qualified package name" {
@@ -133,6 +133,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
+                listOf("A"),
             ),
         )
     }
@@ -144,12 +145,13 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
+                listOf("A", "B"),
             ),
         )
     }
 
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
-        classes shouldContainExactly listOf(class1)
+        classes shouldContainExactly listOf(class1, class2, class3)
     }
 })

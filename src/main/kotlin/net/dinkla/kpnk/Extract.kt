@@ -100,7 +100,19 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
             val paramType = extractIdentifier(extractType(it.children[3]))
             Parameter(paramName, paramType)
         }
-    if (tree.children.size < 4 + modifier) {
+    val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
+        println("delegated")
+        println(it)
+        it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
+            println("annotatedDelegationSpecifier")
+            println(it)
+            val id = extractIdentifier(it.children[0].children[0].children[0].children[0])
+            println("*** $id")
+            id
+        }
+    } ?: listOf()
+    val hasBody = tree.children.size >= 4 + modifier
+    if (!hasBody) {
         return ClassSignature(name, params, listOf())
     }
     val body = tree.children[3 + modifier]
@@ -118,7 +130,7 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
             }
         }
     }?.filterNotNull() ?: listOf()
-    return ClassSignature(name, params, functions)
+    return ClassSignature(name, params, functions, inheritedFrom)
 }
 
 private fun extractReturnType(returnTypeNode: KotlinParseTree?): String? = if (returnTypeNode == null) {

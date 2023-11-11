@@ -7,6 +7,14 @@ data class HelloWorld(val many: Int) {
     override fun toString(): String = "many hello worlds $many"
 }
 
+interface Gen {
+    fun gen(n: Int): String
+}
+
+data class GenImpl(val many: Int) : Gen {
+    override fun gen(n: Int): String = "many hello worlds ${many*n}"
+}
+
 object MathUtils {
     const val K_EPSILON = 0.01
     fun isZero(x: Double): Boolean = x > -K_EPSILON && x < K_EPSILON

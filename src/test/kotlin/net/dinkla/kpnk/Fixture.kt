@@ -26,3 +26,12 @@ internal val class1 = ClassSignature(
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("toString", "String", listOf())),
 )
+
+internal val class2 = ClassSignature("Gen", listOf(), listOf())
+
+internal val class3 = ClassSignature(
+    "GenImpl",
+    listOf(Parameter("many", "Int")),
+    listOf(),
+    listOf("Gen")
+)
