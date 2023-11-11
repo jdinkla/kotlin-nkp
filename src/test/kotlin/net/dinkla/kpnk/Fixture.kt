@@ -33,7 +33,7 @@ internal val class1 = ClassSignature(
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("toString", "String", listOf())),
     visibility = Visibility.INTERNAL,
-    type = ObjectType.DATA_CLASS,
+    type = Type.DATA_CLASS,
 )
 
 internal val class2 = ClassSignature(
@@ -41,7 +41,7 @@ internal val class2 = ClassSignature(
     listOf(),
     listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
     visibility = Visibility.PRIVATE,
-    type = ObjectType.INTERFACE,
+    type = Type.INTERFACE,
 )
 
 internal val class3 = ClassSignature(
@@ -50,22 +50,22 @@ internal val class3 = ClassSignature(
     listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
     listOf("Gen"),
     visibility = Visibility.PUBLIC,
-    type = ObjectType.CLASS,
+    type = Type.CLASS,
 )
 
 internal val class4 = ClassSignature(
     "MathUtils",
     functions = listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
-    type = ObjectType.OBJECT,
+    type = Type.OBJECT,
 )
 
 internal val enum1 = ClassSignature(
     "AB",
-    type = ObjectType.ENUM,
+    type = Type.ENUM,
 )
 
 internal val enum2 = ClassSignature(
     "ABC",
     listOf(Parameter("i", "Int")),
-    type = ObjectType.ENUM,
+    type = Type.ENUM,
 )

@@ -109,7 +109,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
-                type = ObjectType.DATA_CLASS,
+                type = Type.DATA_CLASS,
             ),
         )
     }
@@ -121,7 +121,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
-                type = ObjectType.DATA_CLASS,
+                type = Type.DATA_CLASS,
             ),
         )
     }
@@ -140,7 +140,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf()), FunctionSignature("g", null, listOf())),
-                type = ObjectType.DATA_CLASS,
+                type = Type.DATA_CLASS,
             ),
         )
     }
@@ -152,7 +152,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
-                type = ObjectType.CLASS,
+                type = Type.CLASS,
             ),
         )
     }
@@ -164,7 +164,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
-                type = ObjectType.CLASS,
+                type = Type.CLASS,
             ),
         )
     }
@@ -177,7 +177,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A"),
-                type = ObjectType.CLASS,
+                type = Type.CLASS,
             ),
         )
     }
@@ -190,7 +190,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A", "B"),
-                type = ObjectType.CLASS,
+                type = Type.CLASS,
             ),
         )
     }
@@ -203,7 +203,7 @@ class ExtractTest : StringSpec({
                 listOf(),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
                 listOf(),
-                type = ObjectType.OBJECT,
+                type = Type.OBJECT,
             ),
         )
     }
@@ -216,7 +216,7 @@ class ExtractTest : StringSpec({
                 listOf(),
                 listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
                 listOf(),
-                type = ObjectType.INTERFACE,
+                type = Type.INTERFACE,
             ),
         )
     }
@@ -229,7 +229,7 @@ class ExtractTest : StringSpec({
                 listOf(),
                 listOf(),
                 listOf(),
-                type = ObjectType.ENUM,
+                type = Type.ENUM,
             ),
         )
     }
@@ -242,7 +242,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("i", "Int")),
                 listOf(),
                 listOf(),
-                type = ObjectType.ENUM,
+                type = Type.ENUM,
             ),
         )
     }
@@ -255,7 +255,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("i", "Int")),
                 listOf(),
                 listOf(),
-                type = ObjectType.ENUM,
+                type = Type.ENUM,
             ),
         )
     }
@@ -266,7 +266,7 @@ class ExtractTest : StringSpec({
             ClassSignature(
                 "C",
                 visibility = Visibility.PRIVATE,
-                type = ObjectType.CLASS,
+                type = Type.CLASS,
             ),
         )
     }
@@ -277,7 +277,7 @@ class ExtractTest : StringSpec({
             ClassSignature(
                 "C",
                 visibility = Visibility.INTERNAL,
-                type = ObjectType.CLASS,
+                type = Type.CLASS,
             ),
         )
     }

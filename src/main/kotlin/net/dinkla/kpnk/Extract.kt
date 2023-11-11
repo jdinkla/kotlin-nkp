@@ -108,19 +108,19 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
     return ClassSignature(name, params, declarations, inheritedFrom, visibility = visibility, type = type)
 }
 
-private fun extractObjectType(tree: KotlinParseTree): ObjectType =
+private fun extractObjectType(tree: KotlinParseTree): Type =
     tree.children.find { it.name == "modifiers" }?.let {
         it.children.find { it.name == "modifier" && it.children[0].name == "classModifier" }?.let {
             val theChild = it.children[0].children[0]
             when (theChild.name) {
-                "DATA" -> ObjectType.DATA_CLASS
-                "ENUM" -> ObjectType.ENUM
-                else -> ObjectType.CLASS
+                "DATA" -> Type.DATA_CLASS
+                "ENUM" -> Type.ENUM
+                else -> Type.CLASS
             }
         }
     } ?: tree.children.find { it.name == "INTERFACE" }?.let {
-        ObjectType.INTERFACE
-    } ?: ObjectType.CLASS
+        Type.INTERFACE
+    } ?: Type.CLASS
 
 private fun extractVisibility(tree: KotlinParseTree): Visibility =
     tree.children.find { it.name == "modifiers" }?.let {
@@ -200,7 +200,7 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
         }?.filterNotNull()
         functions
     } ?: listOf()
-    return ClassSignature(name, listOf(), functions, inheritedFrom, type = ObjectType.OBJECT)
+    return ClassSignature(name, listOf(), functions, inheritedFrom, type = Type.OBJECT)
 }
 
 private fun extractReturnType(tree: KotlinParseTree?): String? = if (tree == null) {

@@ -54,6 +54,14 @@ data class Parameter(val name: String, val type: String) : PrettyPrint {
     override fun prettyPrint(): String = "$name: $type"
 }
 
+enum class Visibility(val text: String) {
+    PUBLIC(""), PRIVATE("private"), INTERNAL("internal")
+}
+
+enum class Type(val text: String) {
+    CLASS("class"), OBJECT("object"), DATA_CLASS("data class"), INTERFACE("interface"), ENUM("enum")
+}
+
 data class FunctionSignature(
     val name: String,
     val returnType: String? = null,
@@ -71,21 +79,13 @@ data class FunctionSignature(
     }
 }
 
-enum class Visibility(val text: String) {
-    PUBLIC(""), PRIVATE("private"), INTERNAL("internal")
-}
-
-enum class ObjectType(val text: String) {
-    CLASS("class"), OBJECT("object"), DATA_CLASS("data class"), INTERFACE("interface"), ENUM("enum")
-}
-
 data class ClassSignature(
     val name: String,
     val parameters: List<Parameter> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
     val inheritedFrom: List<String> = listOf(),
     val visibility: Visibility = Visibility.PUBLIC,
-    val type: ObjectType = ObjectType.CLASS,
+    val type: Type = Type.CLASS,
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")
