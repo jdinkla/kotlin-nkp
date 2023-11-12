@@ -66,7 +66,7 @@ internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> {
 }
 
 private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
-    val visibility = extractVisibility(tree)
+    val visibility = extractVisibilityModifier(tree)
     val name = extractSimpleIdentifier(tree)!!
     val parameters =
         tree.children
@@ -101,40 +101,82 @@ internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
 }
 
 private fun extractClass(tree: KotlinParseTree): ClassSignature {
-    val visibility = extractVisibility(tree)
-    val type = extractObjectType(tree)
+    val visibilityModifier = extractVisibilityModifier(tree)
+    val inheritanceModifier = extractInheritanceModifier(tree)
+    val classModifier = extractClassModifier(tree)
+    val elementType = extractObjectType(tree)!!
     val name = extractSimpleIdentifier(tree)!!
     val params = extractParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
     val declarations = extractBody(tree)
-    return ClassSignature(name, params, declarations, inheritedFrom, visibility = visibility, type = type)
+    return ClassSignature(
+        name,
+        params,
+        declarations,
+        inheritedFrom,
+        visibilityModifier,
+        elementType,
+        classModifier,
+        inheritanceModifier,
+    )
 }
 
-private fun extractObjectType(tree: KotlinParseTree): Type =
-    tree.children.find { it.name == "modifiers" }?.let {
-        it.children.find { it.name == "modifier" && it.children[0].name == "classModifier" }?.let {
-            val theChild = it.children[0].children[0]
-            when (theChild.name) {
-                "DATA" -> Type.DATA_CLASS
-                "ENUM" -> Type.ENUM
-                else -> Type.CLASS
-            }
-        }
-    } ?: tree.children.find { it.name == "INTERFACE" }?.let {
-        Type.INTERFACE
-    } ?: Type.CLASS
+private fun extractObjectType(tree: KotlinParseTree): Type? {
+    val isInterface = tree.children.find { it.name == "INTERFACE" } != null
+    val isClass = tree.children.find { it.name == "CLASS" } != null
+    return when {
+        isInterface -> Type.INTERFACE
+        isClass -> Type.CLASS
+        else -> null
+    }
+}
 
-private fun extractVisibility(tree: KotlinParseTree): Visibility =
-    tree.children.find { it.name == "modifiers" }?.let {
-        it.children.find { it.name == "modifier" && it.children[0].name == "visibilityModifier" }?.let {
-            val theChild = it.children[0].children[0]
-            when (theChild.name) {
-                "PRIVATE" -> Visibility.PRIVATE
-                "INTERNAL" -> Visibility.INTERNAL
-                else -> Visibility.PUBLIC
-            }
+private fun extractVisibilityModifier(tree: KotlinParseTree): VisibilityModifier? {
+    val modifier = tree.children
+        .filter { it.name == "modifiers" }
+        .flatMap { it.children }
+        .filter { it.name == "modifier" }
+        .flatMap { it.children }
+    return modifier.find { it.name == "visibilityModifier" }?.let {
+        when (it.children[0].name) {
+            "PUBLIC" -> VisibilityModifier.PUBLIC
+            "PRIVATE" -> VisibilityModifier.PRIVATE
+            "INTERNAL" -> VisibilityModifier.INTERNAL
+            "PROTECTED" -> VisibilityModifier.PROTECTED
+            else -> null
         }
-    } ?: Visibility.PUBLIC
+    }
+}
+
+private fun extractClassModifier(tree: KotlinParseTree): ClassModifier? {
+    val modifier = tree.children
+        .filter { it.name == "modifiers" }
+        .flatMap { it.children }
+        .filter { it.name == "modifier" }
+        .flatMap { it.children }
+    return modifier.find { it.name == "classModifier" }?.let {
+        when (it.children[0].name) {
+            "DATA" -> ClassModifier.DATA
+            "ENUM" -> ClassModifier.ENUM
+            else -> null
+        }
+    }
+}
+
+private fun extractInheritanceModifier(tree: KotlinParseTree): InheritanceModifier? {
+    val modifier = tree.children
+        .filter { it.name == "modifiers" }
+        .flatMap { it.children }
+        .filter { it.name == "modifier" }
+        .flatMap { it.children }
+    return modifier.find { it.name == "inheritanceModifier" }?.let {
+        when (it.children[0].name) {
+            "OPEN" -> InheritanceModifier.OPEN
+            "ABSTRACT" -> InheritanceModifier.ABSTRACT
+            else -> null
+        }
+    }
+}
 
 private fun extractParameters(tree: KotlinParseTree): List<Parameter> {
     return tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
@@ -202,19 +244,20 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
         }?.filterNotNull()
         functions
     } ?: listOf()
-    return ClassSignature(name, listOf(), functions, inheritedFrom, type = Type.OBJECT)
+    return ClassSignature(name, listOf(), functions, inheritedFrom, elementType = Type.OBJECT)
 }
 
 private fun extractType(tree: KotlinParseTree): String {
     var isNullable = false
-    var node: KotlinParseTree? = tree
     var type: String? = null
+    var node: KotlinParseTree? = tree
     while (node != null) {
         val name = node.name
         when (name) {
             "nullableType" -> {
                 isNullable = true
             }
+
             "Identifier" -> {
                 type = node.text!!
                 break

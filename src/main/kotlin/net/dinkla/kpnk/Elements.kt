@@ -54,12 +54,28 @@ data class Parameter(val name: String, val type: String) : PrettyPrint {
     override fun prettyPrint(): String = "$name: $type"
 }
 
-enum class Visibility(val text: String) {
-    PUBLIC(""), PRIVATE("private"), INTERNAL("internal")
+enum class VisibilityModifier(val text: String) {
+    PUBLIC(""),
+    PRIVATE("private"),
+    INTERNAL("internal"),
+    PROTECTED("protected"),
 }
 
+enum class ClassModifier {
+    DATA,
+    ENUM,
+}
+
+enum class InheritanceModifier {
+    OPEN,
+    ABSTRACT,
+}
+
+// TODO ObjectType
 enum class Type(val text: String) {
-    CLASS("class"), OBJECT("object"), DATA_CLASS("data class"), INTERFACE("interface"), ENUM("enum")
+    CLASS("class"),
+    OBJECT("object"),
+    INTERFACE("interface"),
 }
 
 data class FunctionSignature(
@@ -67,14 +83,14 @@ data class FunctionSignature(
     val returnType: String? = null,
     val parameters: List<Parameter> = listOf(),
     val extensionOf: String? = null,
-    val visibility: Visibility = Visibility.PUBLIC,
+    val visibility: VisibilityModifier? = null,
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val prettyReturnType = if (returnType == null) "" else ": $returnType"
         val prettyParameters: String =
             if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
         val ext = if (extensionOf == null) "" else "$extensionOf."
-        val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.text} "
+        val visibility = if (visibility == VisibilityModifier.PUBLIC) "" else "${visibility?.text} "
         return "${visibility}fun $ext$name($prettyParameters)$prettyReturnType"
     }
 }
@@ -84,15 +100,17 @@ data class ClassSignature(
     val parameters: List<Parameter> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
     val inheritedFrom: List<String> = listOf(),
-    val visibility: Visibility = Visibility.PUBLIC,
-    val type: Type = Type.CLASS,
+    val visibilityModifier: VisibilityModifier? = null,
+    val elementType: Type = Type.CLASS,
+    val classModifier: ClassModifier? = null,
+    val inheritanceModifier: InheritanceModifier? = null,
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")
         val prettyParameters: String =
             if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-        val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.text} "
+        val visibility = if (visibilityModifier == VisibilityModifier.PUBLIC) "" else "${visibilityModifier?.text} "
         val joined = functions.map { "    ${it.prettyPrint()}" }.joinToString("\n")
-        return "${visibility}${type.text} $name($prettyParameters) $inherited {\n$joined\n}"
+        return "${visibility}${elementType.text} $name($prettyParameters) $inherited {\n$joined\n}"
     }
 }

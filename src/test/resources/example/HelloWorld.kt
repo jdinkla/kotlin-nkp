@@ -30,6 +30,14 @@ internal fun topLevelFunction(n: Int, hw: HelloWorld): String {
 
 private fun HelloWorld.extensionFun(): String = this.many.toString()
 
+open class O1 {
+    protected fun f(x: Int): String = x.toString()
+}
+
+// open class O2 {
+//    protected fun map(f: (Int) -> String) = f(3)
+// }
+
 fun main() {
     println("has no args and returns Unit implicitly")
     MathUtils.isZero(2.3)

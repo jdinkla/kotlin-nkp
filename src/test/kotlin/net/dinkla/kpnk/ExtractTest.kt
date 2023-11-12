@@ -11,7 +11,7 @@ class ExtractTest : StringSpec({
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
-        file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, enum1, enum2)
+        file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
     }
 
     "extractPackageName should return the fully qualified package name" {
@@ -69,7 +69,7 @@ class ExtractTest : StringSpec({
                 "f",
                 "Int",
                 listOf(Parameter("x", "Int")),
-                visibility = Visibility.INTERNAL,
+                visibility = VisibilityModifier.INTERNAL,
             ),
         )
     }
@@ -81,7 +81,7 @@ class ExtractTest : StringSpec({
                 "f",
                 "Int",
                 listOf(Parameter("x", "Int")),
-                visibility = Visibility.PRIVATE,
+                visibility = VisibilityModifier.PRIVATE,
             ),
         )
     }
@@ -114,7 +114,8 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
-                type = Type.DATA_CLASS,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.DATA,
             ),
         )
     }
@@ -126,7 +127,8 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
-                type = Type.DATA_CLASS,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.DATA,
             ),
         )
     }
@@ -145,7 +147,8 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf()), FunctionSignature("g", null, listOf())),
-                type = Type.DATA_CLASS,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.DATA,
             ),
         )
     }
@@ -157,7 +160,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(),
-                type = Type.CLASS,
+                elementType = Type.CLASS,
             ),
         )
     }
@@ -169,7 +172,7 @@ class ExtractTest : StringSpec({
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
-                type = Type.CLASS,
+                elementType = Type.CLASS,
             ),
         )
     }
@@ -182,7 +185,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A"),
-                type = Type.CLASS,
+                elementType = Type.CLASS,
             ),
         )
     }
@@ -195,7 +198,7 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A", "B"),
-                type = Type.CLASS,
+                elementType = Type.CLASS,
             ),
         )
     }
@@ -205,10 +208,8 @@ class ExtractTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(),
-                listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
-                listOf(),
-                type = Type.OBJECT,
+                functions = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                elementType = Type.OBJECT,
             ),
         )
     }
@@ -218,10 +219,32 @@ class ExtractTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "Interface",
-                listOf(),
-                listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
-                listOf(),
-                type = Type.INTERFACE,
+                functions = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
+                elementType = Type.INTERFACE,
+            ),
+        )
+    }
+
+    "extractClasses should handle a private interface" {
+        val classes = extractClasses(fromText("private interface Interface { fun f(x: Int): Int }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "Interface",
+                functions = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
+                visibilityModifier = VisibilityModifier.PRIVATE,
+                elementType = Type.INTERFACE,
+            ),
+        )
+    }
+
+    "extractClasses should handle a public interface" {
+        val classes = extractClasses(fromText("public interface Interface { fun f() }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "Interface",
+                functions = listOf(FunctionSignature("f")),
+                visibilityModifier = VisibilityModifier.PUBLIC,
+                elementType = Type.INTERFACE,
             ),
         )
     }
@@ -231,10 +254,8 @@ class ExtractTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "AB",
-                listOf(),
-                listOf(),
-                listOf(),
-                type = Type.ENUM,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.ENUM,
             ),
         )
     }
@@ -245,9 +266,8 @@ class ExtractTest : StringSpec({
             ClassSignature(
                 "ABC",
                 listOf(Parameter("i", "Int")),
-                listOf(),
-                listOf(),
-                type = Type.ENUM,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.ENUM,
             ),
         )
     }
@@ -260,7 +280,8 @@ class ExtractTest : StringSpec({
                 listOf(Parameter("i", "Int")),
                 listOf(),
                 listOf(),
-                type = Type.ENUM,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.ENUM,
             ),
         )
     }
@@ -270,8 +291,8 @@ class ExtractTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                visibility = Visibility.PRIVATE,
-                type = Type.CLASS,
+                visibilityModifier = VisibilityModifier.PRIVATE,
+                elementType = Type.CLASS,
             ),
         )
     }
@@ -281,14 +302,58 @@ class ExtractTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                visibility = Visibility.INTERNAL,
-                type = Type.CLASS,
+                visibilityModifier = VisibilityModifier.INTERNAL,
+                elementType = Type.CLASS,
+            ),
+        )
+    }
+
+    "extractClasses should handle an abstract class" {
+        val classes = extractClasses(fromText("abstract class C()"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                elementType = Type.CLASS,
+                inheritanceModifier = InheritanceModifier.ABSTRACT,
+            ),
+        )
+    }
+
+    "extractClasses should handle an internal data class" {
+        val classes = extractClasses(fromText("internal data class C(val x: Int)"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                listOf(Parameter("x", "Int")),
+                visibilityModifier = VisibilityModifier.INTERNAL,
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.DATA,
+            ),
+        )
+    }
+
+    "extractClass should handle an open class with a proteced function" {
+        val classes = extractClasses(fromText("open class C() { protected fun f(): Int = 1 }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                listOf(),
+                listOf(
+                    FunctionSignature(
+                        "f",
+                        "Int",
+                        listOf(),
+                        visibility = VisibilityModifier.PROTECTED,
+                    ),
+                ),
+                elementType = Type.CLASS,
+                inheritanceModifier = InheritanceModifier.OPEN,
             ),
         )
     }
 
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
-        classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, enum1, enum2)
+        classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
     }
 })

@@ -13,7 +13,7 @@ internal val function1 = FunctionSignature(
     "topLevelFunction",
     "String",
     listOf(Parameter("n", "Int"), Parameter("hw", "HelloWorld")),
-    visibility = Visibility.INTERNAL,
+    visibility = VisibilityModifier.INTERNAL,
 )
 
 internal val function2 = FunctionSignature(
@@ -25,23 +25,24 @@ internal val function3 = FunctionSignature(
     "String",
     listOf(),
     "HelloWorld",
-    visibility = Visibility.PRIVATE,
+    visibility = VisibilityModifier.PRIVATE,
 )
 
 internal val class1 = ClassSignature(
     "HelloWorld",
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("toString", "String", listOf())),
-    visibility = Visibility.INTERNAL,
-    type = Type.DATA_CLASS,
+    visibilityModifier = VisibilityModifier.INTERNAL,
+    elementType = Type.CLASS,
+    classModifier = ClassModifier.DATA,
 )
 
 internal val class2 = ClassSignature(
     "Gen",
     listOf(),
     listOf(FunctionSignature("gen", "String?", listOf(Parameter("n", "Int")))),
-    visibility = Visibility.PRIVATE,
-    type = Type.INTERFACE,
+    visibilityModifier = VisibilityModifier.PRIVATE,
+    elementType = Type.INTERFACE,
 )
 
 internal val class3 = ClassSignature(
@@ -49,23 +50,38 @@ internal val class3 = ClassSignature(
     listOf(Parameter("many", "Int")),
     listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
     listOf("Gen"),
-    visibility = Visibility.PUBLIC,
-    type = Type.CLASS,
+    elementType = Type.CLASS,
 )
 
 internal val class4 = ClassSignature(
     "MathUtils",
     functions = listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
-    type = Type.OBJECT,
+    elementType = Type.OBJECT,
+)
+
+internal val class5 = ClassSignature(
+    "O1",
+    functions = listOf(
+        FunctionSignature(
+            "f",
+            "String",
+            listOf(Parameter("x", "Int")),
+            visibility = VisibilityModifier.PROTECTED,
+        ),
+    ),
+    elementType = Type.CLASS,
+    inheritanceModifier = InheritanceModifier.OPEN,
 )
 
 internal val enum1 = ClassSignature(
     "AB",
-    type = Type.ENUM,
+    elementType = Type.CLASS,
+    classModifier = ClassModifier.ENUM,
 )
 
 internal val enum2 = ClassSignature(
     "ABC",
     listOf(Parameter("i", "Int")),
-    type = Type.ENUM,
+    elementType = Type.CLASS,
+    classModifier = ClassModifier.ENUM,
 )
