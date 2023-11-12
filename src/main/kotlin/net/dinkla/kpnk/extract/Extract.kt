@@ -168,6 +168,7 @@ private fun extractClassModifier(tree: KotlinParseTree): ClassModifier? {
         when (it.children[0].name) {
             "DATA" -> ClassModifier.DATA
             "ENUM" -> ClassModifier.ENUM
+            "VALUE" -> ClassModifier.VALUE
             else -> null
         }
     }

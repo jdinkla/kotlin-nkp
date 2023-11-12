@@ -9,29 +9,6 @@ ${functions.joinToString("\n") { it.prettyPrint() }}
 ${classes.joinToString("\n") { it.prettyPrint() }}
 """.trimIndent()
 
-fun ClassSignature.prettyPrint(): String {
-    val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
-    val prettyParameters: String =
-        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-    val visibility = visibilityModifier.prettyPrint()
-    val joined = functions.map { "    ${it.prettyPrint()}" }.joinToString("\n")
-    val classMod = when (classModifier) {
-        null -> ""
-        ClassModifier.DATA -> " data "
-        ClassModifier.ENUM -> " enum "
-    }
-    return "${visibility}${classMod}${elementType.text} $name($prettyParameters)$inherited {\n$joined\n}"
-}
-
-fun FunctionSignature.prettyPrint(): String {
-    val prettyReturnType = if (returnType == null) "" else ": $returnType"
-    val prettyParameters: String =
-        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-    val ext = if (extensionOf == null) "" else "$extensionOf."
-    val visibility = addSpaceAfter(visibilityModifier.prettyPrint())
-    return "${visibility}fun $ext$name($prettyParameters)$prettyReturnType"
-}
-
 fun Parameter.prettyPrint(): String = "$name: $type"
 
 fun Import.prettyPrint(): String = "import $name"
@@ -51,3 +28,21 @@ fun InheritanceModifier?.prettyPrint() = when (this) {
     else -> text
 }
 
+fun ClassSignature.prettyPrint(): String {
+    val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
+    val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
+    val visibility = addSpaceAfter(visibilityModifier.prettyPrint())
+    val joined = functions.map { "    ${it.prettyPrint()}" }.joinToString("\n")
+    val classMod = addSpaceAfter(classModifier.prettyPrint())
+    return "${visibility}${classMod}${elementType.text} $name($prettyParameters)$inherited {\n$joined\n}"
+}
+
+fun FunctionSignature.prettyPrint(): String {
+    val prettyReturnType = if (returnType == null) "" else ": $returnType"
+    val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
+    val ext = if (extensionOf == null) "" else "$extensionOf."
+    val visibility = addSpaceAfter(visibilityModifier.prettyPrint())
+    return "${visibility}fun $ext$name($prettyParameters)$prettyReturnType"
+}

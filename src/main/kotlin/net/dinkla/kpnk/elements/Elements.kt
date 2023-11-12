@@ -50,6 +50,7 @@ enum class VisibilityModifier(val text: String) {
 enum class ClassModifier(val text: String) {
     DATA("data"),
     ENUM("enum"),
+    VALUE("value "),
 }
 
 enum class InheritanceModifier(val text: String) {

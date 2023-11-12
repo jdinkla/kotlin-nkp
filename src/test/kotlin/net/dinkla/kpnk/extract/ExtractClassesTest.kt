@@ -258,6 +258,18 @@ class ExtractClassesTest : StringSpec({
         )
     }
 
+    "extractClass should handle a value class" {
+        val classes = extractClasses(fromText("value class C(val x: Int)"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                listOf(Parameter("x", "Int")),
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.VALUE,
+            ),
+        )
+    }
+
     "extractClasses should return all classes" {
         val classes = extractClasses(tree)
         classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
