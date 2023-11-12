@@ -51,7 +51,7 @@ private fun fileInfos(
             println(fileInfo.prettyPrint())
         } catch (e: Exception) {
             println("ERROR: " + e.message)
-            results += FileInfo.Error(fileName, e.message!!)
+            results += FileInfo.Error(fileName, e.message ?: "Unknown error")
         }
         println("-".repeat(SCREEN_WIDTH))
     }

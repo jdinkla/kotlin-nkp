@@ -3,11 +3,6 @@ package net.dinkla.kpnk.extract
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.class1
-import net.dinkla.kpnk.class2
-import net.dinkla.kpnk.class3
-import net.dinkla.kpnk.class4
-import net.dinkla.kpnk.class5
 import net.dinkla.kpnk.elements.ClassModifier
 import net.dinkla.kpnk.elements.ClassSignature
 import net.dinkla.kpnk.elements.FunctionSignature
@@ -15,10 +10,7 @@ import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.VisibilityModifier
-import net.dinkla.kpnk.enum1
-import net.dinkla.kpnk.enum2
 import net.dinkla.kpnk.fromText
-import net.dinkla.kpnk.tree
 
 class ExtractClassesTest : StringSpec({
     "extractClasses should handle a data class with one constructor argument and without a body" {

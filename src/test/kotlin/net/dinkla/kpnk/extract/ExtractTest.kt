@@ -4,28 +4,16 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.class1
-import net.dinkla.kpnk.class2
-import net.dinkla.kpnk.class3
-import net.dinkla.kpnk.class4
-import net.dinkla.kpnk.class5
 import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.Import
-import net.dinkla.kpnk.enum1
-import net.dinkla.kpnk.enum2
-import net.dinkla.kpnk.expectedImports
 import net.dinkla.kpnk.fromText
-import net.dinkla.kpnk.function1
-import net.dinkla.kpnk.function2
-import net.dinkla.kpnk.function3
-import net.dinkla.kpnk.tree
 
 class ExtractTest : StringSpec({
     "extract should return all information" {
         val file = extract(tree)
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
-        file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
+        file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4)
         file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
     }
 

@@ -1,4 +1,4 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.elements.ClassModifier
 import net.dinkla.kpnk.elements.ClassSignature
@@ -9,6 +9,7 @@ import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.VisibilityModifier
+import net.dinkla.kpnk.fromFile
 
 private const val KOTLIN_EXAMPLE_FILE = "src/test/resources/example/HelloWorld.kt"
 
@@ -36,6 +37,12 @@ internal val function3 = FunctionSignature(
     listOf(),
     "HelloWorld",
     visibilityModifier = VisibilityModifier.PRIVATE,
+)
+
+internal val function4 = FunctionSignature(
+    "higherOrderFunction",
+    "(Int) -> String",
+    listOf(Parameter("f", "(Int) -> String"), Parameter("x", "Int")),
 )
 
 internal val class1 = ClassSignature(

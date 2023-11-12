@@ -8,15 +8,11 @@ import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.VisibilityModifier
 import net.dinkla.kpnk.fromText
-import net.dinkla.kpnk.function1
-import net.dinkla.kpnk.function2
-import net.dinkla.kpnk.function3
-import net.dinkla.kpnk.tree
 
 class ExtractFunctionsTest : StringSpec({
     "extractFunctions should return all functions in example code" {
         val functions = extractFunctions(tree)
-        functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
+        functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4)
     }
 
     "extractFunctions should return all functions" {
@@ -90,5 +86,29 @@ class ExtractFunctionsTest : StringSpec({
     "extractFunctions should handle nullable parameters" {
         val functions = extractFunctions(fromText("fun f(x: Int?): Int? = x"))
         functions shouldBe listOf(FunctionSignature("f", "Int?", listOf(Parameter("x", "Int?"))))
+    }
+
+    "extractFunctions should handle higher order functions as arguments" {
+        val functions = extractFunctions(fromText("fun f(f: (Int) -> String, x: Int): String = f(x)"))
+        functions shouldBe listOf(
+            FunctionSignature(
+                "f",
+                "String",
+                listOf(
+                    Parameter("f", "(Int) -> String"),
+                    Parameter("x", "Int"),
+                ),
+            ),
+        )
+    }
+
+    "extractFunctions should handle higher order functions as result" {
+        val functions = extractFunctions(fromText("fun f(): (Int) -> String = { x -> f(x+1) }"))
+        functions shouldBe listOf(
+            FunctionSignature(
+                "f",
+                "(Int) -> String",
+            ),
+        )
     }
 })

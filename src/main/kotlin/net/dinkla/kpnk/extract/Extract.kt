@@ -10,8 +10,8 @@ import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.VisibilityModifier
+import net.dinkla.kpnk.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
-import java.lang.IllegalArgumentException
 
 fun safeExtract(tree: KotlinParseTree): Elements {
     val packageName = extractPackageName(tree)
@@ -257,30 +257,31 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
     return ClassSignature(name, listOf(), functions, inheritedFrom, elementType = Type.OBJECT)
 }
 
-private fun extractType(tree: KotlinParseTree): String {
-    var isNullable = false
-    var type: String? = null
-    var node: KotlinParseTree? = tree
-    while (node != null) {
-        val name = node.name
-        when (name) {
-            "nullableType" -> {
-                isNullable = true
-            }
-
-            "Identifier" -> {
-                type = node.text!!
-                break
+private fun extractType(tree: KotlinParseTree): String? {
+    return when (val subtype = tree.children[0].name) {
+        "nullableType" -> {
+            tree.children[0].findName("Identifier")?.let {
+                "${it.text}?"
             }
         }
-        node = if (node.children.isEmpty()) {
-            null
-        } else {
-            node.children[0]
+        "typeReference" -> {
+            tree.children[0].findName("Identifier")?.let {
+                it.text
+            }
         }
+        "functionType" -> {
+            val functionTypeParameters = tree.children[0].children[0]
+            val params = functionTypeParameters.children
+                .filter { it.name == "type" }
+                .map { extractType(it) }
+                .joinToString(",")
+            val returnType = tree.children[0].children[2].findName("Identifier")?.let {
+                it.text
+            }!!
+            "($params) -> $returnType"
+        }
+        else -> throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")
     }
-    require(type != null) { "No type found in '$tree'" }
-    return "${type}${if (isNullable) "?" else ""}"
 }
 
 private fun extractSimpleIdentifier(tree: KotlinParseTree): String? {

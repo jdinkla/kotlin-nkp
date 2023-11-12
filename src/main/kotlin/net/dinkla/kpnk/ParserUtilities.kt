@@ -17,3 +17,15 @@ fun walk(node: KotlinParseTree, indent: Int = 0) {
 }
 
 internal fun KotlinParseTree.namesOfChildren(): List<String> = children.map { it.name }
+
+fun KotlinParseTree.findName(name: String): KotlinParseTree? {
+    var node: KotlinParseTree? = this
+    while (node != null && node.name != name) {
+        node = if (node.children.isEmpty()) {
+            null
+        } else {
+            node.children[0]
+        }
+    }
+    return node
+}

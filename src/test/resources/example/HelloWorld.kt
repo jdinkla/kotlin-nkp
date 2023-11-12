@@ -34,9 +34,7 @@ open class O1 {
     protected fun f(x: Int): String = x.toString()
 }
 
-// open class O2 {
-//    protected fun map(f: (Int) -> String) = f(3)
-// }
+fun higherOrderFunction(f: (Int) -> String, x: Int): (Int) -> String = { y -> f(x + y) }
 
 fun main() {
     println("has no args and returns Unit implicitly")
@@ -50,4 +48,6 @@ fun main() {
     ABC.B
     ABC.C
     hw.extensionFun()
+    O1()
+    higherOrderFunction({ x -> x.toString() }, 1)(2)
 }
