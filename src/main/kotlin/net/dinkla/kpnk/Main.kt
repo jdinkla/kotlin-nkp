@@ -14,22 +14,67 @@ import kotlin.system.exitProcess
 
 private val logger = LoggerFactory.getLogger("Main")
 
+enum class Command {
+    ANALYZE, LOAD
+}
+
+val command = Command.LOAD
+
 fun main(args: Array<String>) {
     val directory = parseArgs(args)
     if (directory == null) {
         exitProcess(-1)
     } else {
-        logger.info("Directory: $directory")
-        val files = getAllKotlinFilesInDirectory(directory)
-        val infos = fileInfos(files, directory, false)
-        logger.info("Reports")
-        infos.groupBy { it.javaClass }.forEach {
-            logger.info("${it.key}: ${it.value.size}")
+        val infos: List<FileInfo>
+        when (command) {
+            Command.ANALYZE -> {
+                infos = parseFilesFromDirectory(directory)
+                save(infos, "infos.json")
+            }
+
+            Command.LOAD -> {
+                infos = load("infos.json")
+            }
         }
-        val dependencies = Dependencies.from(dependencies(infos))
-        val string = Json.encodeToString(dependencies)
-        File("dependencies.json").writeText(string)
+        reportErrors(infos)
+        reportDependencies(infos)
+        for (i in infos.filterIsInstance<FileInfo.Parsed>()) {
+            for (c in i.elements.classes) {
+                println("${c.name} ${c.functions.size} ${c.parameters.size}")
+            }
+        }
     }
+}
+
+private fun load(fileName: String): List<FileInfo> {
+    val string = File(fileName).readText()
+    val infos = Json.decodeFromString<List<FileInfo.Parsed>>(string)
+    return infos
+}
+
+private fun save(infos: List<FileInfo>, fileName: String) {
+    val parsed = infos.filterIsInstance<FileInfo.Parsed>()
+    val string = Json.encodeToString(parsed)
+    File(fileName).writeText(string)
+}
+
+private fun reportDependencies(infos: List<FileInfo>) {
+    val dependencies = Dependencies.from(dependencies(infos))
+    val string = Json.encodeToString(dependencies)
+    File("dependencies.json").writeText(string)
+}
+
+private fun reportErrors(infos: List<FileInfo>) {
+    infos.groupBy { it.javaClass }.forEach {
+        logger.info("${it.key}: ${it.value.size}")
+    }
+}
+
+private fun parseFilesFromDirectory(directory: String): List<FileInfo> {
+    logger.info("Directory: $directory")
+    val files = getAllKotlinFilesInDirectory(directory)
+    val infos = fileInfos(files, directory, false)
+    return infos
 }
 
 private fun fileInfos(

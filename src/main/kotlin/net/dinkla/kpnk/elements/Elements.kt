@@ -1,11 +1,16 @@
 package net.dinkla.kpnk.elements
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 @JvmInline
 value class FullyQualifiedName(private val name: String) {
     override fun toString(): String = name
 }
 
+@Serializable
 sealed interface FileInfo {
+    @Serializable
     data class Parsed(
         val fileName: String,
         val elements: Elements,
@@ -16,9 +21,11 @@ sealed interface FileInfo {
         }
     }
 
+    @Serializable
     data class Error(val fileName: String, val message: String) : FileInfo
 }
 
+@Serializable
 data class Elements(
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),
@@ -26,6 +33,7 @@ data class Elements(
     val classes: List<ClassSignature> = listOf(),
 )
 
+@Serializable
 data class Import(val name: FullyQualifiedName) {
     fun packageName(): String {
         val name = name.toString()
@@ -38,8 +46,10 @@ data class Import(val name: FullyQualifiedName) {
     }
 }
 
+@Serializable
 data class Parameter(val name: String, val type: String)
 
+@Serializable
 enum class VisibilityModifier(val text: String) {
     PUBLIC(""),
     PRIVATE("private"),
@@ -47,17 +57,20 @@ enum class VisibilityModifier(val text: String) {
     PROTECTED("protected"),
 }
 
+@Serializable
 enum class ClassModifier(val text: String) {
     DATA("data"),
     ENUM("enum"),
     VALUE("value "),
 }
 
+@Serializable
 enum class InheritanceModifier(val text: String) {
     OPEN("open"),
     ABSTRACT("abstract"),
 }
 
+@Serializable
 enum class Type(val text: String) {
     CLASS("class"),
     OBJECT("object"),

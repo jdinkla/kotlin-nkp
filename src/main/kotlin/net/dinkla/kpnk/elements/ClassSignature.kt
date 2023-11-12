@@ -1,5 +1,8 @@
 package net.dinkla.kpnk.elements
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ClassSignature(
     val name: String,
     val parameters: List<Parameter> = listOf(),

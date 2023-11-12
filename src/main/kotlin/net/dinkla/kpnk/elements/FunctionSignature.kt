@@ -1,5 +1,8 @@
 package net.dinkla.kpnk.elements
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class FunctionSignature(
     val name: String,
     val returnType: String? = null,
