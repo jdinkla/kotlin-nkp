@@ -8,31 +8,25 @@ import net.dinkla.kpnk.elements.FileInfo
 import net.dinkla.kpnk.elements.prettyPrint
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.extract.safeExtract
+import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.system.exitProcess
 
-private const val SCREEN_WIDTH = 120
+private val logger = LoggerFactory.getLogger("Main")
 
 fun main(args: Array<String>) {
     val directory = parseArgs(args)
     if (directory == null) {
         exitProcess(-1)
     } else {
-        println("Directory: $directory")
-        println()
+        logger.info("Directory: $directory")
         val files = getAllKotlinFilesInDirectory(directory)
         val infos = fileInfos(files, directory, false)
-        println("-".repeat(SCREEN_WIDTH))
-        println("Reports")
-        println("-".repeat(SCREEN_WIDTH))
-        println(
-            infos.groupBy { it.javaClass }.forEach {
-                println("${it.key}: ${it.value.size}")
-            },
-        )
-        println()
-        val deps = dependencies(infos)
-        val dependencies = Dependencies.from(deps)
+        logger.info("Reports")
+        infos.groupBy { it.javaClass }.forEach {
+            logger.info("${it.key}: ${it.value.size}")
+        }
+        val dependencies = Dependencies.from(dependencies(infos))
         val string = Json.encodeToString(dependencies)
         File("dependencies.json").writeText(string)
     }
@@ -46,16 +40,15 @@ private fun fileInfos(
     val results = mutableListOf<FileInfo>()
     for (fileName in files) {
         try {
-            println("File: " + fileNameWithoutDirectory(directory, fileName))
+            logger.info("File: " + fileNameWithoutDirectory(directory, fileName))
             val tree = fromFile(fileName)
             val fileInfo = if (safe) safeExtract(tree) else extract(tree)
             results += FileInfo.Parsed(fileName, fileInfo)
-            println(fileInfo.prettyPrint())
+            logger.info(fileInfo.prettyPrint())
         } catch (e: Exception) {
-            println("ERROR: " + e.message)
+            logger.error("ERROR: " + e.message)
             results += FileInfo.Error(fileName, e.message ?: "Unknown error")
         }
-        println("-".repeat(SCREEN_WIDTH))
     }
     return results.toList()
 }
