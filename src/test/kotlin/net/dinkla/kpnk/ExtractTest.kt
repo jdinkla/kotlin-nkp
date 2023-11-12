@@ -102,6 +102,11 @@ class ExtractTest : StringSpec({
         functions shouldBe listOf(FunctionSignature("f", "Any", listOf(Parameter("x", "Any"))))
     }
 
+    "extractFunctions should handle nullable parameters" {
+        val functions = extractFunctions(fromText("fun f(x: Int?): Int? = x"))
+        functions shouldBe listOf(FunctionSignature("f", "Int?", listOf(Parameter("x", "Int?"))))
+    }
+
     "extractClasses should handle a data class with one constructor argument and without a body" {
         val classes = extractClasses(fromText("data class HelloWorld(val many: Int)"))
         classes shouldBe listOf(

@@ -89,10 +89,10 @@ data class ClassSignature(
 ) : PrettyPrint {
     override fun prettyPrint(): String {
         val inherited = if (inheritedFrom.isEmpty()) "" else ": " + inheritedFrom.joinToString(", ")
-        val prettyFunctions: List<String> = functions.map { "    ${it.prettyPrint()}" }
         val prettyParameters: String =
             if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
         val visibility = if (visibility == Visibility.PUBLIC) "" else "${visibility.text} "
-        return "${visibility}${type.text} $name($prettyParameters) $inherited {\n${prettyFunctions.joinToString("\n")}\n}"
+        val joined = functions.map { "    ${it.prettyPrint()}" }.joinToString("\n")
+        return "${visibility}${type.text} $name($prettyParameters) $inherited {\n$joined\n}"
     }
 }

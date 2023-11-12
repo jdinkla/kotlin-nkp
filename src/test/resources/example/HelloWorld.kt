@@ -8,11 +8,8 @@ internal data class HelloWorld(val many: Int) {
 }
 
 private interface Gen {
-    fun gen(n: Int): String
+    fun gen(n: Int): String?
 }
-
-enum class AB { A, B }
-enum class ABC(internal val i: Int) { A(1), B(2), C(3) }
 
 class GenImpl(val many: Int) : Gen {
     override fun gen(n: Int): String = "many hello worlds ${many * n}"
@@ -22,6 +19,10 @@ object MathUtils {
     private const val K_EPSILON = 0.01
     fun isZero(x: Double): Boolean = x > -K_EPSILON && x < K_EPSILON
 }
+
+enum class AB { A, B }
+
+enum class ABC(internal val i: Int) { A(1), B(2), C(3) }
 
 internal fun topLevelFunction(n: Int, hw: HelloWorld): String {
     return FALSE.toString() + TRUE.toString() + hw.toString().repeat(n)

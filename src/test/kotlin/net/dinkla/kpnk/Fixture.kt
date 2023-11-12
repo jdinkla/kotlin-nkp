@@ -39,7 +39,7 @@ internal val class1 = ClassSignature(
 internal val class2 = ClassSignature(
     "Gen",
     listOf(),
-    listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
+    listOf(FunctionSignature("gen", "String?", listOf(Parameter("n", "Int")))),
     visibility = Visibility.PRIVATE,
     type = Type.INTERFACE,
 )

@@ -75,7 +75,9 @@ private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
             ?.filter { it.name == "functionValueParameter" }
             ?.map { it.children[0] }?.map(::extractParameter)
             ?: listOf()
-    val returnType = extractReturnType(tree.children.find { it.name == "type" })
+    val returnType = tree.children.find { it.name == "type" }?.let {
+        extractType(it)
+    }
     val receiverType = tree.children.find { it.name == "receiverType" }?.let {
         extractIdentifier(it.children[0].children[0].children[0].children[0])
     }
@@ -148,7 +150,7 @@ private fun extractParameters(tree: KotlinParseTree): List<Parameter> {
 private fun extractParameter(it: KotlinParseTree): Parameter {
     val paramName = extractSimpleIdentifier(it) ?: "ERROR PARAM NAME"
     val paramType = it.children.find { it.name == "type" }?.let {
-        extractIdentifier(extractType(it))
+        extractType(it)
     } ?: "ERROR PARAM TYPE"
     return Parameter(paramName, paramType)
 }
@@ -203,14 +205,30 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
     return ClassSignature(name, listOf(), functions, inheritedFrom, type = Type.OBJECT)
 }
 
-private fun extractReturnType(tree: KotlinParseTree?): String? = if (tree == null) {
-    null
-} else {
-    extractIdentifier(tree.children[0].children[0].children[0].children[0])
+private fun extractType(tree: KotlinParseTree): String {
+    var isNullable = false
+    var node: KotlinParseTree? = tree
+    var type: String? = null
+    while (node != null) {
+        val name = node.name
+        when (name) {
+            "nullableType" -> {
+                isNullable = true
+            }
+            "Identifier" -> {
+                type = node.text!!
+                break
+            }
+        }
+        node = if (node.children.isEmpty()) {
+            null
+        } else {
+            node.children[0]
+        }
+    }
+    require(type != null) { "No type found in '$tree'" }
+    return "${type}${if (isNullable) "?" else ""}"
 }
-
-private fun extractType(tree: KotlinParseTree): KotlinParseTree =
-    tree.children[0].children[0].children[0].children[0]
 
 private fun extractSimpleIdentifier(tree: KotlinParseTree): String? {
     return tree.children.find { it.name == "simpleIdentifier" }?.let { extractIdentifier(it) }
@@ -219,5 +237,5 @@ private fun extractSimpleIdentifier(tree: KotlinParseTree): String? {
 private fun extractIdentifier(tree: KotlinParseTree): String = when (tree.name) {
     "simpleIdentifier" -> tree.children[0].text!!
     "DOT" -> "."
-    else -> throw IllegalArgumentException("Unknown child '${tree.name}'")
+    else -> throw IllegalArgumentException("Unknown child '${tree.name}' in '$tree'")
 }
