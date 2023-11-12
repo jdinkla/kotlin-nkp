@@ -4,6 +4,15 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.elements.ClassModifier
+import net.dinkla.kpnk.elements.ClassSignature
+import net.dinkla.kpnk.elements.FullyQualifiedName
+import net.dinkla.kpnk.elements.FunctionSignature
+import net.dinkla.kpnk.elements.Import
+import net.dinkla.kpnk.elements.InheritanceModifier
+import net.dinkla.kpnk.elements.Parameter
+import net.dinkla.kpnk.elements.Type
+import net.dinkla.kpnk.elements.VisibilityModifier
 
 class ExtractTest : StringSpec({
     "extract should return all information" {
@@ -69,7 +78,7 @@ class ExtractTest : StringSpec({
                 "f",
                 "Int",
                 listOf(Parameter("x", "Int")),
-                visibility = VisibilityModifier.INTERNAL,
+                visibilityModifier = VisibilityModifier.INTERNAL,
             ),
         )
     }
@@ -81,7 +90,7 @@ class ExtractTest : StringSpec({
                 "f",
                 "Int",
                 listOf(Parameter("x", "Int")),
-                visibility = VisibilityModifier.PRIVATE,
+                visibilityModifier = VisibilityModifier.PRIVATE,
             ),
         )
     }
@@ -343,7 +352,7 @@ class ExtractTest : StringSpec({
                         "f",
                         "Int",
                         listOf(),
-                        visibility = VisibilityModifier.PROTECTED,
+                        visibilityModifier = VisibilityModifier.PROTECTED,
                     ),
                 ),
                 elementType = Type.CLASS,

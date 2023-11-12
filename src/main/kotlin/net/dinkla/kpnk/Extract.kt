@@ -1,5 +1,15 @@
 package net.dinkla.kpnk
 
+import net.dinkla.kpnk.elements.ClassModifier
+import net.dinkla.kpnk.elements.ClassSignature
+import net.dinkla.kpnk.elements.Elements
+import net.dinkla.kpnk.elements.FullyQualifiedName
+import net.dinkla.kpnk.elements.FunctionSignature
+import net.dinkla.kpnk.elements.Import
+import net.dinkla.kpnk.elements.InheritanceModifier
+import net.dinkla.kpnk.elements.Parameter
+import net.dinkla.kpnk.elements.Type
+import net.dinkla.kpnk.elements.VisibilityModifier
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import java.lang.IllegalArgumentException
 

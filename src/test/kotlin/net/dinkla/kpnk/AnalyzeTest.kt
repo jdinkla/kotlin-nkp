@@ -3,6 +3,10 @@ package net.dinkla.kpnk
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.elements.Elements
+import net.dinkla.kpnk.elements.FileInfo
+import net.dinkla.kpnk.elements.FullyQualifiedName
+import net.dinkla.kpnk.elements.Import
 
 class AnalyzeTest : StringSpec({
     "dependencies should return the packages and their imports" {

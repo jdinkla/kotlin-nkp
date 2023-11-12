@@ -9,7 +9,7 @@ inheritanceModifier OPEN
 visibilityModifier PRIVATE, PROTECTED, INTERNAL, PUBLIC
 ------------------------------------------------------------------------
 
-
+typeAlias
 function types (as parameters and return values)
 companion objects
 local classes

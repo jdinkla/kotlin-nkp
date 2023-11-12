@@ -1,5 +1,15 @@
 package net.dinkla.kpnk
 
+import net.dinkla.kpnk.elements.ClassModifier
+import net.dinkla.kpnk.elements.ClassSignature
+import net.dinkla.kpnk.elements.FullyQualifiedName
+import net.dinkla.kpnk.elements.FunctionSignature
+import net.dinkla.kpnk.elements.Import
+import net.dinkla.kpnk.elements.InheritanceModifier
+import net.dinkla.kpnk.elements.Parameter
+import net.dinkla.kpnk.elements.Type
+import net.dinkla.kpnk.elements.VisibilityModifier
+
 private const val KOTLIN_EXAMPLE_FILE = "src/test/resources/example/HelloWorld.kt"
 
 internal val tree = fromFile(KOTLIN_EXAMPLE_FILE)
@@ -13,7 +23,7 @@ internal val function1 = FunctionSignature(
     "topLevelFunction",
     "String",
     listOf(Parameter("n", "Int"), Parameter("hw", "HelloWorld")),
-    visibility = VisibilityModifier.INTERNAL,
+    visibilityModifier = VisibilityModifier.INTERNAL,
 )
 
 internal val function2 = FunctionSignature(
@@ -25,7 +35,7 @@ internal val function3 = FunctionSignature(
     "String",
     listOf(),
     "HelloWorld",
-    visibility = VisibilityModifier.PRIVATE,
+    visibilityModifier = VisibilityModifier.PRIVATE,
 )
 
 internal val class1 = ClassSignature(
@@ -66,7 +76,7 @@ internal val class5 = ClassSignature(
             "f",
             "String",
             listOf(Parameter("x", "Int")),
-            visibility = VisibilityModifier.PROTECTED,
+            visibilityModifier = VisibilityModifier.PROTECTED,
         ),
     ),
     elementType = Type.CLASS,

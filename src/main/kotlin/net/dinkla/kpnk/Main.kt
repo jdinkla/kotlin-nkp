@@ -2,6 +2,7 @@ package net.dinkla.kpnk
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.dinkla.kpnk.elements.FileInfo
 import java.io.File
 import kotlin.system.exitProcess
 
