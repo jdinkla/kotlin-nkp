@@ -1,4 +1,4 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.analyze
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
@@ -8,7 +8,7 @@ import net.dinkla.kpnk.elements.FileInfo
 import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.Import
 
-class AnalyzeTest : StringSpec({
+class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
         val infos = listOf(
             FileInfo.Parsed(

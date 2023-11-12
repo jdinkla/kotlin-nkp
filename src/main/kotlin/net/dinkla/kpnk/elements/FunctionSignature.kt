@@ -7,4 +7,3 @@ data class FunctionSignature(
     val extensionOf: String? = null,
     val visibilityModifier: VisibilityModifier? = null,
 )
-

@@ -2,6 +2,8 @@ package net.dinkla.kpnk
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.dinkla.kpnk.analyze.Dependencies
+import net.dinkla.kpnk.analyze.dependencies
 import net.dinkla.kpnk.elements.FileInfo
 import net.dinkla.kpnk.elements.prettyPrint
 import net.dinkla.kpnk.extract.extract

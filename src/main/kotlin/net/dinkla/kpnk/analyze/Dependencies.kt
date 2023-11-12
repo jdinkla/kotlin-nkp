@@ -1,4 +1,4 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.analyze
 
 import kotlinx.serialization.Serializable
 import net.dinkla.kpnk.elements.FileInfo

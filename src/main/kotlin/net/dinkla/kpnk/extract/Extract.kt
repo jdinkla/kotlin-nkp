@@ -266,9 +266,7 @@ private fun extractType(tree: KotlinParseTree): String? {
             }
         }
         "typeReference" -> {
-            tree.children[0].findName("Identifier")?.let {
-                it.text
-            }
+            tree.children[0].findName("Identifier")?.text
         }
         "functionType" -> {
             val functionTypeParameters = tree.children[0].children[0]
@@ -276,9 +274,7 @@ private fun extractType(tree: KotlinParseTree): String? {
                 .filter { it.name == "type" }
                 .map { extractType(it) }
                 .joinToString(",")
-            val returnType = tree.children[0].children[2].findName("Identifier")?.let {
-                it.text
-            }!!
+            val returnType = tree.children[0].children[2].findName("Identifier")?.text!!
             "($params) -> $returnType"
         }
         else -> throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")
