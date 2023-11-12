@@ -1,4 +1,4 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.elements.ClassModifier
 import net.dinkla.kpnk.elements.ClassSignature

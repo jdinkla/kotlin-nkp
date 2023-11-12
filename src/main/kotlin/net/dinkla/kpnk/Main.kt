@@ -3,6 +3,9 @@ package net.dinkla.kpnk
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.elements.FileInfo
+import net.dinkla.kpnk.elements.prettyPrint
+import net.dinkla.kpnk.extract.extract
+import net.dinkla.kpnk.extract.safeExtract
 import java.io.File
 import kotlin.system.exitProcess
 

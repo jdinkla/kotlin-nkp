@@ -1,121 +1,26 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.extract
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.class1
+import net.dinkla.kpnk.class2
+import net.dinkla.kpnk.class3
+import net.dinkla.kpnk.class4
+import net.dinkla.kpnk.class5
 import net.dinkla.kpnk.elements.ClassModifier
 import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.FunctionSignature
-import net.dinkla.kpnk.elements.Import
 import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.VisibilityModifier
+import net.dinkla.kpnk.enum1
+import net.dinkla.kpnk.enum2
+import net.dinkla.kpnk.fromText
+import net.dinkla.kpnk.tree
 
-class ExtractTest : StringSpec({
-    "extract should return all information" {
-        val file = extract(tree)
-        file.packageName shouldBe FullyQualifiedName("example")
-        file.imports shouldContainExactly expectedImports
-        file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
-        file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
-    }
-
-    "extractPackageName should return the fully qualified package name" {
-        val packageName = extractPackageName(fromText("package my.example.test"))
-        packageName shouldBe FullyQualifiedName("my.example.test")
-    }
-
-    "extractPackageName should return the simple package name" {
-        val packageName = extractPackageName(fromText("package example"))
-        packageName shouldBe FullyQualifiedName("example")
-    }
-
-    "extractImports should return all imports" {
-        val imports = extractImports(fromText("package example; import a.b.c; import d.e.f"))
-        imports shouldContainExactly listOf(Import(FullyQualifiedName("a.b.c")), Import(FullyQualifiedName("d.e.f")))
-    }
-
-    "extractFunctions should return all functions in example code" {
-        val functions = extractFunctions(tree)
-        functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3)
-    }
-
-    "extractFunctions should return all functions" {
-        val functions = extractFunctions(fromText("fun f(x: Int): Int = x+1; fun g() = 3"))
-        functions shouldContainExactly listOf(
-            FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))),
-            FunctionSignature("g", null, listOf()),
-        )
-    }
-
-    "extractFunctions should handle function with parameters and return type" {
-        val functions = extractFunctions(fromText("fun f(x: Int): Int = x+1"))
-        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
-    }
-
-    "extractFunctions should handle function with parameters without explicit simple return type" {
-        val functions = extractFunctions(fromText("fun f(x: Int) = x+1"))
-        functions shouldBe listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int"))))
-    }
-
-    "extractFunctions should handle function without parameters but with explicit simple return type" {
-        val functions = extractFunctions(fromText("fun f(): Int = 1"))
-        functions shouldBe listOf(FunctionSignature("f", "Int", listOf()))
-    }
-
-    "extractFunctions should handle function without parameters and without explicit simple return type" {
-        val functions = extractFunctions(fromText("fun f() = 1"))
-        functions shouldBe listOf(FunctionSignature("f", null, listOf()))
-    }
-
-    "extractFunctions should handle internal function with parameters and simple return type" {
-        val functions = extractFunctions(fromText("internal fun f(x: Int): Int = x+1"))
-        functions shouldBe listOf(
-            FunctionSignature(
-                "f",
-                "Int",
-                listOf(Parameter("x", "Int")),
-                visibilityModifier = VisibilityModifier.INTERNAL,
-            ),
-        )
-    }
-
-    "extractFunctions should handle private function with parameters and simple return type" {
-        val functions = extractFunctions(fromText("private fun f(x: Int): Int = x+1"))
-        functions shouldBe listOf(
-            FunctionSignature(
-                "f",
-                "Int",
-                listOf(Parameter("x", "Int")),
-                visibilityModifier = VisibilityModifier.PRIVATE,
-            ),
-        )
-    }
-
-    "extractFunctions should handle operator functions like plus" {
-        val functions = extractFunctions(fromText("operator fun plus(x: Int, y: Int): Int = x+y"))
-        functions shouldBe listOf(
-            FunctionSignature(
-                "plus",
-                "Int",
-                listOf(Parameter("x", "Int"), Parameter("y", "Int")),
-            ),
-        )
-    }
-
-    "extractFunctions should handle function with Any as parameter and Any as return type" {
-        val functions = extractFunctions(fromText("fun f(x: Any): Any = x"))
-        functions shouldBe listOf(FunctionSignature("f", "Any", listOf(Parameter("x", "Any"))))
-    }
-
-    "extractFunctions should handle nullable parameters" {
-        val functions = extractFunctions(fromText("fun f(x: Int?): Int? = x"))
-        functions shouldBe listOf(FunctionSignature("f", "Int?", listOf(Parameter("x", "Int?"))))
-    }
-
+class ExtractClassesTest : StringSpec({
     "extractClasses should handle a data class with one constructor argument and without a body" {
         val classes = extractClasses(fromText("data class HelloWorld(val many: Int)"))
         classes shouldBe listOf(
