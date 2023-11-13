@@ -113,4 +113,3 @@ internal val enum2 = ClassSignature(
 
 internal val property1 = Property("myProperty", "String", PropertyModifier.VAL)
 internal val property2 = Property("THE_ANSWER", "Int", PropertyModifier.CONST_VAL)
-

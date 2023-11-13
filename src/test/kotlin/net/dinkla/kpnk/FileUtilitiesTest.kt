@@ -18,4 +18,12 @@ class FileUtilitiesTest : StringSpec({
     "basename should return the name of the file on Windows" {
         basename("C:\\src\\test\\resources\\example\\HelloWorld.kt") shouldBe "HelloWorld.kt"
     }
+
+    "fileNameWithoutDirectory should return the file name without the directory" {
+        fileNameWithoutDirectory("a", "a/b/cde.fg") shouldBe "b/cde.fg"
+    }
+
+    "fileNameWithoutDirectory should return the file name without the directory 2" {
+        fileNameWithoutDirectory("a/b/c", "a/b/c/def.x") shouldBe "def.x"
+    }
 })

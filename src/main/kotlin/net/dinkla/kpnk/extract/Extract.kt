@@ -332,7 +332,6 @@ internal fun extractProperties(tree: KotlinParseTree): List<Property> {
 }
 
 fun extractProperty(tree: KotlinParseTree): Property {
-    println(tree)
     val hasConstModifier = extractConstModifier(tree) ?: false
     val isMutable = tree.children.find { it.name == "VAR" } != null
     val variableDeclaration = tree.children.find { it.name == "variableDeclaration" }!!
@@ -342,7 +341,6 @@ fun extractProperty(tree: KotlinParseTree): Property {
     }!!
     return Property(name, type, PropertyModifier.create(hasConstModifier, isMutable))
 }
-
 
 private fun extractConstModifier(tree: KotlinParseTree): Boolean? {
     val modifier = tree.children

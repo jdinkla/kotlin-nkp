@@ -2,14 +2,49 @@ package net.dinkla.kpnk.elements
 
 import net.dinkla.kpnk.addSpaceAfter
 
-fun Elements.prettyPrint(): String = """
-package $packageName
-${imports.joinToString("\n") { it.prettyPrint() }}
-${typeAliases.joinToString("\n") { it.prettyPrint() }}
-${properties.joinToString("\n") { it.prettyPrint() }}
-${functions.joinToString("\n") { it.prettyPrint() }}
-${classes.joinToString("\n") { it.prettyPrint() }}
-""".trimIndent()
+fun Elements.prettyPrint(): String {
+    var isLineNeeded = false
+    return buildString {
+        appendLine("package $packageName")
+        appendLine()
+        if (imports.isNotEmpty()) {
+            appendLine(imports.joinToString("\n") { it.prettyPrint() })
+            isLineNeeded = true
+        }
+        if (isLineNeeded) {
+            appendLine()
+            isLineNeeded = false
+        }
+        if (typeAliases.isNotEmpty()) {
+            appendLine(typeAliases.joinToString("\n") { it.prettyPrint() })
+            isLineNeeded = true
+        }
+        if (isLineNeeded) {
+            appendLine()
+            isLineNeeded = false
+        }
+        if (properties.isNotEmpty()) {
+            appendLine(properties.joinToString("\n") { it.prettyPrint() })
+            isLineNeeded = true
+        }
+        if (isLineNeeded) {
+            appendLine()
+            isLineNeeded = false
+        }
+        if (functions.isNotEmpty()) {
+            appendLine(functions.joinToString("\n") { it.prettyPrint() })
+            isLineNeeded = true
+        }
+        if (isLineNeeded) {
+            appendLine()
+            isLineNeeded = false
+        }
+        if (classes.isNotEmpty()) {
+            appendLine(classes.joinToString("\n") { it.prettyPrint() })
+            isLineNeeded = true
+        }
+    }
+}
 
 fun Parameter.prettyPrint(): String = "$name: $type"
 
@@ -36,8 +71,13 @@ fun ClassSignature.prettyPrint(): String {
         if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
     val visibility = addSpaceAfter(visibilityModifier.prettyPrint())
     val joined = functions.map { "    ${it.prettyPrint()}" }.joinToString("\n")
+    val joined2 = if (joined.isNotEmpty()) {
+        "\n$joined\n"
+    } else {
+        joined
+    }
     val classMod = addSpaceAfter(classModifier.prettyPrint())
-    return "${visibility}${classMod}${elementType.text} $name($prettyParameters)$inherited {\n$joined\n}"
+    return "${visibility}${classMod}${elementType.text} $name($prettyParameters)$inherited {$joined2}"
 }
 
 fun FunctionSignature.prettyPrint(): String {
@@ -53,5 +93,5 @@ fun TypeAlias.prettyPrint(): String = "typealias $name = $def"
 
 fun Property.prettyPrint(): String {
     val mod = modifier.text
-    return "${mod} ${name} : ${type}"
+    return "$mod $name : $type"
 }

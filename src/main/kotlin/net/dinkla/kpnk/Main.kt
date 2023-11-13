@@ -18,13 +18,14 @@ enum class Command {
     ANALYZE, LOAD
 }
 
-val command = Command.LOAD
+val command = Command.ANALYZE
 
 fun main(args: Array<String>) {
-    val directory = parseArgs(args)
-    if (directory == null) {
+    val directoryString = parseArgs(args)
+    if (directoryString == null) {
         exitProcess(-1)
     } else {
+        val directory = File(directoryString).absolutePath
         val infos: List<FileInfo>
         when (command) {
             Command.ANALYZE -> {
