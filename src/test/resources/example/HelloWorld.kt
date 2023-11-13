@@ -36,6 +36,10 @@ open class O1 {
 
 fun higherOrderFunction(f: (Int) -> String, x: Int): (Int) -> String = { y -> f(x + y) }
 
+typealias Dictionary = Map<String, String>
+
+fun create(ls: List<String>): Dictionary = ls.map { it to it }.toMap()
+
 fun main() {
     println("has no args and returns Unit implicitly")
     MathUtils.isZero(2.3)

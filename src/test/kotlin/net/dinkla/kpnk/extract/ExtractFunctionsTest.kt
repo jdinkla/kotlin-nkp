@@ -12,7 +12,7 @@ import net.dinkla.kpnk.fromText
 class ExtractFunctionsTest : StringSpec({
     "extractFunctions should return all functions in example code" {
         val functions = extractFunctions(tree)
-        functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4)
+        functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4, function5)
     }
 
     "extractFunctions should return all functions" {

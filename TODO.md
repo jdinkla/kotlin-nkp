@@ -1,6 +1,8 @@
 # TODO
 
-typeAlias
+List vs List<String>
+Map<String, String> in extractType()
+
 companion objects
 local classes
 anonymous objects?
@@ -26,4 +28,7 @@ lateinit, by, delegate, lazy properties
 
 : Super(args1, arg2), Someother(args3)
 
--- nullable types
+import org.jetbrains.kotlin.spec.grammar.KotlinParser.TypeAliasContext
+import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
+
+

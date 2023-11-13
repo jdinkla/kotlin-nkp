@@ -45,6 +45,12 @@ internal val function4 = FunctionSignature(
     listOf(Parameter("f", "(Int) -> String"), Parameter("x", "Int")),
 )
 
+internal val function5 = FunctionSignature(
+    "create",
+    "Dictionary",
+    listOf(Parameter("ls", "List")),
+)
+
 internal val class1 = ClassSignature(
     "HelloWorld",
     listOf(Parameter("many", "Int")),

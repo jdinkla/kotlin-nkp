@@ -31,6 +31,7 @@ data class Elements(
     val imports: List<Import> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
     val classes: List<ClassSignature> = listOf(),
+    val typeAliases: List<TypeAlias> = listOf(),
 )
 
 @Serializable
@@ -76,3 +77,7 @@ enum class Type(val text: String) {
     OBJECT("object"),
     INTERFACE("interface"),
 }
+
+@Serializable
+data class TypeAlias(val name: String, val def: String)
+

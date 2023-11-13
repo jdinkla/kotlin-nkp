@@ -9,6 +9,7 @@ import net.dinkla.kpnk.elements.Import
 import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.Type
+import net.dinkla.kpnk.elements.TypeAlias
 import net.dinkla.kpnk.elements.VisibilityModifier
 import net.dinkla.kpnk.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -35,7 +36,8 @@ fun extract(tree: KotlinParseTree): Elements {
     val imports = extractImports(tree)
     val functions = extractFunctions(tree)
     val classes = extractClasses(tree)
-    return Elements(packageName, imports, functions, classes)
+    val aliases = extractTypeAliases(tree)
+    return Elements(packageName, imports, functions, classes, aliases)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
@@ -289,4 +291,23 @@ private fun extractIdentifier(tree: KotlinParseTree): String = when (tree.name) 
     "simpleIdentifier" -> tree.children[0].text!!
     "DOT" -> "."
     else -> throw IllegalArgumentException("Unknown child '${tree.name}' in '$tree'")
+}
+
+internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> {
+    val result = mutableListOf<TypeAlias>()
+    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
+    for (topLevelObject in topLevelObjects) {
+        assert(topLevelObject.children[0].name == "declaration")
+        val declaration = topLevelObject.children[0].children[0]
+        if (declaration.name == "typeAlias") {
+            result += extractTypeAlias(declaration)
+        }
+    }
+    return result
+}
+
+fun extractTypeAlias(tree: KotlinParseTree): TypeAlias {
+    val name = extractIdentifier(tree.children[1])!!
+    val type = extractType(tree.children[3])!!
+    return TypeAlias(name, type)
 }

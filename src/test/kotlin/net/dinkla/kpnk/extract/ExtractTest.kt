@@ -6,6 +6,7 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.Import
+import net.dinkla.kpnk.elements.TypeAlias
 import net.dinkla.kpnk.fromText
 
 class ExtractTest : StringSpec({
@@ -13,7 +14,7 @@ class ExtractTest : StringSpec({
         val file = extract(tree)
         file.packageName shouldBe FullyQualifiedName("example")
         file.imports shouldContainExactly expectedImports
-        file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4)
+        file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4, function5)
         file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
     }
 
@@ -30,5 +31,10 @@ class ExtractTest : StringSpec({
     "extractImports should return all imports" {
         val imports = extractImports(fromText("package example; import a.b.c; import d.e.f"))
         imports shouldContainExactly listOf(Import(FullyQualifiedName("a.b.c")), Import(FullyQualifiedName("d.e.f")))
+    }
+
+    "extractTypeAlias should extract typealias" {
+        val typeAliases = extractTypeAliases(fromText("typealias Dictionary = Map<String, String>"))
+        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", "Map"))
     }
 })
