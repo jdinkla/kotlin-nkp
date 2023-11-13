@@ -7,6 +7,8 @@ import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.Import
 import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
+import net.dinkla.kpnk.elements.Property
+import net.dinkla.kpnk.elements.PropertyModifier
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.VisibilityModifier
 import net.dinkla.kpnk.fromFile
@@ -108,3 +110,7 @@ internal val enum2 = ClassSignature(
     elementType = Type.CLASS,
     classModifier = ClassModifier.ENUM,
 )
+
+internal val property1 = Property("myProperty", "String", PropertyModifier.VAL)
+internal val property2 = Property("THE_ANSWER", "Int", PropertyModifier.CONST_VAL)
+

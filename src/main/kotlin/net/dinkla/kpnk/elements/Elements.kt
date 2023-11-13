@@ -32,6 +32,7 @@ data class Elements(
     val functions: List<FunctionSignature> = listOf(),
     val classes: List<ClassSignature> = listOf(),
     val typeAliases: List<TypeAlias> = listOf(),
+    val properties: List<Property> = listOf(),
 )
 
 @Serializable
@@ -81,3 +82,20 @@ enum class Type(val text: String) {
 @Serializable
 data class TypeAlias(val name: String, val def: String)
 
+enum class PropertyModifier(val text: String) {
+    VAR("var"),
+    VAL("val"),
+    CONST_VAL("const val"),
+    ;
+
+    companion object {
+        fun create(hasConstModifier: Boolean, isMutable: Boolean): PropertyModifier = when {
+            hasConstModifier -> CONST_VAL
+            isMutable -> VAR
+            else -> VAL
+        }
+    }
+}
+
+@Serializable
+data class Property(val name: String, val type: String, val modifier: PropertyModifier)

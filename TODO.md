@@ -1,14 +1,17 @@
 # TODO
 
+properties
+
 List vs List<String>
 Map<String, String> in extractType()
+
+bug: a property called property has a PROPERTY node
 
 companion objects
 local classes
 anonymous objects?
 inline functions
 reified type parameters
-properties
 delegated properties
 sealed classes
 

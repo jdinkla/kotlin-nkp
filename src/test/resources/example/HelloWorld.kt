@@ -40,6 +40,9 @@ typealias Dictionary = Map<String, String>
 
 fun create(ls: List<String>): Dictionary = ls.map { it to it }.toMap()
 
+val myProperty: String = "is theft..."
+const val THE_ANSWER: Int = 42
+
 fun main() {
     println("has no args and returns Unit implicitly")
     MathUtils.isZero(2.3)
@@ -54,4 +57,5 @@ fun main() {
     hw.extensionFun()
     O1()
     higherOrderFunction({ x -> x.toString() }, 1)(2)
+    create(listOf(myProperty, THE_ANSWER.toString()))
 }

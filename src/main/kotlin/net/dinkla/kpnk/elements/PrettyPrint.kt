@@ -5,6 +5,8 @@ import net.dinkla.kpnk.addSpaceAfter
 fun Elements.prettyPrint(): String = """
 package $packageName
 ${imports.joinToString("\n") { it.prettyPrint() }}
+${typeAliases.joinToString("\n") { it.prettyPrint() }}
+${properties.joinToString("\n") { it.prettyPrint() }}
 ${functions.joinToString("\n") { it.prettyPrint() }}
 ${classes.joinToString("\n") { it.prettyPrint() }}
 """.trimIndent()
@@ -45,4 +47,11 @@ fun FunctionSignature.prettyPrint(): String {
     val ext = if (extensionOf == null) "" else "$extensionOf."
     val visibility = addSpaceAfter(visibilityModifier.prettyPrint())
     return "${visibility}fun $ext$name($prettyParameters)$prettyReturnType"
+}
+
+fun TypeAlias.prettyPrint(): String = "typealias $name = $def"
+
+fun Property.prettyPrint(): String {
+    val mod = modifier.text
+    return "${mod} ${name} : ${type}"
 }

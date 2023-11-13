@@ -8,6 +8,8 @@ import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.Import
 import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
+import net.dinkla.kpnk.elements.Property
+import net.dinkla.kpnk.elements.PropertyModifier
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.TypeAlias
 import net.dinkla.kpnk.elements.VisibilityModifier
@@ -37,7 +39,8 @@ fun extract(tree: KotlinParseTree): Elements {
     val functions = extractFunctions(tree)
     val classes = extractClasses(tree)
     val aliases = extractTypeAliases(tree)
-    return Elements(packageName, imports, functions, classes, aliases)
+    val properties = extractProperties(tree)
+    return Elements(packageName, imports, functions, classes, aliases, properties)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
@@ -267,9 +270,11 @@ private fun extractType(tree: KotlinParseTree): String? {
                 "${it.text}?"
             }
         }
+
         "typeReference" -> {
             tree.children[0].findName("Identifier")?.text
         }
+
         "functionType" -> {
             val functionTypeParameters = tree.children[0].children[0]
             val params = functionTypeParameters.children
@@ -279,6 +284,7 @@ private fun extractType(tree: KotlinParseTree): String? {
             val returnType = tree.children[0].children[2].findName("Identifier")?.text!!
             "($params) -> $returnType"
         }
+
         else -> throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")
     }
 }
@@ -307,7 +313,47 @@ internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> {
 }
 
 fun extractTypeAlias(tree: KotlinParseTree): TypeAlias {
-    val name = extractIdentifier(tree.children[1])!!
+    val name = extractIdentifier(tree.children[1])
     val type = extractType(tree.children[3])!!
     return TypeAlias(name, type)
+}
+
+internal fun extractProperties(tree: KotlinParseTree): List<Property> {
+    val result = mutableListOf<Property>()
+    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
+    for (topLevelObject in topLevelObjects) {
+        assert(topLevelObject.children[0].name == "declaration")
+        val declaration = topLevelObject.children[0].children[0]
+        if (declaration.name == "propertyDeclaration") {
+            result += extractProperty(declaration)
+        }
+    }
+    return result
+}
+
+fun extractProperty(tree: KotlinParseTree): Property {
+    println(tree)
+    val hasConstModifier = extractConstModifier(tree) ?: false
+    val isMutable = tree.children.find { it.name == "VAR" } != null
+    val variableDeclaration = tree.children.find { it.name == "variableDeclaration" }!!
+    val name = variableDeclaration.children[0].findName("Identifier")?.text!!
+    val type = variableDeclaration.children.find { it.name == "type" }?.let {
+        extractType(it)
+    }!!
+    return Property(name, type, PropertyModifier.create(hasConstModifier, isMutable))
+}
+
+
+private fun extractConstModifier(tree: KotlinParseTree): Boolean? {
+    val modifier = tree.children
+        .filter { it.name == "modifiers" }
+        .flatMap { it.children }
+        .filter { it.name == "modifier" }
+        .flatMap { it.children }
+    return modifier.find { it.name == "propertyModifier" }?.let {
+        when (it.children[0].name) {
+            "CONST" -> true
+            else -> false
+        }
+    }
 }

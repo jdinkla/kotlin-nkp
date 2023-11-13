@@ -16,4 +16,10 @@ class ElementsTest : StringSpec({
     "Import.packageName() should return the name of the package the element is contained in" {
         Import(FullyQualifiedName("kotlin.math.max")).packageName() shouldBe "kotlin.math"
     }
+
+    "PropertyModifier.create should create the correct modifier" {
+        PropertyModifier.create(false, false) shouldBe PropertyModifier.VAL
+        PropertyModifier.create(false, true) shouldBe PropertyModifier.VAR
+        PropertyModifier.create(true, false) shouldBe PropertyModifier.CONST_VAL
+    }
 })
