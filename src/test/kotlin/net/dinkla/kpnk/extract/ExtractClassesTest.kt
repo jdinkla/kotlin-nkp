@@ -83,7 +83,7 @@ class ExtractClassesTest : StringSpec({
         )
     }
 
-    "extractClasses should handle a class that inherits from class A" {
+    "extractClasses should handle a class that inherits from interface A" {
         val classes = extractClasses(fromText("class HelloWorld(val many: Int): A"))
         classes shouldBe listOf(
             ClassSignature(
@@ -96,7 +96,7 @@ class ExtractClassesTest : StringSpec({
         )
     }
 
-    "extractClasses should handle a class that inherits from classes A and B" {
+    "extractClasses should handle a class that inherits from interfaces A and B" {
         val classes = extractClasses(fromText("class HelloWorld(val many: Int): A, B"))
         classes shouldBe listOf(
             ClassSignature(
@@ -104,6 +104,32 @@ class ExtractClassesTest : StringSpec({
                 listOf(Parameter("many", "Int")),
                 listOf(),
                 listOf("A", "B"),
+                elementType = Type.CLASS,
+            ),
+        )
+    }
+
+    "extractClasses should handle a class that inherits from class A" {
+        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A()"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(),
+                listOf("A"),
+                elementType = Type.CLASS,
+            ),
+        )
+    }
+
+    "extractClasses should handle a class that inherits from class A and pass an argument" {
+        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A(many)"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(Parameter("many", "Int")),
+                listOf(),
+                listOf("A"),
                 elementType = Type.CLASS,
             ),
         )
@@ -238,7 +264,7 @@ class ExtractClassesTest : StringSpec({
         )
     }
 
-    "extractClass should handle an open class with a proteced function" {
+    "extractClass should handle an open class with a protected function" {
         val classes = extractClasses(fromText("open class C() { protected fun f(): Int = 1 }"))
         classes shouldBe listOf(
             ClassSignature(

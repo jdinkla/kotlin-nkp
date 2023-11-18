@@ -213,14 +213,16 @@ private fun extractParameter(it: KotlinParseTree): Parameter {
     return Parameter(paramName, paramType)
 }
 
-private fun extractSuperClasses(tree: KotlinParseTree) =
+private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
     tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
-            extractIdentifier(it.children[0].children[0].children[0].children[0])
+            it.findName("Identifier")?.let {
+                it.text
+            }!!
         }
     } ?: listOf()
 
-private fun extractBody(tree: KotlinParseTree) =
+private fun extractBody(tree: KotlinParseTree): List<FunctionSignature> =
     tree.children.find { it.name == "classBody" }?.let {
         it.children.filter { it.name == "classMemberDeclarations" }
             .flatMap {
