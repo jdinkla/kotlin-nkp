@@ -4,24 +4,18 @@ import kotlinx.serialization.Serializable
 import net.dinkla.kpnk.FileName
 
 @Serializable
-@JvmInline
-value class FullyQualifiedName(private val name: String) {
-    override fun toString(): String = name
-}
-
-@Serializable
 data class FileInfo(
     val fileName: FileName,
-    val elements: Elements,
+    val topLevel: TopLevel,
 ) {
     fun packageName(): String {
         val name = fileName.basename.replace(".kt", "")
-        return elements.packageName.toString() + "." + name
+        return topLevel.packageName.toString() + "." + name
     }
 }
 
 @Serializable
-data class Elements(
+data class TopLevel(
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),
     val functions: List<FunctionSignature> = listOf(),
@@ -29,19 +23,6 @@ data class Elements(
     val typeAliases: List<TypeAlias> = listOf(),
     val properties: List<Property> = listOf(),
 )
-
-@Serializable
-data class Import(val name: FullyQualifiedName) {
-    fun packageName(): String {
-        val name = name.toString()
-        val index = name.lastIndexOf(".")
-        return if (index >= 0) {
-            name.substring(0, index)
-        } else {
-            name
-        }
-    }
-}
 
 @Serializable
 data class Parameter(val name: String, val type: String)
@@ -76,21 +57,6 @@ enum class Type(val text: String) {
 
 @Serializable
 data class TypeAlias(val name: String, val def: String)
-
-enum class PropertyModifier(val text: String) {
-    VAR("var"),
-    VAL("val"),
-    CONST_VAL("const val"),
-    ;
-
-    companion object {
-        fun create(hasConstModifier: Boolean, isMutable: Boolean): PropertyModifier = when {
-            hasConstModifier -> CONST_VAL
-            isMutable -> VAR
-            else -> VAL
-        }
-    }
-}
 
 @Serializable
 data class Property(

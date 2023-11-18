@@ -2,7 +2,6 @@ package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.elements.ClassModifier
 import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.Elements
 import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.Import
@@ -10,18 +9,19 @@ import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
 import net.dinkla.kpnk.elements.Property
 import net.dinkla.kpnk.elements.PropertyModifier
+import net.dinkla.kpnk.elements.TopLevel
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.TypeAlias
 import net.dinkla.kpnk.elements.VisibilityModifier
 import net.dinkla.kpnk.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-fun safeExtract(tree: KotlinParseTree): Elements {
+fun safeExtract(tree: KotlinParseTree): TopLevel {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = tc(::extractFunctions, tree) ?: listOf()
     val classes = tc(::extractClasses, tree) ?: listOf()
-    return Elements(packageName, imports, functions, classes)
+    return TopLevel(packageName, imports, functions, classes)
 }
 
 fun <T> tc(f: (KotlinParseTree) -> T, tree: KotlinParseTree): T? {
@@ -33,14 +33,14 @@ fun <T> tc(f: (KotlinParseTree) -> T, tree: KotlinParseTree): T? {
     }
 }
 
-fun extract(tree: KotlinParseTree): Elements {
+fun extract(tree: KotlinParseTree): TopLevel {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val functions = extractFunctions(tree)
     val classes = extractClasses(tree)
     val aliases = extractTypeAliases(tree)
     val properties = extractProperties(tree)
-    return Elements(packageName, imports, functions, classes, aliases, properties)
+    return TopLevel(packageName, imports, functions, classes, aliases, properties)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {

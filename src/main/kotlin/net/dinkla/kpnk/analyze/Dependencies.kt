@@ -22,10 +22,9 @@ fun dependencies(infos: List<FileInfo>): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
     for (info in infos) {
         val name = info.packageName()
-        for (imp in info.elements.imports) {
-            val packageName = imp.packageName()
+        for (imp in info.topLevel.imports) {
             val set = dependencies.getOrDefault(name, mutableSetOf())
-            set += packageName
+            set += imp.packageName
             dependencies[name] = set
         }
     }

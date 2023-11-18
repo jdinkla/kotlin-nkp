@@ -2,7 +2,7 @@ package net.dinkla.kpnk.elements
 
 import net.dinkla.kpnk.addSpaceAfter
 
-fun Elements.prettyPrint(): String {
+fun TopLevel.prettyPrint(): String {
     var isLineNeeded = false
     return buildString {
         appendLine("package $packageName")

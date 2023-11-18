@@ -10,6 +10,6 @@ fun reportLargeClasses(infos: List<FileInfo>, topN: Int = 10) {
 }
 
 fun largeClasses(infos: List<FileInfo>, topN: Int): List<ClassSignature> {
-    val allClasses = infos.flatMap { it.elements.classes }
+    val allClasses = infos.flatMap { it.topLevel.classes }
     return allClasses.sortedByDescending { it.functions.size + it.properties.size }.take(topN)
 }

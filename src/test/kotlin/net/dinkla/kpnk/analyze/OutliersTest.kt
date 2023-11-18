@@ -4,11 +4,11 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.FileName
 import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.Elements
 import net.dinkla.kpnk.elements.FileInfo
 import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.Property
+import net.dinkla.kpnk.elements.TopLevel
 
 class OutliersTest : StringSpec({
     "largeClasses should return the top 2 classes with most functions and properties" {
@@ -22,7 +22,7 @@ class OutliersTest : StringSpec({
 })
 
 private fun info(classSignatures: List<ClassSignature>) =
-    FileInfo(FileName("a"), Elements(FullyQualifiedName("name"), classes = classSignatures))
+    FileInfo(FileName("a"), TopLevel(FullyQualifiedName("name"), classes = classSignatures))
 
 private fun cls(numElems: Int) = ClassSignature(
     "A",
