@@ -136,7 +136,7 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
     val name = extractSimpleIdentifier(tree)!!
     val params = extractParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
-    val declarations = extractClassBody(tree)
+    val declarations = extractBody(tree)
     return ClassSignature(
         name,
         params,
@@ -233,7 +233,18 @@ private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
         }
     } ?: listOf()
 
-private fun extractClassBody(tree: KotlinParseTree): List<Defined> {
+private fun extractObject(tree: KotlinParseTree): ClassSignature {
+    val name = extractSimpleIdentifier(tree)!!
+    val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
+        it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
+            extractIdentifier(it.children[0].children[0].children[0].children[0])
+        }
+    } ?: listOf()
+    val declarations = extractBody(tree)
+    return ClassSignature(name, listOf(), inheritedFrom, elementType = Type.OBJECT, declarations = declarations)
+}
+
+private fun extractBody(tree: KotlinParseTree): List<Defined> {
     return tree.children.find { it.name == "classBody" }?.let {
         it.children.filter { it.name == "classMemberDeclarations" }
             .flatMap {
@@ -248,33 +259,6 @@ private fun extractClassBody(tree: KotlinParseTree): List<Defined> {
                     }
             }.filterNotNull()
     } ?: listOf()
-}
-
-private fun extractObject(tree: KotlinParseTree): ClassSignature {
-    val name = extractSimpleIdentifier(tree)!!
-    val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
-        it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
-            extractIdentifier(it.children[0].children[0].children[0].children[0])
-        }
-    } ?: listOf()
-    val declarations = tree.children.find { it.name == "classBody" }?.let {
-        val classMemberDeclarations = it.children.find { it.name == "classMemberDeclarations" }
-        val declarations = classMemberDeclarations?.children?.map { classMemberDeclaration ->
-            val declaration = classMemberDeclaration.children[0]
-            if (declaration.name != "declaration") {
-                null
-            } else {
-                val functionDeclaration = declaration.children[0]
-                when (functionDeclaration.name) {
-                    "functionDeclaration" -> extractFunction(functionDeclaration)
-                    "propertyDeclaration" -> extractProperty(functionDeclaration)
-                    else -> null
-                }
-            }
-        }?.filterNotNull()
-        declarations
-    } ?: listOf()
-    return ClassSignature(name, listOf(), inheritedFrom, elementType = Type.OBJECT, declarations = declarations)
 }
 
 private fun extractType(tree: KotlinParseTree): String? {
