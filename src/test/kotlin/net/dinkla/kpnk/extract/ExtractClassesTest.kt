@@ -41,21 +41,19 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a data class with one constructor argument with two methods f and g" {
-        val classes =
-            extractClasses(
-                fromText(
-                    """
-                data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2; class X(val y: Int) { fun h() = 3 } }
-                    """.trimIndent(),
-                ),
-            )
+        val classes = extractClasses(
+            fromText("data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2 }"),
+        )
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
-                declarations = listOf(FunctionSignature("f", null, listOf()), FunctionSignature("g", null, listOf())),
+                declarations = listOf(
+                    FunctionSignature("f", null, listOf()),
+                    FunctionSignature("g", null, listOf()),
+                ),
             ),
         )
     }
@@ -309,6 +307,22 @@ class ExtractClassesTest : StringSpec({
                 "O",
                 elementType = Type.OBJECT,
                 declarations = listOf(Property("y", "Int")),
+            ),
+        )
+    }
+
+    "extractClass should handle a class inside a class" {
+        val classes = extractClasses(fromText("class C() { class D() }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                elementType = Type.CLASS,
+                declarations = listOf(
+                    ClassSignature(
+                        "D",
+                        elementType = Type.CLASS,
+                    ),
+                ),
             ),
         )
     }

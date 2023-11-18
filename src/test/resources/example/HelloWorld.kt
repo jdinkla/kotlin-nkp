@@ -32,6 +32,7 @@ private fun HelloWorld.extensionFun(): String = this.many.toString()
 
 open class O1 {
     protected fun f(x: Int): String = x.toString()
+    class I(val name: String)
 }
 
 fun higherOrderFunction(f: (Int) -> String, x: Int): (Int) -> String = { y -> f(x + y) }

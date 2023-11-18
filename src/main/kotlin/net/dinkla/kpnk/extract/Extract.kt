@@ -254,6 +254,7 @@ private fun extractBody(tree: KotlinParseTree): List<Defined> {
                         when (declaration.name) {
                             "functionDeclaration" -> extractFunction(declaration)
                             "propertyDeclaration" -> extractProperty(declaration)
+                            "classDeclaration" -> extractClass(declaration)
                             else -> null
                         }
                     }

@@ -99,6 +99,11 @@ internal val class5 = ClassSignature(
             listOf(Parameter("x", "Int")),
             visibilityModifier = VisibilityModifier.PROTECTED,
         ),
+        ClassSignature(
+            "I",
+            listOf(Parameter("name", "String")),
+            elementType = Type.CLASS,
+        ),
     ),
     elementType = Type.CLASS,
     inheritanceModifier = InheritanceModifier.OPEN,
