@@ -12,18 +12,18 @@ class FileUtilitiesTest : StringSpec({
     }
 
     "basename should return the name of the file given a full path" {
-        basename("src/test/resources/example/HelloWorld.kt") shouldBe "HelloWorld.kt"
+        FileName("src/test/resources/example/HelloWorld.kt").basename shouldBe "HelloWorld.kt"
     }
 
     "basename should return the name of the file on Windows" {
-        basename("C:\\src\\test\\resources\\example\\HelloWorld.kt") shouldBe "HelloWorld.kt"
+        FileName("C:\\src\\test\\resources\\example\\HelloWorld.kt").basename shouldBe "HelloWorld.kt"
     }
 
     "fileNameWithoutDirectory should return the file name without the directory" {
-        fileNameWithoutDirectory("a", "a/b/cde.fg") shouldBe "b/cde.fg"
+        FileName("a/b/cde.fg").withoutDirectory("a") shouldBe "b/cde.fg"
     }
 
     "fileNameWithoutDirectory should return the file name without the directory 2" {
-        fileNameWithoutDirectory("a/b/c", "a/b/c/def.x") shouldBe "def.x"
+        FileName("a/b/c/def.x").withoutDirectory("a/b/c") shouldBe "def.x"
     }
 })

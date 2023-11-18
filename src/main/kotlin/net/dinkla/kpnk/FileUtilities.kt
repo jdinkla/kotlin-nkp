@@ -1,5 +1,6 @@
 package net.dinkla.kpnk
 
+import kotlinx.serialization.Serializable
 import java.io.File
 import kotlin.math.max
 
@@ -16,15 +17,21 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     return files.toList()
 }
 
-fun fileNameWithoutDirectory(directory: String, fileName: String): String {
-    return fileName.substring(directory.length + 1)
-}
+@Serializable
+@JvmInline
+value class FileName(val name: String) {
 
-fun basename(fileName: String): String {
-    val index = max(fileName.lastIndexOf("/"), fileName.lastIndexOf("\\"))
-    return if (index >= 0) {
-        fileName.substring(index + 1)
-    } else {
-        fileName
+    val basename: String
+        get() {
+            val index = max(name.lastIndexOf("/"), name.lastIndexOf("\\"))
+            return if (index >= 0) {
+                name.substring(index + 1)
+            } else {
+                name
+            }
+        }
+
+    fun withoutDirectory(directory: String): String {
+        return name.substring(directory.length + 1)
     }
 }

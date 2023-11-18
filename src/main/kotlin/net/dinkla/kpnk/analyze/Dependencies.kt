@@ -21,7 +21,7 @@ data class Dependencies(val dependencies: List<Dependency>) {
 fun dependencies(infos: List<FileInfo>): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
     for (info in infos) {
-        val name = info.basename()
+        val name = info.packageName()
         for (imp in info.elements.imports) {
             val packageName = imp.packageName()
             val set = dependencies.getOrDefault(name, mutableSetOf())

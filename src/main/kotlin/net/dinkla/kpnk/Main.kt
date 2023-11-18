@@ -87,7 +87,7 @@ private fun CoroutineScope.fileInfos(
         try {
             val tree = fromFile(it)
             val fileInfo = if (safe) safeExtract(tree) else extract(tree)
-            success(FileInfo(it, fileInfo))
+            success(FileInfo(FileName(it), fileInfo))
         } catch (e: Exception) {
             logger.error("parsing '$it' yields ${e.message}")
             failure(e)

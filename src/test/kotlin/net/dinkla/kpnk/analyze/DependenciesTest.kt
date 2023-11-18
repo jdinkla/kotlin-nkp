@@ -3,6 +3,7 @@ package net.dinkla.kpnk.analyze
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.FileName
 import net.dinkla.kpnk.elements.Elements
 import net.dinkla.kpnk.elements.FileInfo
 import net.dinkla.kpnk.elements.FullyQualifiedName
@@ -12,7 +13,7 @@ class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
         val infos = listOf(
             FileInfo(
-                "src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt",
+                FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
                 Elements(
                     FullyQualifiedName("net.dinkla.kpnk"),
                     listOf(
@@ -23,7 +24,7 @@ class DependenciesTest : StringSpec({
                 ),
             ),
             FileInfo(
-                "src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt",
+                FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
                 Elements(
                     FullyQualifiedName("net.dinkla.kpnk"),
                     listOf(Import(FullyQualifiedName("kotlin.math.min"))),

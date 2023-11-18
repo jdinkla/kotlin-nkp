@@ -2,6 +2,7 @@ package net.dinkla.kpnk.analyze
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.FileName
 import net.dinkla.kpnk.elements.ClassSignature
 import net.dinkla.kpnk.elements.Elements
 import net.dinkla.kpnk.elements.FileInfo
@@ -21,7 +22,7 @@ class OutliersTest : StringSpec({
 })
 
 private fun info(classSignatures: List<ClassSignature>) =
-    FileInfo("a", Elements(FullyQualifiedName("name"), classes = classSignatures))
+    FileInfo(FileName("a"), Elements(FullyQualifiedName("name"), classes = classSignatures))
 
 private fun cls(numElems: Int) = ClassSignature(
     "A",

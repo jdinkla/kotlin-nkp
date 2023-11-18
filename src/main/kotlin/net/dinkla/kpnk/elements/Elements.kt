@@ -1,6 +1,7 @@
 package net.dinkla.kpnk.elements
 
 import kotlinx.serialization.Serializable
+import net.dinkla.kpnk.FileName
 
 @Serializable
 @JvmInline
@@ -10,11 +11,11 @@ value class FullyQualifiedName(private val name: String) {
 
 @Serializable
 data class FileInfo(
-    val fileName: String,
+    val fileName: FileName,
     val elements: Elements,
 ) {
-    fun basename(): String {
-        val name = net.dinkla.kpnk.basename(fileName).replace(".kt", "")
+    fun packageName(): String {
+        val name = fileName.basename.replace(".kt", "")
         return elements.packageName.toString() + "." + name
     }
 }
