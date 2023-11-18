@@ -5,11 +5,10 @@ import io.kotest.matchers.shouldBe
 
 class ElementsTest : StringSpec({
     "basename should return the package and the filename" {
-        val info =
-            FileInfo.Parsed(
-                "src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt",
-                Elements(FullyQualifiedName("net.dinkla.kpnk")),
-            )
+        val info = FileInfo(
+            "src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt",
+            Elements(FullyQualifiedName("net.dinkla.kpnk")),
+        )
         info.basename() shouldBe "net.dinkla.kpnk.HelloWorld"
     }
 

@@ -9,20 +9,14 @@ value class FullyQualifiedName(private val name: String) {
 }
 
 @Serializable
-sealed interface FileInfo {
-    @Serializable
-    data class Parsed(
-        val fileName: String,
-        val elements: Elements,
-    ) : FileInfo {
-        fun basename(): String {
-            val name = net.dinkla.kpnk.basename(fileName).replace(".kt", "")
-            return elements.packageName.toString() + "." + name
-        }
+data class FileInfo(
+    val fileName: String,
+    val elements: Elements,
+) {
+    fun basename(): String {
+        val name = net.dinkla.kpnk.basename(fileName).replace(".kt", "")
+        return elements.packageName.toString() + "." + name
     }
-
-    @Serializable
-    data class Error(val fileName: String, val message: String) : FileInfo
 }
 
 @Serializable

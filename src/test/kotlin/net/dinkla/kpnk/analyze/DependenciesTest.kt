@@ -11,7 +11,7 @@ import net.dinkla.kpnk.elements.Import
 class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
         val infos = listOf(
-            FileInfo.Parsed(
+            FileInfo(
                 "src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt",
                 Elements(
                     FullyQualifiedName("net.dinkla.kpnk"),
@@ -22,7 +22,7 @@ class DependenciesTest : StringSpec({
                     ),
                 ),
             ),
-            FileInfo.Parsed(
+            FileInfo(
                 "src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt",
                 Elements(
                     FullyQualifiedName("net.dinkla.kpnk"),

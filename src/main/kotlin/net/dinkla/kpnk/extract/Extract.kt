@@ -296,8 +296,12 @@ private fun extractSimpleIdentifier(tree: KotlinParseTree): String? {
 private fun extractIdentifier(tree: KotlinParseTree): String = when (tree.name) {
     "simpleIdentifier" -> tree.children[0].text!!
     "DOT" -> "."
-    else -> throw IllegalArgumentException("Unknown child '${tree.name}' in '$tree'")
+    else -> throw IllegalArgumentException(tree.errorMessage())
 }
+
+private fun KotlinParseTree.errorMessage(): String = "Unknown child '${this.name}' in '${
+    this.toString().replace(" ", "_").replace("[^a-zA-Z0-9_-]".toRegex(), "")
+}'"
 
 internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> {
     val result = mutableListOf<TypeAlias>()
