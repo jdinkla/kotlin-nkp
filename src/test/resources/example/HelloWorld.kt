@@ -43,6 +43,28 @@ fun create(ls: List<String>): Dictionary = ls.map { it to it }.toMap()
 val myProperty: String = "is theft..."
 const val THE_ANSWER: Int = 42
 
+class S {
+    var a = 2
+
+    inner class T(val i: Int) {
+        internal val b = 3
+        fun g() = 9
+    }
+
+    object O {
+        val s = S()
+        val t = s.T(2)
+        val c = t.b
+    }
+
+    private fun T.f() = a + b + g() * O.c
+
+    fun m() {
+        val t = T(3)
+        t.f()
+    }
+}
+
 fun main() {
     println("has no args and returns Unit implicitly")
     MathUtils.isZero(2.3)
@@ -58,4 +80,5 @@ fun main() {
     O1()
     higherOrderFunction({ x -> x.toString() }, 1)(2)
     create(listOf(myProperty, THE_ANSWER.toString()))
+    S().m()
 }
