@@ -1,5 +1,10 @@
 package net.dinkla.kpnk
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.analyze.Dependencies
@@ -28,21 +33,23 @@ fun main(args: Array<String>) {
     } else {
         val directory = File(directoryString).absolutePath
         val infos: List<FileInfo>
-        when (command) {
-            Command.ANALYZE -> {
-                logger.info("Directory: $directory")
-                val allInfos = parseFilesFromDirectory(directory)
-                reportErrors(allInfos)
-                infos = allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
-                save(infos, "infos.json")
-            }
+        runBlocking(Dispatchers.Default) {
+            when (command) {
+                Command.ANALYZE -> {
+                    logger.info("Directory: $directory")
+                    val allInfos = parseFilesFromDirectory(directory).map { it.await() }
+                    reportErrors(allInfos)
+                    infos = allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
+                    save(infos, "infos.json")
+                }
 
-            Command.LOAD -> {
-                infos = load("infos.json")
+                Command.LOAD -> {
+                    infos = load("infos.json")
+                }
             }
         }
         reportDependencies(infos)
-        for (i in infos.filterIsInstance<FileInfo>()) {
+        for (i in infos) {
             for (c in i.elements.classes) {
                 println("${c.name} ${c.functions.size} ${c.parameters.size}")
             }
@@ -72,20 +79,22 @@ private fun reportErrors(infos: List<Result<FileInfo>>) {
     }
 }
 
-private fun parseFilesFromDirectory(directory: String): List<Result<FileInfo>> =
+private fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
     fileInfos(getAllKotlinFilesInDirectory(directory), false)
 
-private fun fileInfos(
+private fun CoroutineScope.fileInfos(
     files: List<String>,
     safe: Boolean = true,
-): List<Result<FileInfo>> = files.map {
-    try {
-        val tree = fromFile(it)
-        val fileInfo = if (safe) safeExtract(tree) else extract(tree)
-        success(FileInfo(it, fileInfo))
-    } catch (e: Exception) {
-        logger.error("parsing '$it' yields ${e.message}")
-        failure(e)
+): List<Deferred<Result<FileInfo>>> = files.map {
+    async {
+        try {
+            val tree = fromFile(it)
+            val fileInfo = if (safe) safeExtract(tree) else extract(tree)
+            success(FileInfo(it, fileInfo))
+        } catch (e: Exception) {
+            logger.error("parsing '$it' yields ${e.message}")
+            failure(e)
+        }
     }
 }
 
