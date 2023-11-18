@@ -67,15 +67,40 @@ internal fun extractImports(tree: KotlinParseTree): List<Import> =
         }
     } ?: listOf()
 
-internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> {
-    val result = mutableListOf<FunctionSignature>()
+internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> =
+    getDeclarations(tree)
+        .filter { it.name == "functionDeclaration" }
+        .map { extractFunction(it) }
+
+internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
+    val result = mutableListOf<ClassSignature>()
+    for (declaration in getDeclarations(tree)) {
+        if (declaration.name == "classDeclaration") {
+            result += extractClass(declaration)
+        }
+        if (declaration.name == "objectDeclaration") {
+            result += extractObject(declaration)
+        }
+    }
+    return result
+}
+
+internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> =
+    getDeclarations(tree)
+        .filter { it.name == "typeAlias" }
+        .map { extractTypeAlias(it) }
+
+internal fun extractProperties(tree: KotlinParseTree): List<Property> =
+    getDeclarations(tree)
+        .filter { it.name == "propertyDeclaration" }
+        .map { extractProperty(it) }
+
+private fun getDeclarations(tree: KotlinParseTree): List<KotlinParseTree> {
+    val result = mutableListOf<KotlinParseTree>()
     val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
     for (topLevelObject in topLevelObjects) {
         assert(topLevelObject.children[0].name == "declaration")
-        val declaration = topLevelObject.children[0].children[0]
-        if (declaration.name == "functionDeclaration") {
-            result += extractFunction(declaration)
-        }
+        result += topLevelObject.children[0].children[0]
     }
     return result
 }
@@ -97,22 +122,6 @@ private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
         extractIdentifier(it.children[0].children[0].children[0].children[0])
     }
     return FunctionSignature(name, returnType, parameters, receiverType, visibility)
-}
-
-internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
-    val result = mutableListOf<ClassSignature>()
-    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
-    for (topLevelObject in topLevelObjects) {
-        assert(topLevelObject.children[0].name == "declaration")
-        val declaration = topLevelObject.children[0].children[0]
-        if (declaration.name == "classDeclaration") {
-            result += extractClass(declaration)
-        }
-        if (declaration.name == "objectDeclaration") {
-            result += extractObject(declaration)
-        }
-    }
-    return result
 }
 
 private fun extractClass(tree: KotlinParseTree): ClassSignature {
@@ -303,36 +312,10 @@ private fun KotlinParseTree.errorMessage(): String = "Unknown child '${this.name
     this.toString().replace(" ", "_").replace("[^a-zA-Z0-9_-]".toRegex(), "")
 }'"
 
-internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> {
-    val result = mutableListOf<TypeAlias>()
-    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
-    for (topLevelObject in topLevelObjects) {
-        assert(topLevelObject.children[0].name == "declaration")
-        val declaration = topLevelObject.children[0].children[0]
-        if (declaration.name == "typeAlias") {
-            result += extractTypeAlias(declaration)
-        }
-    }
-    return result
-}
-
 fun extractTypeAlias(tree: KotlinParseTree): TypeAlias {
     val name = extractIdentifier(tree.children[1])
     val type = extractType(tree.children[3])!!
     return TypeAlias(name, type)
-}
-
-internal fun extractProperties(tree: KotlinParseTree): List<Property> {
-    val result = mutableListOf<Property>()
-    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
-    for (topLevelObject in topLevelObjects) {
-        assert(topLevelObject.children[0].name == "declaration")
-        val declaration = topLevelObject.children[0].children[0]
-        if (declaration.name == "propertyDeclaration") {
-            result += extractProperty(declaration)
-        }
-    }
-    return result
 }
 
 fun extractProperty(tree: KotlinParseTree): Property {
