@@ -12,4 +12,5 @@ data class ClassSignature(
     val elementType: Type = Type.CLASS,
     val classModifier: ClassModifier? = null,
     val inheritanceModifier: InheritanceModifier? = null,
+    val properties: List<Property> = listOf(),
 )

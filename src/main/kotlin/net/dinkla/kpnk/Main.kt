@@ -9,6 +9,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.analyze.Dependencies
 import net.dinkla.kpnk.analyze.dependencies
+import net.dinkla.kpnk.analyze.reportLargeClasses
 import net.dinkla.kpnk.elements.FileInfo
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.extract.safeExtract
@@ -49,11 +50,7 @@ fun main(args: Array<String>) {
             }
         }
         reportDependencies(infos)
-        for (i in infos) {
-            for (c in i.elements.classes) {
-                println("${c.name} ${c.functions.size} ${c.parameters.size}")
-            }
-        }
+        reportLargeClasses(infos)
     }
 }
 

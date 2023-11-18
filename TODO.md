@@ -35,3 +35,12 @@ import org.jetbrains.kotlin.spec.grammar.KotlinParser.TypeAliasContext
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 
+Source = Directory | Json
+
+bool SaveToJson after parsing
+
+Analysis
+    = Dependencies
+    | PrintAll
+
+
