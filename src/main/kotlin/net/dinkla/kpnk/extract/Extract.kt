@@ -47,15 +47,18 @@ internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
     val packageHeader = tree.children.find { it.name == "packageHeader" }
     return FullyQualifiedName(
         if (packageHeader != null) {
-            packageHeader.children[1].children
-                .filter { it.name == "simpleIdentifier" }
-                .map { extractIdentifier(it) }
-                .joinToString(".")
+            extractFullyQualifiedPackageName(packageHeader)
         } else {
             ""
         },
     )
 }
+
+private fun extractFullyQualifiedPackageName(tree: KotlinParseTree) =
+    tree.children[1].children
+        .filter { it.name == "simpleIdentifier" }
+        .map { extractIdentifier(it) }
+        .joinToString(".")
 
 internal fun extractImports(tree: KotlinParseTree): List<Import> =
     tree.children.find { it.name == "importList" }?.let { importList ->
@@ -128,7 +131,7 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
     val visibilityModifier = extractVisibilityModifier(tree)
     val inheritanceModifier = extractInheritanceModifier(tree)
     val classModifier = extractClassModifier(tree)
-    val elementType = extractObjectType(tree)!!
+    val elementType = extractInterfaceOrClassType(tree)!!
     val name = extractSimpleIdentifier(tree)!!
     val params = extractParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
@@ -145,7 +148,7 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
     )
 }
 
-private fun extractObjectType(tree: KotlinParseTree): Type? {
+private fun extractInterfaceOrClassType(tree: KotlinParseTree): Type? {
     val isInterface = tree.children.find { it.name == "INTERFACE" } != null
     val isClass = tree.children.find { it.name == "CLASS" } != null
     return when {
