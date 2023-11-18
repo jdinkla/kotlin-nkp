@@ -6,11 +6,16 @@ import kotlinx.serialization.Serializable
 data class ClassSignature(
     val name: String,
     val parameters: List<Parameter> = listOf(),
-    val functions: List<FunctionSignature> = listOf(),
     val inheritedFrom: List<String> = listOf(),
     val visibilityModifier: VisibilityModifier? = null,
     val elementType: Type = Type.CLASS,
     val classModifier: ClassModifier? = null,
     val inheritanceModifier: InheritanceModifier? = null,
-    val properties: List<Property> = listOf(),
-)
+    val declarations: List<Defined> = listOf(),
+) : Defined {
+    val functions: List<FunctionSignature>
+        get() = declarations.filterIsInstance<FunctionSignature>()
+
+    val properties: List<Property>
+        get() = declarations.filterIsInstance<Property>()
+}

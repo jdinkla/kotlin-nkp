@@ -26,6 +26,12 @@ private fun info(classSignatures: List<ClassSignature>) =
 
 private fun cls(numElems: Int) = ClassSignature(
     "A",
-    functions = (1..numElems).map { FunctionSignature(it.toString()) },
-    properties = (1..numElems).map { Property(it.toString(), "String") },
+    declarations = (1..numElems).map {
+        FunctionSignature(it.toString())
+    } + (1..numElems).map {
+        Property(
+            it.toString(),
+            "String",
+        )
+    },
 )

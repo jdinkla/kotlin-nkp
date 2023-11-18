@@ -2,6 +2,7 @@ package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.elements.ClassModifier
 import net.dinkla.kpnk.elements.ClassSignature
+import net.dinkla.kpnk.elements.Defined
 import net.dinkla.kpnk.elements.FullyQualifiedName
 import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.Import
@@ -135,16 +136,16 @@ private fun extractClass(tree: KotlinParseTree): ClassSignature {
     val name = extractSimpleIdentifier(tree)!!
     val params = extractParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
-    val declarations = extractBody(tree)
+    val declarations = extractClassBody(tree)
     return ClassSignature(
         name,
         params,
-        declarations,
         inheritedFrom,
         visibilityModifier,
         elementType,
         classModifier,
         inheritanceModifier,
+        declarations,
     )
 }
 
@@ -232,21 +233,22 @@ private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
         }
     } ?: listOf()
 
-private fun extractBody(tree: KotlinParseTree): List<FunctionSignature> =
-    tree.children.find { it.name == "classBody" }?.let {
+private fun extractClassBody(tree: KotlinParseTree): List<Defined> {
+    return tree.children.find { it.name == "classBody" }?.let {
         it.children.filter { it.name == "classMemberDeclarations" }
             .flatMap {
                 it.children.filter { it.name == "classMemberDeclaration" }
                     .map { classMemberDeclaration ->
-                        val declaration = classMemberDeclaration.children[0]
-                        val child = declaration.children[0]
-                        when (child.name) {
-                            "functionDeclaration" -> extractFunction(child)
+                        val declaration = classMemberDeclaration.children[0].children[0]
+                        when (declaration.name) {
+                            "functionDeclaration" -> extractFunction(declaration)
+                            "propertyDeclaration" -> extractProperty(declaration)
                             else -> null
                         }
                     }
             }.filterNotNull()
     } ?: listOf()
+}
 
 private fun extractObject(tree: KotlinParseTree): ClassSignature {
     val name = extractSimpleIdentifier(tree)!!
@@ -255,24 +257,24 @@ private fun extractObject(tree: KotlinParseTree): ClassSignature {
             extractIdentifier(it.children[0].children[0].children[0].children[0])
         }
     } ?: listOf()
-    val functions = tree.children.find { it.name == "classBody" }?.let {
+    val declarations = tree.children.find { it.name == "classBody" }?.let {
         val classMemberDeclarations = it.children.find { it.name == "classMemberDeclarations" }
-        val functions = classMemberDeclarations?.children?.map { classMemberDeclaration ->
+        val declarations = classMemberDeclarations?.children?.map { classMemberDeclaration ->
             val declaration = classMemberDeclaration.children[0]
             if (declaration.name != "declaration") {
                 null
             } else {
                 val functionDeclaration = declaration.children[0]
-                if (functionDeclaration.name == "functionDeclaration") {
-                    extractFunction(functionDeclaration)
-                } else {
-                    null
+                when (functionDeclaration.name) {
+                    "functionDeclaration" -> extractFunction(functionDeclaration)
+                    "propertyDeclaration" -> extractProperty(functionDeclaration)
+                    else -> null
                 }
             }
         }?.filterNotNull()
-        functions
+        declarations
     } ?: listOf()
-    return ClassSignature(name, listOf(), functions, inheritedFrom, elementType = Type.OBJECT)
+    return ClassSignature(name, listOf(), inheritedFrom, elementType = Type.OBJECT, declarations = declarations)
 }
 
 private fun extractType(tree: KotlinParseTree): String? {

@@ -1,6 +1,8 @@
 # TODO
 
-properties
+properties and visibility modifier
+
+classes/objects and typealias and inner classes
 
 List vs List<String>
 Map<String, String> in extractType()

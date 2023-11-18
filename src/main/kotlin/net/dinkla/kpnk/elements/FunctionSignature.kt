@@ -9,4 +9,4 @@ data class FunctionSignature(
     val parameters: List<Parameter> = listOf(),
     val extensionOf: String? = null,
     val visibilityModifier: VisibilityModifier? = null,
-)
+) : Defined

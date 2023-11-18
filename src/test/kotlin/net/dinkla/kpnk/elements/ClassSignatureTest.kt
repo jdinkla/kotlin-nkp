@@ -8,7 +8,7 @@ class ClassSignatureTest : StringSpec({
         ClassSignature(
             "C",
             listOf(Parameter("p", "Int")),
-            listOf(FunctionSignature("toString", "String", listOf())),
+            declarations = listOf(FunctionSignature("toString", "String", listOf())),
             elementType = Type.CLASS,
         ).prettyPrint() shouldBe """
             class C(p: Int) {
@@ -21,7 +21,7 @@ class ClassSignatureTest : StringSpec({
         ClassSignature(
             "C",
             listOf(Parameter("p", "Int")),
-            listOf(FunctionSignature("toString", "String", listOf())),
+            declarations = listOf(FunctionSignature("toString", "String", listOf())),
             visibilityModifier = VisibilityModifier.INTERNAL,
             elementType = Type.CLASS,
             classModifier = ClassModifier.DATA,

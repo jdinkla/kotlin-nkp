@@ -8,6 +8,7 @@ import net.dinkla.kpnk.elements.ClassSignature
 import net.dinkla.kpnk.elements.FunctionSignature
 import net.dinkla.kpnk.elements.InheritanceModifier
 import net.dinkla.kpnk.elements.Parameter
+import net.dinkla.kpnk.elements.Property
 import net.dinkla.kpnk.elements.Type
 import net.dinkla.kpnk.elements.VisibilityModifier
 import net.dinkla.kpnk.fromText
@@ -32,9 +33,9 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
+                declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
             ),
         )
     }
@@ -52,9 +53,9 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(FunctionSignature("f", null, listOf()), FunctionSignature("g", null, listOf())),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
+                declarations = listOf(FunctionSignature("f", null, listOf()), FunctionSignature("g", null, listOf())),
             ),
         )
     }
@@ -77,8 +78,8 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
                 elementType = Type.CLASS,
+                declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
             ),
         )
     }
@@ -89,7 +90,6 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -102,7 +102,6 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(),
                 listOf("A", "B"),
                 elementType = Type.CLASS,
             ),
@@ -115,7 +114,6 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -128,7 +126,6 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "HelloWorld",
                 listOf(Parameter("many", "Int")),
-                listOf(),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -140,7 +137,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                functions = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
                 elementType = Type.OBJECT,
             ),
         )
@@ -151,7 +148,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "Interface",
-                functions = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
+                declarations = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
                 elementType = Type.INTERFACE,
             ),
         )
@@ -162,7 +159,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "Interface",
-                functions = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
+                declarations = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
                 visibilityModifier = VisibilityModifier.PRIVATE,
                 elementType = Type.INTERFACE,
             ),
@@ -174,7 +171,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "Interface",
-                functions = listOf(FunctionSignature("f")),
+                declarations = listOf(FunctionSignature("f")),
                 visibilityModifier = VisibilityModifier.PUBLIC,
                 elementType = Type.INTERFACE,
             ),
@@ -210,8 +207,6 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "A",
                 listOf(Parameter("i", "Int")),
-                listOf(),
-                listOf(),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.ENUM,
             ),
@@ -270,7 +265,7 @@ class ExtractClassesTest : StringSpec({
             ClassSignature(
                 "C",
                 listOf(),
-                listOf(
+                declarations = listOf(
                     FunctionSignature(
                         "f",
                         "Int",
@@ -292,6 +287,28 @@ class ExtractClassesTest : StringSpec({
                 listOf(Parameter("x", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.VALUE,
+            ),
+        )
+    }
+
+    "extractClass should handle a property inside a class" {
+        val classes = extractClasses(fromText("class C() { val y: Int = 1 }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                elementType = Type.CLASS,
+                declarations = listOf(Property("y", "Int")),
+            ),
+        )
+    }
+
+    "extractClass should handle a property inside an object" {
+        val classes = extractClasses(fromText("object O { val y: Int = 1 }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "O",
+                elementType = Type.OBJECT,
+                declarations = listOf(Property("y", "Int")),
             ),
         )
     }

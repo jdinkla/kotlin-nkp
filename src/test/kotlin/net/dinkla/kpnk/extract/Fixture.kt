@@ -36,8 +36,7 @@ internal val function2 = FunctionSignature(
 internal val function3 = FunctionSignature(
     "extensionFun",
     "String",
-    listOf(),
-    "HelloWorld",
+    extensionOf = "HelloWorld",
     visibilityModifier = VisibilityModifier.PRIVATE,
 )
 
@@ -56,7 +55,7 @@ internal val function5 = FunctionSignature(
 internal val class1 = ClassSignature(
     "HelloWorld",
     listOf(Parameter("many", "Int")),
-    listOf(FunctionSignature("toString", "String", listOf())),
+    declarations = listOf(FunctionSignature("toString", "String", listOf())),
     visibilityModifier = VisibilityModifier.INTERNAL,
     elementType = Type.CLASS,
     classModifier = ClassModifier.DATA,
@@ -65,7 +64,7 @@ internal val class1 = ClassSignature(
 internal val class2 = ClassSignature(
     "Gen",
     listOf(),
-    listOf(FunctionSignature("gen", "String?", listOf(Parameter("n", "Int")))),
+    declarations = listOf(FunctionSignature("gen", "String?", listOf(Parameter("n", "Int")))),
     visibilityModifier = VisibilityModifier.PRIVATE,
     elementType = Type.INTERFACE,
 )
@@ -73,20 +72,27 @@ internal val class2 = ClassSignature(
 internal val class3 = ClassSignature(
     "GenImpl",
     listOf(Parameter("many", "Int")),
-    listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
-    listOf("Gen"),
+    declarations = listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
+    inheritedFrom = listOf("Gen"),
     elementType = Type.CLASS,
 )
 
 internal val class4 = ClassSignature(
     "MathUtils",
-    functions = listOf(FunctionSignature("isZero", "Boolean", listOf(Parameter("x", "Double")))),
+    declarations = listOf(
+        Property("K_EPSILON", null, PropertyModifier.CONST_VAL),
+        FunctionSignature(
+            "isZero",
+            "Boolean",
+            listOf(Parameter("x", "Double")),
+        ),
+    ),
     elementType = Type.OBJECT,
 )
 
 internal val class5 = ClassSignature(
     "O1",
-    functions = listOf(
+    declarations = listOf(
         FunctionSignature(
             "f",
             "String",

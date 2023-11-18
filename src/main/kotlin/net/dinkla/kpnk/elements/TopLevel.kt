@@ -56,11 +56,14 @@ enum class Type(val text: String) {
 }
 
 @Serializable
-data class TypeAlias(val name: String, val def: String)
+sealed interface Defined
+
+@Serializable
+data class TypeAlias(val name: String, val def: String) : Defined
 
 @Serializable
 data class Property(
     val name: String,
-    val type: String?,
+    val dataType: String?,
     val modifier: PropertyModifier = PropertyModifier.VAL,
-)
+) : Defined
