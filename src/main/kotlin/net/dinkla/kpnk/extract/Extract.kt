@@ -216,9 +216,7 @@ private fun extractParameter(it: KotlinParseTree): Parameter {
 private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
     tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
-            it.findName("Identifier")?.let {
-                it.text
-            }!!
+            it.findName("Identifier")?.text!!
         }
     } ?: listOf()
 
@@ -344,7 +342,7 @@ fun extractProperty(tree: KotlinParseTree): Property {
     val name = variableDeclaration.children[0].findName("Identifier")?.text!!
     val type = variableDeclaration.children.find { it.name == "type" }?.let {
         extractType(it)
-    }!!
+    }
     return Property(name, type, PropertyModifier.create(hasConstModifier, isMutable))
 }
 

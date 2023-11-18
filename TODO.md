@@ -29,11 +29,8 @@ secondary constructor
 
 lateinit, by, delegate, lazy properties
 
-: Super(args1, arg2), Someother(args3)
-
 import org.jetbrains.kotlin.spec.grammar.KotlinParser.TypeAliasContext
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
-
 
 Source = Directory | Json
 

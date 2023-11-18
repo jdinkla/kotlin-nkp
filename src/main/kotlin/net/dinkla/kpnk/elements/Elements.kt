@@ -92,4 +92,8 @@ enum class PropertyModifier(val text: String) {
 }
 
 @Serializable
-data class Property(val name: String, val type: String, val modifier: PropertyModifier = PropertyModifier.VAL)
+data class Property(
+    val name: String,
+    val type: String?,
+    val modifier: PropertyModifier = PropertyModifier.VAL,
+)

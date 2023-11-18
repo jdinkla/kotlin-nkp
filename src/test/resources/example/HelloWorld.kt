@@ -42,6 +42,7 @@ fun create(ls: List<String>): Dictionary = ls.map { it to it }.toMap()
 
 val myProperty: String = "is theft..."
 const val THE_ANSWER: Int = 42
+private val twentyOne = HelloWorld(21)
 
 fun main() {
     println("has no args and returns Unit implicitly")
@@ -58,4 +59,5 @@ fun main() {
     O1()
     higherOrderFunction({ x -> x.toString() }, 1)(2)
     create(listOf(myProperty, THE_ANSWER.toString()))
+    twentyOne.toString()
 }

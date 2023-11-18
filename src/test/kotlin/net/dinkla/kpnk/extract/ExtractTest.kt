@@ -18,7 +18,7 @@ class ExtractTest : StringSpec({
         file.imports shouldContainExactly expectedImports
         file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4, function5)
         file.classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
-        file.properties shouldContainExactlyInAnyOrder listOf(property1, property2)
+        file.properties shouldContainExactlyInAnyOrder listOf(property1, property2, property3)
     }
 
     "extractPackageName should return the fully qualified package name" {
@@ -54,6 +54,16 @@ class ExtractTest : StringSpec({
     "extractProperty should handle a const val property" {
         val properties = extractProperties(fromText("const val x: Int = 1"))
         properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.CONST_VAL))
+    }
+
+    "extractProperty should handle a constructor call with explicit type" {
+        val properties = extractProperties(fromText("val x : C = C(1)"))
+        properties shouldContainExactlyInAnyOrder listOf(Property("x", "C", PropertyModifier.VAL))
+    }
+
+    "extractProperty should handle a constructor call with implicit type" {
+        val properties = extractProperties(fromText("val x = C(1)"))
+        properties shouldContainExactlyInAnyOrder listOf(Property("x", null, PropertyModifier.VAL))
     }
 
     "extractProperties should extract properties" {
