@@ -9,3 +9,8 @@ enum class VisibilityModifier(val text: String) {
     INTERNAL("internal"),
     PROTECTED("protected"),
 }
+
+fun VisibilityModifier?.prettyPrint() = when (this) {
+    null -> ""
+    else -> text
+}

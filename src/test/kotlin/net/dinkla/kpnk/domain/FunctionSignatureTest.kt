@@ -35,4 +35,16 @@ class FunctionSignatureTest : StringSpec({
             fun Ext.f(x: Int): Int
         """.trimIndent()
     }
+
+    "prettyPrint should return a string representation of a function override fun f(x: Int): Int" {
+        FunctionSignature(
+            "f",
+            "Int",
+            listOf(Parameter("x", "Int")),
+            visibilityModifier = VisibilityModifier.PROTECTED,
+            memberModifier = MemberModifier.OVERRIDE,
+        ).prettyPrint() shouldBe """
+            protected override fun f(x: Int): Int
+        """.trimIndent()
+    }
 })

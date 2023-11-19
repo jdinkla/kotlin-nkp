@@ -6,6 +6,7 @@ import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Import
 import net.dinkla.kpnk.domain.InheritanceModifier
+import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
@@ -55,7 +56,14 @@ internal val function5 = FunctionSignature(
 internal val class1 = ClassSignature(
     "HelloWorld",
     listOf(Parameter("many", "Int")),
-    declarations = listOf(FunctionSignature("toString", "String", listOf())),
+    declarations = listOf(
+        FunctionSignature(
+            "toString",
+            "String",
+            listOf(),
+            memberModifier = MemberModifier.OVERRIDE,
+        ),
+    ),
     visibilityModifier = VisibilityModifier.INTERNAL,
     elementType = Type.CLASS,
     classModifier = ClassModifier.DATA,
@@ -72,7 +80,14 @@ internal val class2 = ClassSignature(
 internal val class3 = ClassSignature(
     "GenImpl",
     listOf(Parameter("many", "Int")),
-    declarations = listOf(FunctionSignature("gen", "String", listOf(Parameter("n", "Int")))),
+    declarations = listOf(
+        FunctionSignature(
+            "gen",
+            "String",
+            listOf(Parameter("n", "Int")),
+            memberModifier = MemberModifier.OVERRIDE,
+        ),
+    ),
     inheritedFrom = listOf("Gen"),
     elementType = Type.CLASS,
 )

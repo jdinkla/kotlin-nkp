@@ -1,19 +1,16 @@
 package net.dinkla.kpnk.extract
 
-import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Import
-import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TopLevel
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
-import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
@@ -65,17 +62,13 @@ internal fun extractDefinitions(tree: KotlinParseTree): List<Defined> {
     return result
 }
 
-internal fun getDeclarations(tree: KotlinParseTree): List<KotlinParseTree> {
-    val result = mutableListOf<KotlinParseTree>()
-    val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
-    for (topLevelObject in topLevelObjects) {
-        assert(topLevelObject.children[0].name == "declaration")
-        result += topLevelObject.children[0].children[0]
-    }
-    return result
-}
+internal fun getDeclarations(tree: KotlinParseTree): List<KotlinParseTree> =
+    tree.children
+        .filter { it.name == "topLevelObject" }
+        .map { it.children[0].children[0] }
 
 internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
+    val memberModifier = extractMemberModifier(tree)
     val visibility = extractVisibilityModifier(tree)
     val name = extractSimpleIdentifier(tree)!!
     val parameters =
@@ -91,7 +84,7 @@ internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
     val receiverType = tree.children.find { it.name == "receiverType" }?.let {
         extractIdentifier(it.children[0].children[0].children[0].children[0])
     }
-    return FunctionSignature(name, returnType, parameters, receiverType, visibility)
+    return FunctionSignature(name, returnType, parameters, receiverType, visibility, memberModifier)
 }
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {
@@ -122,55 +115,6 @@ private fun extractInterfaceOrClassType(tree: KotlinParseTree): Type? {
         isInterface -> Type.INTERFACE
         isClass -> Type.CLASS
         else -> null
-    }
-}
-
-private fun extractVisibilityModifier(tree: KotlinParseTree): VisibilityModifier? {
-    val modifier = tree.children
-        .filter { it.name == "modifiers" }
-        .flatMap { it.children }
-        .filter { it.name == "modifier" }
-        .flatMap { it.children }
-    return modifier.find { it.name == "visibilityModifier" }?.let {
-        when (it.children[0].name) {
-            "PUBLIC" -> VisibilityModifier.PUBLIC
-            "PRIVATE" -> VisibilityModifier.PRIVATE
-            "INTERNAL" -> VisibilityModifier.INTERNAL
-            "PROTECTED" -> VisibilityModifier.PROTECTED
-            else -> null
-        }
-    }
-}
-
-private fun extractClassModifier(tree: KotlinParseTree): ClassModifier? {
-    val modifier = tree.children
-        .filter { it.name == "modifiers" }
-        .flatMap { it.children }
-        .filter { it.name == "modifier" }
-        .flatMap { it.children }
-    return modifier.find { it.name == "classModifier" }?.let {
-        when (it.children[0].name) {
-            "DATA" -> ClassModifier.DATA
-            "ENUM" -> ClassModifier.ENUM
-            "VALUE" -> ClassModifier.VALUE
-            "INNER" -> ClassModifier.INNER
-            else -> null
-        }
-    }
-}
-
-private fun extractInheritanceModifier(tree: KotlinParseTree): InheritanceModifier? {
-    val modifier = tree.children
-        .filter { it.name == "modifiers" }
-        .flatMap { it.children }
-        .filter { it.name == "modifier" }
-        .flatMap { it.children }
-    return modifier.find { it.name == "inheritanceModifier" }?.let {
-        when (it.children[0].name) {
-            "OPEN" -> InheritanceModifier.OPEN
-            "ABSTRACT" -> InheritanceModifier.ABSTRACT
-            else -> null
-        }
     }
 }
 
@@ -266,10 +210,6 @@ private fun extractIdentifier(tree: KotlinParseTree): String = when (tree.name) 
     else -> throw IllegalArgumentException(tree.errorMessage())
 }
 
-private fun KotlinParseTree.errorMessage(): String = "Unknown child '${this.name}' in '${
-    this.toString().replace(" ", "_").replace("[^a-zA-Z0-9_-]".toRegex(), "")
-}'"
-
 fun extractTypeAlias(tree: KotlinParseTree): TypeAlias {
     val name = extractIdentifier(tree.children[1])
     val type = extractType(tree.children[3])!!
@@ -288,16 +228,6 @@ fun extractProperty(tree: KotlinParseTree): Property {
     return Property(name, type, PropertyModifier.create(hasConstModifier, isMutable), visibility)
 }
 
-private fun extractConstModifier(tree: KotlinParseTree): Boolean? {
-    val modifier = tree.children
-        .filter { it.name == "modifiers" }
-        .flatMap { it.children }
-        .filter { it.name == "modifier" }
-        .flatMap { it.children }
-    return modifier.find { it.name == "propertyModifier" }?.let {
-        when (it.children[0].name) {
-            "CONST" -> true
-            else -> false
-        }
-    }
-}
+private fun KotlinParseTree.errorMessage(): String = "Unknown child '${this.name}' in '${
+    this.toString().replace(" ", "_").replace("[^a-zA-Z0-9_-]".toRegex(), "")
+}'"

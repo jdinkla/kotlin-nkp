@@ -68,11 +68,6 @@ fun ClassSignature.prettyPrint(): String {
     return "$visMod$classMod$inhMod$type $name($prettyParameters)$inherited {$joined2}"
 }
 
-fun VisibilityModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
-
 fun ClassModifier?.prettyPrint() = when (this) {
     null -> ""
     else -> text

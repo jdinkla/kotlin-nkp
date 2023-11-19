@@ -1,8 +1,7 @@
 # TODO
 
-override fun hi
 secondary constructor see MeshTriangle
-
+open fun f()
 List vs List<String>
 Map<String, String> in extractType()
 

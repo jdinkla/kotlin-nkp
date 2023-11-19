@@ -5,6 +5,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
@@ -109,6 +110,18 @@ class ExtractFunctionsTest : StringSpec({
             FunctionSignature(
                 "f",
                 "(Int) -> String",
+            ),
+        )
+    }
+
+    "extractFunctions should handle overriden functions" {
+        val functions = extractFunctions(fromText("override fun f(x: Int): Int = x+1"))
+        functions shouldBe listOf(
+            FunctionSignature(
+                "f",
+                "Int",
+                listOf(Parameter("x", "Int")),
+                memberModifier = MemberModifier.OVERRIDE,
             ),
         )
     }
