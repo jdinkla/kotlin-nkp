@@ -17,23 +17,6 @@ import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-fun safeExtract(tree: KotlinParseTree): TopLevel {
-    val packageName = extractPackageName(tree)
-    val imports = extractImports(tree)
-    val functions = tc(::extractFunctions, tree) ?: listOf()
-    val classes = tc(::extractClasses, tree) ?: listOf()
-    return TopLevel(packageName, imports, functions, classes)
-}
-
-fun <T> tc(f: (KotlinParseTree) -> T, tree: KotlinParseTree): T? {
-    return try {
-        f(tree)
-    } catch (e: Exception) {
-        println("ERROR: " + e.message)
-        null
-    }
-}
-
 fun extract(tree: KotlinParseTree): TopLevel {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
@@ -41,7 +24,7 @@ fun extract(tree: KotlinParseTree): TopLevel {
     val classes = extractClasses(tree)
     val aliases = extractTypeAliases(tree)
     val properties = extractProperties(tree)
-    return TopLevel(packageName, imports, functions, classes, aliases, properties)
+    return TopLevel(packageName, imports, functions + classes + aliases + properties)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {

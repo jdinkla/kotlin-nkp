@@ -18,11 +18,20 @@ data class FileInfo(
 data class TopLevel(
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),
-    val functions: List<FunctionSignature> = listOf(),
-    val classes: List<ClassSignature> = listOf(),
-    val typeAliases: List<TypeAlias> = listOf(),
-    val properties: List<Property> = listOf(),
-)
+    val declarations: List<Defined> = listOf(),
+) {
+    val functions: List<FunctionSignature>
+        get() = declarations.filterIsInstance<FunctionSignature>()
+
+    val properties: List<Property>
+        get() = declarations.filterIsInstance<Property>()
+
+    val classes: List<ClassSignature>
+        get() = declarations.filterIsInstance<ClassSignature>()
+
+    val typeAliases: List<TypeAlias>
+        get() = declarations.filterIsInstance<TypeAlias>()
+}
 
 @Serializable
 data class Parameter(val name: String, val type: String)

@@ -12,7 +12,6 @@ import net.dinkla.kpnk.analysis.dependencies
 import net.dinkla.kpnk.analysis.reportLargeClasses
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.extract.extract
-import net.dinkla.kpnk.extract.safeExtract
 import net.dinkla.kpnk.utilities.FileName
 import net.dinkla.kpnk.utilities.fromFile
 import net.dinkla.kpnk.utilities.getAllKotlinFilesInDirectory
@@ -80,16 +79,15 @@ private fun reportErrors(infos: List<Result<FileInfo>>) {
 }
 
 private fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
-    fileInfos(getAllKotlinFilesInDirectory(directory), false)
+    fileInfos(getAllKotlinFilesInDirectory(directory))
 
 private fun CoroutineScope.fileInfos(
     files: List<String>,
-    safe: Boolean = true,
 ): List<Deferred<Result<FileInfo>>> = files.map {
     async {
         try {
             val tree = fromFile(it)
-            val fileInfo = if (safe) safeExtract(tree) else extract(tree)
+            val fileInfo = extract(tree)
             success(FileInfo(FileName(it), fileInfo))
         } catch (e: Exception) {
             logger.error("parsing '$it' yields ${e.message}")
