@@ -48,6 +48,7 @@ class ExtractPropertyTest : StringSpec({
             ),
         )
     }
+
     "extractProperty should handle overriden property" {
         val properties = extractProperties(fromText("override val x: Int = 1"))
         properties shouldContainExactly listOf(
@@ -55,7 +56,19 @@ class ExtractPropertyTest : StringSpec({
                 "x",
                 "Int",
                 PropertyModifier.VAL,
-                memberModifier = MemberModifier.OVERRIDE,
+                memberModifier = listOf(MemberModifier.OVERRIDE),
+            ),
+        )
+    }
+
+    "extractProperty should handle lateinit" {
+        val properties = extractProperties(fromText("lateinit var x: Int"))
+        properties shouldContainExactly listOf(
+            Property(
+                "x",
+                "Int",
+                PropertyModifier.VAR,
+                memberModifier = listOf(MemberModifier.LATE_INIT),
             ),
         )
     }

@@ -9,11 +9,11 @@ data class Property(
     val dataType: String? = null,
     val modifier: PropertyModifier = PropertyModifier.VAL,
     val visibilityModifier: VisibilityModifier? = null,
-    val memberModifier: MemberModifier? = null,
+    val memberModifier: List<MemberModifier> = listOf(),
 ) : Defined
 
 fun Property.prettyPrint(): String {
-    val mMod = addSpaceAfter(memberModifier.prettyPrint())
+    val mMod = addSpaceAfter(memberModifier.map { it.prettyPrint() }.sortedDescending().joinToString(" "))
     val vMod = addSpaceAfter(visibilityModifier.prettyPrint())
     val mod = modifier.text
     val type = if (dataType != null) " : $dataType" else ""

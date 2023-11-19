@@ -84,7 +84,7 @@ internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
     val receiverType = tree.children.find { it.name == "receiverType" }?.let {
         extractIdentifier(it.children[0].children[0].children[0].children[0])
     }
-    return FunctionSignature(name, returnType, parameters, receiverType, visibility, memberModifier)
+    return FunctionSignature(name, returnType, parameters, receiverType, visibility, memberModifier.firstOrNull())
 }
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {

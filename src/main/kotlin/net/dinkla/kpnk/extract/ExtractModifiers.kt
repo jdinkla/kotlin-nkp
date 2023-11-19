@@ -69,16 +69,18 @@ internal fun extractConstModifier(tree: KotlinParseTree): Boolean? {
     }
 }
 
-internal fun extractMemberModifier(tree: KotlinParseTree): MemberModifier? {
+internal fun extractMemberModifier(tree: KotlinParseTree): List<MemberModifier> {
     val modifier = tree.children
         .filter { it.name == "modifiers" }
         .flatMap { it.children }
         .filter { it.name == "modifier" }
         .flatMap { it.children }
-    return modifier.find { it.name == "memberModifier" }?.let {
-        when (it.children[0].name) {
-            "OVERRIDE" -> MemberModifier.OVERRIDE
-            else -> null
-        }
-    }
+    return modifier.filter { it.name == "memberModifier" }
+        .map {
+            when (it.children[0].name) {
+                "OVERRIDE" -> MemberModifier.OVERRIDE
+                "LATEINIT" -> MemberModifier.LATE_INIT
+                else -> null
+            }
+        }.filterNotNull()
 }

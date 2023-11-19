@@ -1,6 +1,5 @@
 # TODO
 
-lateinit
 secondary constructor see MeshTriangle
 open fun f()
 List vs List<String>
@@ -12,11 +11,9 @@ companion objects
 anonymous objects?
 inline functions
 reified type parameters
-delegated properties
+by, delegate, lazy properties
 sealed classes
 
-sealed
-operator fun
 infix
 
 lambda with receiver
@@ -24,8 +21,6 @@ fun with receiver
 
 private constructor
 
-
-lateinit, by, delegate, lazy properties
 
 import org.jetbrains.kotlin.spec.grammar.KotlinParser.TypeAliasContext
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
