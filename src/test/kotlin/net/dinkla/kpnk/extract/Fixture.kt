@@ -80,7 +80,7 @@ internal val class3 = ClassSignature(
 internal val class4 = ClassSignature(
     "MathUtils",
     declarations = listOf(
-        Property("K_EPSILON", null, PropertyModifier.CONST_VAL),
+        Property("K_EPSILON", null, PropertyModifier.CONST_VAL, VisibilityModifier.PRIVATE),
         FunctionSignature(
             "isZero",
             "Boolean",
@@ -123,5 +123,5 @@ internal val enum2 = ClassSignature(
 )
 
 internal val property1 = Property("myProperty", "String", PropertyModifier.VAL)
-internal val property2 = Property("THE_ANSWER", "Int", PropertyModifier.CONST_VAL)
-internal val property3 = Property("twentyOne", null, PropertyModifier.VAL)
+internal val property2 = Property("THE_ANSWER", "Int", PropertyModifier.CONST_VAL, VisibilityModifier.INTERNAL)
+internal val property3 = Property("twentyOne", null, PropertyModifier.VAL, VisibilityModifier.PRIVATE)

@@ -6,8 +6,6 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
-import net.dinkla.kpnk.domain.Property
-import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -41,47 +39,9 @@ class ExtractTest : StringSpec({
         val typeAliases = extractTypeAliases(fromText("typealias Dictionary = Map<String, String>"))
         typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", "Map"))
     }
-
-    "extractProperty should handle one val property" {
-        val properties = extractProperties(fromText("val x: Int = 1"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.VAL))
-    }
-
-    "extractProperty should handle one var property" {
-        val properties = extractProperties(fromText("var x: Int = 1"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.VAR))
-    }
-
-    "extractProperty should handle a const val property" {
-        val properties = extractProperties(fromText("const val x: Int = 1"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.CONST_VAL))
-    }
-
-    "extractProperty should handle a constructor call with explicit type" {
-        val properties = extractProperties(fromText("val x : C = C(1)"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "C", PropertyModifier.VAL))
-    }
-
-    "extractProperty should handle a constructor call with implicit type" {
-        val properties = extractProperties(fromText("val x = C(1)"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", null, PropertyModifier.VAL))
-    }
-
-    "extractProperties should extract properties" {
-        val properties = extractProperties(fromText("val x: Int = 1; var y: String = \"2\""))
-        properties shouldContainExactlyInAnyOrder listOf(
-            Property("x", "Int", PropertyModifier.VAL),
-            Property("y", "String", PropertyModifier.VAR),
-        )
-    }
 })
 
 internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> =
     getDeclarations(tree)
         .filter { it.name == "typeAlias" }
         .map { extractTypeAlias(it) }
-
-internal fun extractProperties(tree: KotlinParseTree): List<Property> =
-    getDeclarations(tree)
-        .filter { it.name == "propertyDeclaration" }
-        .map { extractProperty(it) }

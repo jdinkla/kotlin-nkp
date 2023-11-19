@@ -1,7 +1,5 @@
 # TODO
 
-properties and visibility modifier
-
 classes/objects and typealias and inner classes
 inner objects
 

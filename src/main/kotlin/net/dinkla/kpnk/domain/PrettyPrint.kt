@@ -90,8 +90,3 @@ fun FunctionSignature.prettyPrint(): String {
 }
 
 fun TypeAlias.prettyPrint(): String = "typealias $name = $def"
-
-fun Property.prettyPrint(): String {
-    val mod = modifier.text
-    return "$mod $name : $dataType"
-}

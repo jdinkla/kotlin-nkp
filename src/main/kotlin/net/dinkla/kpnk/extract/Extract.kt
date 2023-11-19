@@ -275,6 +275,7 @@ fun extractTypeAlias(tree: KotlinParseTree): TypeAlias {
 }
 
 fun extractProperty(tree: KotlinParseTree): Property {
+    val visibility = extractVisibilityModifier(tree)
     val hasConstModifier = extractConstModifier(tree) ?: false
     val isMutable = tree.children.find { it.name == "VAR" } != null
     val variableDeclaration = tree.children.find { it.name == "variableDeclaration" }!!
@@ -282,7 +283,7 @@ fun extractProperty(tree: KotlinParseTree): Property {
     val type = variableDeclaration.children.find { it.name == "type" }?.let {
         extractType(it)
     }
-    return Property(name, type, PropertyModifier.create(hasConstModifier, isMutable))
+    return Property(name, type, PropertyModifier.create(hasConstModifier, isMutable), visibility)
 }
 
 private fun extractConstModifier(tree: KotlinParseTree): Boolean? {

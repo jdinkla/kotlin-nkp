@@ -42,7 +42,7 @@ typealias Dictionary = Map<String, String>
 fun create(ls: List<String>): Dictionary = ls.map { it to it }.toMap()
 
 val myProperty: String = "is theft..."
-const val THE_ANSWER: Int = 42
+internal const val THE_ANSWER: Int = 42
 private val twentyOne = HelloWorld(21)
 
 fun main() {
