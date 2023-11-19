@@ -2,13 +2,11 @@ package net.dinkla.kpnk
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import net.dinkla.kpnk.analysis.reportDependencies
+import net.dinkla.kpnk.analysis.reportInheritance
 import net.dinkla.kpnk.analysis.reportLargeClasses
-import net.dinkla.kpnk.analysis.searchClass
-import net.dinkla.kpnk.analysis.searchHierarchy
+import net.dinkla.kpnk.analysis.reportSearch
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
-import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.utilities.load
 import net.dinkla.kpnk.utilities.parseFilesFromDirectory
 import net.dinkla.kpnk.utilities.save
@@ -43,14 +41,10 @@ fun main(args: Array<String>) {
                 load(SAVE_FILE_NAME)
             }
         }
-        reportDependencies(infos)
+        // reportDependencies(infos)
         reportLargeClasses(infos)
-        val found = infos.searchClass("MeshTriangle")
-        found.forEach { println(it.prettyPrint()) }
-
-        logger.info("*** Hierarchy ***")
-        val hier = infos.searchHierarchy("SmoothMeshTriangle")
-        hier.forEach { println(it.prettyPrint()) }
+        reportSearch(infos, "RectangleLight")
+        reportInheritance(infos)
     }
 }
 
