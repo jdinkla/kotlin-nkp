@@ -3,6 +3,7 @@
 properties and visibility modifier
 
 classes/objects and typealias and inner classes
+inner objects
 
 List vs List<String>
 Map<String, String> in extractType()

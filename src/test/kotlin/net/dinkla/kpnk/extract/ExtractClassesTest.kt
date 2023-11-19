@@ -12,6 +12,7 @@ import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
+import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 class ExtractClassesTest : StringSpec({
     "extractClasses should handle a data class with one constructor argument and without a body" {
@@ -332,3 +333,16 @@ class ExtractClassesTest : StringSpec({
         classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
     }
 })
+
+private fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
+    val result = mutableListOf<ClassSignature>()
+    for (declaration in getDeclarations(tree)) {
+        if (declaration.name == "classDeclaration") {
+            result += extractClass(declaration)
+        }
+        if (declaration.name == "objectDeclaration") {
+            result += extractObject(declaration)
+        }
+    }
+    return result
+}

@@ -20,11 +20,8 @@ import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 fun extract(tree: KotlinParseTree): TopLevel {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
-    val functions = extractFunctions(tree)
-    val classes = extractClasses(tree)
-    val aliases = extractTypeAliases(tree)
-    val properties = extractProperties(tree)
-    return TopLevel(packageName, imports, functions + classes + aliases + properties)
+    val declarations = extractDefinitions(tree)
+    return TopLevel(packageName, imports, declarations)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
@@ -54,35 +51,21 @@ internal fun extractImports(tree: KotlinParseTree): List<Import> =
         }
     } ?: listOf()
 
-internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> =
-    getDeclarations(tree)
-        .filter { it.name == "functionDeclaration" }
-        .map { extractFunction(it) }
-
-internal fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
-    val result = mutableListOf<ClassSignature>()
+internal fun extractDefinitions(tree: KotlinParseTree): List<Defined> {
+    val result = mutableListOf<Defined>()
     for (declaration in getDeclarations(tree)) {
-        if (declaration.name == "classDeclaration") {
-            result += extractClass(declaration)
-        }
-        if (declaration.name == "objectDeclaration") {
-            result += extractObject(declaration)
+        when (declaration.name) {
+            "classDeclaration" -> result += extractClass(declaration)
+            "objectDeclaration" -> result += extractObject(declaration)
+            "functionDeclaration" -> result += extractFunction(declaration)
+            "typeAlias" -> result += extractTypeAlias(declaration)
+            "propertyDeclaration" -> result += extractProperty(declaration)
         }
     }
     return result
 }
 
-internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> =
-    getDeclarations(tree)
-        .filter { it.name == "typeAlias" }
-        .map { extractTypeAlias(it) }
-
-internal fun extractProperties(tree: KotlinParseTree): List<Property> =
-    getDeclarations(tree)
-        .filter { it.name == "propertyDeclaration" }
-        .map { extractProperty(it) }
-
-private fun getDeclarations(tree: KotlinParseTree): List<KotlinParseTree> {
+internal fun getDeclarations(tree: KotlinParseTree): List<KotlinParseTree> {
     val result = mutableListOf<KotlinParseTree>()
     val topLevelObjects = tree.children.filter { it.name == "topLevelObject" }
     for (topLevelObject in topLevelObjects) {
@@ -92,7 +75,7 @@ private fun getDeclarations(tree: KotlinParseTree): List<KotlinParseTree> {
     return result
 }
 
-private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
+internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
     val visibility = extractVisibilityModifier(tree)
     val name = extractSimpleIdentifier(tree)!!
     val parameters =
@@ -111,7 +94,7 @@ private fun extractFunction(tree: KotlinParseTree): FunctionSignature {
     return FunctionSignature(name, returnType, parameters, receiverType, visibility)
 }
 
-private fun extractClass(tree: KotlinParseTree): ClassSignature {
+internal fun extractClass(tree: KotlinParseTree): ClassSignature {
     val visibilityModifier = extractVisibilityModifier(tree)
     val inheritanceModifier = extractInheritanceModifier(tree)
     val classModifier = extractClassModifier(tree)
@@ -216,7 +199,7 @@ private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
         }
     } ?: listOf()
 
-private fun extractObject(tree: KotlinParseTree): ClassSignature {
+internal fun extractObject(tree: KotlinParseTree): ClassSignature {
     val name = extractSimpleIdentifier(tree)!!
     val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {

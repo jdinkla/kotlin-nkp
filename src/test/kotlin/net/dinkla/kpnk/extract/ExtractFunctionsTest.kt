@@ -8,6 +8,7 @@ import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
+import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 class ExtractFunctionsTest : StringSpec({
     "extractFunctions should return all functions in example code" {
@@ -112,3 +113,8 @@ class ExtractFunctionsTest : StringSpec({
         )
     }
 })
+
+internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> =
+    getDeclarations(tree)
+        .filter { it.name == "functionDeclaration" }
+        .map { extractFunction(it) }

@@ -10,6 +10,7 @@ import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.utilities.fromText
+import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 class ExtractTest : StringSpec({
     "extract should return all information" {
@@ -74,3 +75,13 @@ class ExtractTest : StringSpec({
         )
     }
 })
+
+internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> =
+    getDeclarations(tree)
+        .filter { it.name == "typeAlias" }
+        .map { extractTypeAlias(it) }
+
+internal fun extractProperties(tree: KotlinParseTree): List<Property> =
+    getDeclarations(tree)
+        .filter { it.name == "propertyDeclaration" }
+        .map { extractProperty(it) }
