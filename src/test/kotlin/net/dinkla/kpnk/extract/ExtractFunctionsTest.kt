@@ -4,9 +4,9 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.elements.FunctionSignature
-import net.dinkla.kpnk.elements.Parameter
-import net.dinkla.kpnk.elements.VisibilityModifier
+import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.Parameter
+import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.fromText
 
 class ExtractFunctionsTest : StringSpec({

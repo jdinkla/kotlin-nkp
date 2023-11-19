@@ -1,7 +1,7 @@
-package net.dinkla.kpnk.analyze
+package net.dinkla.kpnk.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.kpnk.elements.FileInfo
+import net.dinkla.kpnk.domain.FileInfo
 
 @Serializable
 data class Dependency(val name: String, val dependencies: Set<String>)

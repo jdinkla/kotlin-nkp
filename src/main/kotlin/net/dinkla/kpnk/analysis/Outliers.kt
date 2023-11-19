@@ -1,7 +1,7 @@
-package net.dinkla.kpnk.analyze
+package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.FileInfo
+import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.FileInfo
 
 fun reportLargeClasses(infos: List<FileInfo>, topN: Int = 10) {
     largeClasses(infos, topN).forEach { c ->

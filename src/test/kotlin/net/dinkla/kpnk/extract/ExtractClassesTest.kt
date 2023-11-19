@@ -3,14 +3,14 @@ package net.dinkla.kpnk.extract
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.elements.ClassModifier
-import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.FunctionSignature
-import net.dinkla.kpnk.elements.InheritanceModifier
-import net.dinkla.kpnk.elements.Parameter
-import net.dinkla.kpnk.elements.Property
-import net.dinkla.kpnk.elements.Type
-import net.dinkla.kpnk.elements.VisibilityModifier
+import net.dinkla.kpnk.domain.ClassModifier
+import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.InheritanceModifier
+import net.dinkla.kpnk.domain.Parameter
+import net.dinkla.kpnk.domain.Property
+import net.dinkla.kpnk.domain.Type
+import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.fromText
 
 class ExtractClassesTest : StringSpec({

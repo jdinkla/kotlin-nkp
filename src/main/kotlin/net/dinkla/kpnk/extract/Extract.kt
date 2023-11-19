@@ -1,19 +1,19 @@
 package net.dinkla.kpnk.extract
 
-import net.dinkla.kpnk.elements.ClassModifier
-import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.Defined
-import net.dinkla.kpnk.elements.FullyQualifiedName
-import net.dinkla.kpnk.elements.FunctionSignature
-import net.dinkla.kpnk.elements.Import
-import net.dinkla.kpnk.elements.InheritanceModifier
-import net.dinkla.kpnk.elements.Parameter
-import net.dinkla.kpnk.elements.Property
-import net.dinkla.kpnk.elements.PropertyModifier
-import net.dinkla.kpnk.elements.TopLevel
-import net.dinkla.kpnk.elements.Type
-import net.dinkla.kpnk.elements.TypeAlias
-import net.dinkla.kpnk.elements.VisibilityModifier
+import net.dinkla.kpnk.domain.ClassModifier
+import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.Defined
+import net.dinkla.kpnk.domain.FullyQualifiedName
+import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.Import
+import net.dinkla.kpnk.domain.InheritanceModifier
+import net.dinkla.kpnk.domain.Parameter
+import net.dinkla.kpnk.domain.Property
+import net.dinkla.kpnk.domain.PropertyModifier
+import net.dinkla.kpnk.domain.TopLevel
+import net.dinkla.kpnk.domain.Type
+import net.dinkla.kpnk.domain.TypeAlias
+import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 

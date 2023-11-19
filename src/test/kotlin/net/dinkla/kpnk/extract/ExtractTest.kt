@@ -4,11 +4,11 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.elements.FullyQualifiedName
-import net.dinkla.kpnk.elements.Import
-import net.dinkla.kpnk.elements.Property
-import net.dinkla.kpnk.elements.PropertyModifier
-import net.dinkla.kpnk.elements.TypeAlias
+import net.dinkla.kpnk.domain.FullyQualifiedName
+import net.dinkla.kpnk.domain.Import
+import net.dinkla.kpnk.domain.Property
+import net.dinkla.kpnk.domain.PropertyModifier
+import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.fromText
 
 class ExtractTest : StringSpec({

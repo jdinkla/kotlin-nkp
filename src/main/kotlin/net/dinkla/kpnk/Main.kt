@@ -7,10 +7,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import net.dinkla.kpnk.analyze.Dependencies
-import net.dinkla.kpnk.analyze.dependencies
-import net.dinkla.kpnk.analyze.reportLargeClasses
-import net.dinkla.kpnk.elements.FileInfo
+import net.dinkla.kpnk.analysis.Dependencies
+import net.dinkla.kpnk.analysis.dependencies
+import net.dinkla.kpnk.analysis.reportLargeClasses
+import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.extract.safeExtract
 import org.slf4j.LoggerFactory

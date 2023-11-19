@@ -1,14 +1,14 @@
-package net.dinkla.kpnk.analyze
+package net.dinkla.kpnk.analysis
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.FileName
-import net.dinkla.kpnk.elements.ClassSignature
-import net.dinkla.kpnk.elements.FileInfo
-import net.dinkla.kpnk.elements.FullyQualifiedName
-import net.dinkla.kpnk.elements.FunctionSignature
-import net.dinkla.kpnk.elements.Property
-import net.dinkla.kpnk.elements.TopLevel
+import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.FileInfo
+import net.dinkla.kpnk.domain.FullyQualifiedName
+import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.Property
+import net.dinkla.kpnk.domain.TopLevel
 
 class OutliersTest : StringSpec({
     "largeClasses should return the top 2 classes with most functions and properties" {

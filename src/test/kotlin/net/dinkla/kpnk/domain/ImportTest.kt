@@ -1,4 +1,4 @@
-package net.dinkla.kpnk.elements
+package net.dinkla.kpnk.domain
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe

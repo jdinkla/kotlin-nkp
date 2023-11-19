@@ -1,4 +1,4 @@
-package net.dinkla.kpnk.elements
+package net.dinkla.kpnk.domain
 
 import kotlinx.serialization.Serializable
 import net.dinkla.kpnk.FileName
