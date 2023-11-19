@@ -1,4 +1,4 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.utilities
 
 import kotlinx.serialization.Serializable
 import java.io.File

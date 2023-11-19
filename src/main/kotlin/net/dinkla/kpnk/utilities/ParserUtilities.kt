@@ -1,4 +1,4 @@
-package net.dinkla.kpnk
+package net.dinkla.kpnk.utilities
 
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import org.jetbrains.kotlin.spec.grammar.tools.parseKotlinCode

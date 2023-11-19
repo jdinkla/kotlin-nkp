@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.VisibilityModifier
-import net.dinkla.kpnk.fromText
+import net.dinkla.kpnk.utilities.fromText
 
 class ExtractFunctionsTest : StringSpec({
     "extractFunctions should return all functions in example code" {

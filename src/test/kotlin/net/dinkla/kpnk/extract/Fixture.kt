@@ -11,7 +11,7 @@ import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
-import net.dinkla.kpnk.fromFile
+import net.dinkla.kpnk.utilities.fromFile
 
 private const val KOTLIN_EXAMPLE_FILE = "src/test/resources/example/HelloWorld.kt"
 

@@ -11,7 +11,7 @@ import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
-import net.dinkla.kpnk.fromText
+import net.dinkla.kpnk.utilities.fromText
 
 class ExtractClassesTest : StringSpec({
     "extractClasses should handle a data class with one constructor argument and without a body" {

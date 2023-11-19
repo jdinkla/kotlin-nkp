@@ -16,4 +16,15 @@ class PrettyPrintTest : StringSpec({
             }
         """.trimIndent()
     }
+
+    "prettyPrint should show the toplevel" {
+        val topLevel = TopLevel(
+            FullyQualifiedName("net.dinkla.kpnk"),
+            imports = listOf(Import(FullyQualifiedName("java.lang.Boolean.TRUE"))),
+        )
+        val lines = topLevel.prettyPrint().lines()
+        lines.size shouldBe 5
+        lines[0] shouldBe "package net.dinkla.kpnk"
+        lines[2] shouldBe "import java.lang.Boolean.TRUE"
+    }
 })

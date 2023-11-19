@@ -1,7 +1,7 @@
 package net.dinkla.kpnk.domain
 
 import kotlinx.serialization.Serializable
-import net.dinkla.kpnk.FileName
+import net.dinkla.kpnk.utilities.FileName
 
 @Serializable
 data class FileInfo(

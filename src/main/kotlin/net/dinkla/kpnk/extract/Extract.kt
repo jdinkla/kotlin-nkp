@@ -14,7 +14,7 @@ import net.dinkla.kpnk.domain.TopLevel
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.domain.VisibilityModifier
-import net.dinkla.kpnk.findName
+import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun safeExtract(tree: KotlinParseTree): TopLevel {

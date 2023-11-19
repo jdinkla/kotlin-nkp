@@ -9,7 +9,7 @@ import net.dinkla.kpnk.domain.Import
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TypeAlias
-import net.dinkla.kpnk.fromText
+import net.dinkla.kpnk.utilities.fromText
 
 class ExtractTest : StringSpec({
     "extract should return all information" {

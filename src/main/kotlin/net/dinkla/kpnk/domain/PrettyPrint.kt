@@ -1,6 +1,6 @@
 package net.dinkla.kpnk.domain
 
-import net.dinkla.kpnk.addSpaceAfter
+import net.dinkla.kpnk.utilities.addSpaceAfter
 
 fun TopLevel.prettyPrint(): String {
     var isLineNeeded = false

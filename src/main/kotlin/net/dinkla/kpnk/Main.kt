@@ -13,6 +13,9 @@ import net.dinkla.kpnk.analysis.reportLargeClasses
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.extract.safeExtract
+import net.dinkla.kpnk.utilities.FileName
+import net.dinkla.kpnk.utilities.fromFile
+import net.dinkla.kpnk.utilities.getAllKotlinFilesInDirectory
 import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.Result.Companion.failure
