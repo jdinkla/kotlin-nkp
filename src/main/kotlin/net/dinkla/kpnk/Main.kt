@@ -1,33 +1,28 @@
 package net.dinkla.kpnk
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import net.dinkla.kpnk.analysis.Dependencies
-import net.dinkla.kpnk.analysis.dependencies
+import net.dinkla.kpnk.analysis.reportDependencies
 import net.dinkla.kpnk.analysis.reportLargeClasses
 import net.dinkla.kpnk.domain.FileInfo
-import net.dinkla.kpnk.extract.extract
-import net.dinkla.kpnk.utilities.FileName
-import net.dinkla.kpnk.utilities.fromFile
-import net.dinkla.kpnk.utilities.getAllKotlinFilesInDirectory
+import net.dinkla.kpnk.utilities.load
+import net.dinkla.kpnk.utilities.parseFilesFromDirectory
+import net.dinkla.kpnk.utilities.save
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
-import kotlin.Result.Companion.failure
-import kotlin.Result.Companion.success
 import kotlin.system.exitProcess
 
-private val logger = LoggerFactory.getLogger("Main")
+val logger: Logger = LoggerFactory.getLogger("Main")
 
 enum class Command {
-    ANALYZE, LOAD
+    READ_AND_SAVE, LOAD
 }
 
-val command = Command.ANALYZE
+val command = Command.READ_AND_SAVE
+
+// val command = Command.LOAD
+const val SAVE_FILE_NAME = "infos.json"
 
 fun main(args: Array<String>) {
     val directoryString = parseArgs(args)
@@ -35,20 +30,13 @@ fun main(args: Array<String>) {
         exitProcess(-1)
     } else {
         val directory = File(directoryString).absolutePath
-        val infos: List<FileInfo>
-        runBlocking(Dispatchers.Default) {
-            when (command) {
-                Command.ANALYZE -> {
-                    logger.info("Directory: $directory")
-                    val allInfos = parseFilesFromDirectory(directory).map { it.await() }
-                    reportErrors(allInfos)
-                    infos = allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
-                    save(infos, "infos.json")
-                }
+        val infos = when (command) {
+            Command.READ_AND_SAVE -> {
+                read(directory, SAVE_FILE_NAME)
+            }
 
-                Command.LOAD -> {
-                    infos = load("infos.json")
-                }
+            Command.LOAD -> {
+                load(SAVE_FILE_NAME)
             }
         }
         reportDependencies(infos)
@@ -56,43 +44,22 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun load(fileName: String): List<FileInfo> {
-    val string = File(fileName).readText()
-    return Json.decodeFromString<List<FileInfo>>(string)
-}
-
-private fun save(infos: List<FileInfo>, fileName: String) {
-    val string = Json.encodeToString(infos)
-    File(fileName).writeText(string)
-}
-
-private fun reportDependencies(infos: List<FileInfo>) {
-    val dependencies = Dependencies.from(dependencies(infos))
-    val string = Json.encodeToString(dependencies)
-    File("dependencies.json").writeText(string)
+private fun read(
+    directory: String,
+    saveFileName: String,
+): List<FileInfo> = runBlocking(Dispatchers.Default) {
+    logger.info("Reading and saving from directory '$directory'")
+    val allInfos = parseFilesFromDirectory(directory).map { it.await() }
+    reportErrors(allInfos)
+    val filtered = allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
+    save(filtered, saveFileName)
+    logger.info("saved to file '$saveFileName'")
+    filtered
 }
 
 private fun reportErrors(infos: List<Result<FileInfo>>) {
     infos.groupBy { it.isSuccess }.forEach {
         logger.info("${if (it.key) "Successful" else "With error"}: ${it.value.size}")
-    }
-}
-
-private fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
-    fileInfos(getAllKotlinFilesInDirectory(directory))
-
-private fun CoroutineScope.fileInfos(
-    files: List<String>,
-): List<Deferred<Result<FileInfo>>> = files.map {
-    async {
-        try {
-            val tree = fromFile(it)
-            val fileInfo = extract(tree)
-            success(FileInfo(FileName(it), fileInfo))
-        } catch (e: Exception) {
-            logger.error("parsing '$it' yields ${e.message}")
-            failure(e)
-        }
     }
 }
 
