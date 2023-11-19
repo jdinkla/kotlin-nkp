@@ -4,10 +4,10 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.FileInfo
+import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
 import net.dinkla.kpnk.domain.TopLevel
-import net.dinkla.kpnk.domain.FileName
 
 class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
