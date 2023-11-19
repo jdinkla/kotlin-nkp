@@ -31,4 +31,27 @@ class ClassSignatureTest : StringSpec({
             }
         """.trimIndent()
     }
+
+    "prettyPrint should return a string representation of class with an inner class" {
+        val def = ClassSignature(
+            "C",
+            listOf(Parameter("p", "Int")),
+            elementType = Type.CLASS,
+            inheritanceModifier = InheritanceModifier.OPEN,
+            declarations = listOf(
+                FunctionSignature("toString", "String", listOf()),
+                ClassSignature(
+                    "D",
+                    listOf(Parameter("p", "Int")),
+                    elementType = Type.CLASS,
+                    classModifier = ClassModifier.INNER,
+                ),
+            ),
+        )
+        val lines = def.prettyPrint().lines()
+        lines[0] shouldBe "open class C(p: Int) {"
+        lines[1] shouldBe "    fun toString(): String"
+        lines[2] shouldBe "    inner class D(p: Int) {}"
+        lines[3] shouldBe "}"
+    }
 })

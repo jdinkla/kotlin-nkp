@@ -50,36 +50,6 @@ fun Parameter.prettyPrint(): String = "$name: $type"
 
 fun Import.prettyPrint(): String = "import $name"
 
-fun VisibilityModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
-
-fun ClassModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
-
-fun InheritanceModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
-
-fun ClassSignature.prettyPrint(): String {
-    val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
-    val prettyParameters: String =
-        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-    val visibility = addSpaceAfter(visibilityModifier.prettyPrint())
-    val joined = functions.map { "    ${it.prettyPrint()}" }.joinToString("\n")
-    val joined2 = if (joined.isNotEmpty()) {
-        "\n$joined\n"
-    } else {
-        joined
-    }
-    val classMod = addSpaceAfter(classModifier.prettyPrint())
-    return "${visibility}${classMod}${elementType.text} $name($prettyParameters)$inherited {$joined2}"
-}
-
 fun FunctionSignature.prettyPrint(): String {
     val prettyReturnType = if (returnType == null) "" else ": $returnType"
     val prettyParameters: String =

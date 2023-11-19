@@ -263,7 +263,6 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                listOf(),
                 declarations = listOf(
                     FunctionSignature(
                         "f",
@@ -322,6 +321,73 @@ class ExtractClassesTest : StringSpec({
                     ClassSignature(
                         "D",
                         elementType = Type.CLASS,
+                    ),
+                ),
+            ),
+        )
+    }
+
+    "extractClass should handle an inner class inside a class" {
+        val classes = extractClasses(fromText("class C() { inner class D() }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                elementType = Type.CLASS,
+                declarations = listOf(
+                    ClassSignature(
+                        "D",
+                        elementType = Type.CLASS,
+                        classModifier = ClassModifier.INNER,
+                    ),
+                ),
+            ),
+        )
+    }
+
+    "extractClass should handle a class inside an object" {
+        val classes = extractClasses(fromText("object O { class D() }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "O",
+                elementType = Type.OBJECT,
+                declarations = listOf(
+                    ClassSignature(
+                        "D",
+                        elementType = Type.CLASS,
+                    ),
+                ),
+            ),
+        )
+    }
+
+    "extractClass should handle an object inside an object" {
+        val classes = extractClasses(fromText("object O { object P { fun f() = 1 } }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "O",
+                elementType = Type.OBJECT,
+                declarations = listOf(
+                    ClassSignature(
+                        "P",
+                        elementType = Type.OBJECT,
+                        declarations = listOf(FunctionSignature("f")),
+                    ),
+                ),
+            ),
+        )
+    }
+
+    "extractClass should handle an object inside a class" {
+        val classes = extractClasses(fromText("class C { object P { fun f() = 1 } }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "C",
+                elementType = Type.CLASS,
+                declarations = listOf(
+                    ClassSignature(
+                        "P",
+                        elementType = Type.OBJECT,
+                        declarations = listOf(FunctionSignature("f")),
                     ),
                 ),
             ),

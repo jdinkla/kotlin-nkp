@@ -1,6 +1,7 @@
 package net.dinkla.kpnk.domain
 
 import kotlinx.serialization.Serializable
+import net.dinkla.kpnk.utilities.addSpaceAfter
 
 @Serializable
 data class ClassSignature(
@@ -31,11 +32,53 @@ enum class Type(val text: String) {
 enum class ClassModifier(val text: String) {
     DATA("data"),
     ENUM("enum"),
-    VALUE("value "),
+    VALUE("value"),
+    INNER("inner"),
 }
 
 @Serializable
 enum class InheritanceModifier(val text: String) {
     OPEN("open"),
     ABSTRACT("abstract"),
+}
+
+fun ClassSignature.prettyPrint(): String {
+    val visMod = addSpaceAfter(visibilityModifier.prettyPrint())
+    val classMod = addSpaceAfter(classModifier.prettyPrint())
+    val inhMod = addSpaceAfter(inheritanceModifier.prettyPrint())
+    val type = elementType.text
+    val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
+    val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
+
+    val joined = declarations.map {
+        val text = when (it) {
+            is FunctionSignature -> it.prettyPrint()
+            is Property -> it.prettyPrint()
+            is ClassSignature -> it.prettyPrint()
+            else -> ""
+        }
+        "    $text"
+    }.joinToString("\n")
+    val joined2 = if (joined.isNotEmpty()) {
+        "\n$joined\n"
+    } else {
+        joined
+    }
+    return "$visMod$classMod$inhMod$type $name($prettyParameters)$inherited {$joined2}"
+}
+
+fun VisibilityModifier?.prettyPrint() = when (this) {
+    null -> ""
+    else -> text
+}
+
+fun ClassModifier?.prettyPrint() = when (this) {
+    null -> ""
+    else -> text
+}
+
+fun InheritanceModifier?.prettyPrint() = when (this) {
+    null -> ""
+    else -> text
 }

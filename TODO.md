@@ -1,24 +1,18 @@
 # TODO
 
-classes/objects and typealias and inner classes
-inner objects
-
 List vs List<String>
 Map<String, String> in extractType()
 
 bug: a property called property has a PROPERTY node
 
 companion objects
-local classes
 anonymous objects?
 inline functions
 reified type parameters
 delegated properties
 sealed classes
 
-inner
 sealed
-const val
 operator fun
 infix
 

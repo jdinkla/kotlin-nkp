@@ -153,6 +153,7 @@ private fun extractClassModifier(tree: KotlinParseTree): ClassModifier? {
             "DATA" -> ClassModifier.DATA
             "ENUM" -> ClassModifier.ENUM
             "VALUE" -> ClassModifier.VALUE
+            "INNER" -> ClassModifier.INNER
             else -> null
         }
     }
@@ -221,6 +222,7 @@ private fun extractBody(tree: KotlinParseTree): List<Defined> {
                             "functionDeclaration" -> extractFunction(declaration)
                             "propertyDeclaration" -> extractProperty(declaration)
                             "classDeclaration" -> extractClass(declaration)
+                            "objectDeclaration" -> extractObject(declaration)
                             else -> null
                         }
                     }
