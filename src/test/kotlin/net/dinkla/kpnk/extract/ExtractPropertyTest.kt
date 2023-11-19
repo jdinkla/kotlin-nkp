@@ -3,6 +3,7 @@ package net.dinkla.kpnk.extract
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.VisibilityModifier
@@ -44,6 +45,17 @@ class ExtractPropertyTest : StringSpec({
                 "Int",
                 PropertyModifier.VAL,
                 VisibilityModifier.PRIVATE,
+            ),
+        )
+    }
+    "extractProperty should handle overriden property" {
+        val properties = extractProperties(fromText("override val x: Int = 1"))
+        properties shouldContainExactly listOf(
+            Property(
+                "x",
+                "Int",
+                PropertyModifier.VAL,
+                memberModifier = MemberModifier.OVERRIDE,
             ),
         )
     }

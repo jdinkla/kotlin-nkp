@@ -25,6 +25,13 @@ class PropertyTest : StringSpec({
         )
         property.prettyPrint() shouldBe "var name"
     }
+    "prettyPrint should handle override" {
+        val property = property.copy(
+            modifier = PropertyModifier.VAR,
+            memberModifier = MemberModifier.OVERRIDE,
+        )
+        property.prettyPrint() shouldBe "override var name"
+    }
 })
 
 private val property = Property(

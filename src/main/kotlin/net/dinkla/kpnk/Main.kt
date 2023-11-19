@@ -5,6 +5,7 @@ import kotlinx.coroutines.runBlocking
 import net.dinkla.kpnk.analysis.reportDependencies
 import net.dinkla.kpnk.analysis.reportLargeClasses
 import net.dinkla.kpnk.analysis.searchClass
+import net.dinkla.kpnk.analysis.searchHierarchy
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.domain.prettyPrint
@@ -46,6 +47,10 @@ fun main(args: Array<String>) {
         reportLargeClasses(infos)
         val found = infos.searchClass("MeshTriangle")
         found.forEach { println(it.prettyPrint()) }
+
+        logger.info("*** Hierarchy ***")
+        val hier = infos.searchHierarchy("SmoothMeshTriangle")
+        hier.forEach { println(it.prettyPrint()) }
     }
 }
 
