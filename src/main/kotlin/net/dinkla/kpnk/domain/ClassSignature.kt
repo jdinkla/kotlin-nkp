@@ -19,3 +19,23 @@ data class ClassSignature(
     val properties: List<Property>
         get() = declarations.filterIsInstance<Property>()
 }
+
+@Serializable
+enum class Type(val text: String) {
+    CLASS("class"),
+    OBJECT("object"),
+    INTERFACE("interface"),
+}
+
+@Serializable
+enum class ClassModifier(val text: String) {
+    DATA("data"),
+    ENUM("enum"),
+    VALUE("value "),
+}
+
+@Serializable
+enum class InheritanceModifier(val text: String) {
+    OPEN("open"),
+    ABSTRACT("abstract"),
+}
