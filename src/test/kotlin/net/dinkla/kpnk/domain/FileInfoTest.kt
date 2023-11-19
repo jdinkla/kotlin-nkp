@@ -2,7 +2,6 @@ package net.dinkla.kpnk.domain
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.utilities.FileName
 
 class FileInfoTest : StringSpec({
     "packageName should return the package and the filename" {

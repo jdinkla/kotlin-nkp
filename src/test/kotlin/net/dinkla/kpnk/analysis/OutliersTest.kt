@@ -8,7 +8,7 @@ import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.TopLevel
-import net.dinkla.kpnk.utilities.FileName
+import net.dinkla.kpnk.domain.FileName
 
 class OutliersTest : StringSpec({
     "largeClasses should return the top 2 classes with most functions and properties" {

@@ -4,7 +4,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import net.dinkla.kpnk.analysis.reportDependencies
 import net.dinkla.kpnk.analysis.reportLargeClasses
+import net.dinkla.kpnk.analysis.searchClass
 import net.dinkla.kpnk.domain.FileInfo
+import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.utilities.load
 import net.dinkla.kpnk.utilities.parseFilesFromDirectory
 import net.dinkla.kpnk.utilities.save
@@ -19,9 +22,9 @@ enum class Command {
     READ_AND_SAVE, LOAD
 }
 
-val command = Command.READ_AND_SAVE
+// val command = Command.READ_AND_SAVE
+val command = Command.LOAD
 
-// val command = Command.LOAD
 const val SAVE_FILE_NAME = "infos.json"
 
 fun main(args: Array<String>) {
@@ -41,13 +44,15 @@ fun main(args: Array<String>) {
         }
         reportDependencies(infos)
         reportLargeClasses(infos)
+        val found = infos.searchClass("MeshTriangle")
+        found.forEach { println(it.prettyPrint()) }
     }
 }
 
 private fun read(
     directory: String,
     saveFileName: String,
-): List<FileInfo> = runBlocking(Dispatchers.Default) {
+): FileInfos = runBlocking(Dispatchers.Default) {
     logger.info("Reading and saving from directory '$directory'")
     val allInfos = parseFilesFromDirectory(directory).map { it.await() }
     reportErrors(allInfos)

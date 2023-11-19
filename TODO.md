@@ -1,5 +1,8 @@
 # TODO
 
+override fun hi
+secondary constructor see MeshTriangle
+
 List vs List<String>
 Map<String, String> in extractType()
 
@@ -20,7 +23,7 @@ lambda with receiver
 fun with receiver
 
 private constructor
-secondary constructor
+
 
 lateinit, by, delegate, lazy properties
 
