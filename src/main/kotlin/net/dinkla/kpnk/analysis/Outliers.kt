@@ -9,7 +9,7 @@ fun reportLargeClasses(infos: List<FileInfo>, topN: Int = 10) {
     largeClasses(infos, topN).forEach { c ->
         println(
             """
-            ${c.name} has ${c.functions.size} functions and ${c.properties.size} properties (total ${c.declarations.size})
+            ${c.name} has ${c.classes.size} classes, ${c.functions.size} functions and ${c.properties.size} properties (total ${c.declarations.size})
             """.trimIndent(),
         )
     }

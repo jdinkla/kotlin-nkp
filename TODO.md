@@ -34,4 +34,6 @@ Analysis
     | PrintAll
 
 
+Analysis with size of class + size of inner classes
+
 

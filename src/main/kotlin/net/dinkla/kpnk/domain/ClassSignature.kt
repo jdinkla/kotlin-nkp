@@ -19,6 +19,9 @@ data class ClassSignature(
 
     val properties: List<Property>
         get() = declarations.filterIsInstance<Property>()
+
+    val classes: List<ClassSignature>
+        get() = declarations.filterIsInstance<ClassSignature>()
 }
 
 @Serializable
