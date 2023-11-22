@@ -39,6 +39,11 @@ class ExtractTest : StringSpec({
         val typeAliases = extractTypeAliases(fromText("typealias Dictionary = Map<String, String>"))
         typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", "Map"))
     }
+
+    "extractTypeAlias should extract generic typealias" {
+        val typeAliases = extractTypeAliases(fromText("typealias Dictionary<K> = Map<K, String>"))
+        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", "Map"))
+    }
 })
 
 internal fun extractTypeAliases(tree: KotlinParseTree): List<TypeAlias> =

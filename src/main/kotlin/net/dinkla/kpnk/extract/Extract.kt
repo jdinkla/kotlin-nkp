@@ -212,7 +212,8 @@ private fun extractIdentifier(tree: KotlinParseTree): String = when (tree.name) 
 
 fun extractTypeAlias(tree: KotlinParseTree): TypeAlias {
     val name = extractIdentifier(tree.children[1])
-    val type = extractType(tree.children[3])!!
+    val typeNode = tree.children.first { it.name == "type" }
+    val type = extractType(typeNode)!!
     return TypeAlias(name, type)
 }
 
