@@ -43,6 +43,7 @@ private fun CoroutineScope.fileInfos(
 ): List<Deferred<Result<FileInfo>>> = files.map {
     async {
         try {
+            logger.trace("handling file $it")
             val tree = fromFile(it)
             val fileInfo = extract(tree)
             Result.success(FileInfo(FileName(it), fileInfo))
