@@ -35,6 +35,7 @@ internal fun extractClassModifier(tree: KotlinParseTree): ClassModifier? {
             "ENUM" -> ClassModifier.ENUM
             "VALUE" -> ClassModifier.VALUE
             "INNER" -> ClassModifier.INNER
+            "SEALED" -> ClassModifier.SEALED
             else -> null
         }
     }

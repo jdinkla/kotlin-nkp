@@ -9,6 +9,7 @@ import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
+import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
@@ -388,6 +389,45 @@ class ExtractClassesTest : StringSpec({
                         "P",
                         elementType = Type.OBJECT,
                         declarations = listOf(FunctionSignature("f")),
+                    ),
+                ),
+            ),
+        )
+    }
+
+    "extractClass should handle a sealed interface" {
+        val classes = extractClasses(fromText("sealed interface SI { data class DC(val name: String) : SI }"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "SI",
+                elementType = Type.INTERFACE,
+                classModifier = ClassModifier.SEALED,
+                declarations = listOf(
+                    ClassSignature(
+                        "DC",
+                        listOf(Parameter("name", "String")),
+                        elementType = Type.CLASS,
+                        classModifier = ClassModifier.DATA,
+                        inheritedFrom = listOf("SI"),
+                    ),
+                ),
+            ),
+        )
+    }
+
+    "extractClass should handle a sealed class" {
+        val classes = extractClasses(fromText("sealed class V { object O : V() { const val name = \"x\" }}"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "V",
+                elementType = Type.CLASS,
+                classModifier = ClassModifier.SEALED,
+                declarations = listOf(
+                    ClassSignature(
+                        "O",
+                        elementType = Type.OBJECT,
+                        inheritedFrom = listOf("V"),
+                        declarations = listOf(Property("name", null, PropertyModifier.CONST_VAL)),
                     ),
                 ),
             ),

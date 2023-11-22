@@ -37,6 +37,7 @@ enum class ClassModifier(val text: String) {
     ENUM("enum"),
     VALUE("value"),
     INNER("inner"),
+    SEALED("sealed"),
 }
 
 @Serializable

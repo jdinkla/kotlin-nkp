@@ -148,7 +148,7 @@ internal fun extractObject(tree: KotlinParseTree): ClassSignature {
     val name = extractSimpleIdentifier(tree)!!
     val inheritedFrom = tree.children.find { it.name == "delegationSpecifiers" }?.let {
         it.children.filter { it.name == "annotatedDelegationSpecifier" }.map {
-            extractIdentifier(it.children[0].children[0].children[0].children[0])
+            it.findName("Identifier")?.text!!
         }
     } ?: listOf()
     val declarations = extractBody(tree)
