@@ -1,6 +1,9 @@
 package net.dinkla.kpnk
 
 import net.dinkla.kpnk.analysis.DependenciesCommand
+import net.dinkla.kpnk.analysis.Inheritance
+import net.dinkla.kpnk.analysis.Outliers
+import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.domain.readFromDirectory
 import net.dinkla.kpnk.utilities.loadFromJsonFile
@@ -13,6 +16,9 @@ val logger: Logger = LoggerFactory.getLogger("Main")
 
 fun main(args: Array<String>) {
     CommandManager.add("dependencies", DependenciesCommand)
+    CommandManager.add("inheritance", Inheritance)
+    CommandManager.add("outliers", Outliers)
+    CommandManager.add("search", Search)
     if (args.size < 2) {
         CommandManager.synopsis()
         exitProcess(-1)
@@ -25,9 +31,6 @@ fun main(args: Array<String>) {
         val infos = read(args[0])
         command.execute(args.drop(2).toTypedArray(), infos)
     }
-//    reportLargeClasses(infos)
-//    reportSearch(infos, "RectangleLight")
-//    reportInheritance(infos)
 }
 
 private fun read(fileName: String): FileInfos {

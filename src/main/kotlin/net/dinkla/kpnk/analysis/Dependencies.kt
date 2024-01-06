@@ -26,10 +26,10 @@ object DependenciesCommand : Command {
 }
 
 @Serializable
-data class Dependency(val name: String, val dependencies: Set<String>)
+internal data class Dependency(val name: String, val dependencies: Set<String>)
 
 @Serializable
-data class Dependencies(val dependencies: List<Dependency>) {
+internal data class Dependencies(val dependencies: List<Dependency>) {
     companion object {
         fun from(dependencies: Map<String, Set<String>>): Dependencies =
             Dependencies(

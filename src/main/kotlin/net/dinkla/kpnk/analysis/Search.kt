@@ -1,9 +1,23 @@
 package net.dinkla.kpnk.analysis
 
+import net.dinkla.kpnk.Command
+import net.dinkla.kpnk.CommandManager
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.logger
+
+object Search : Command {
+    override val description: String = "searches for a class <classname>"
+
+    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
+        if (args.size == 1) {
+            reportSearch(fileInfos!!, args[0])
+        } else {
+            CommandManager.synopsis()
+        }
+    }
+}
 
 fun reportSearch(infos: FileInfos, clazz: String) {
     logger.info("*** searchClass ***")
