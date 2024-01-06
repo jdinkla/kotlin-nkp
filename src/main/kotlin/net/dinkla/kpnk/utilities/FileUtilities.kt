@@ -30,7 +30,7 @@ internal fun loadFromJsonFile(fileName: String): FileInfos {
     return Json.decodeFromString<List<FileInfo>>(string)
 }
 
-internal fun save(infos: FileInfos, fileName: String) {
+fun saveToJsonFile(infos: FileInfos, fileName: String) {
     val string = Json.encodeToString(infos)
     File(fileName).writeText(string)
 }

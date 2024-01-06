@@ -3,6 +3,7 @@ package net.dinkla.kpnk
 import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.analysis.Inheritance
 import net.dinkla.kpnk.analysis.Outliers
+import net.dinkla.kpnk.analysis.SaveCommand
 import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.domain.readFromDirectory
@@ -19,6 +20,7 @@ fun main(args: Array<String>) {
     CommandManager.add("inheritance", Inheritance)
     CommandManager.add("outliers", Outliers)
     CommandManager.add("search", Search)
+    CommandManager.add("save", SaveCommand)
     if (args.size < 2) {
         CommandManager.synopsis()
         exitProcess(-1)
