@@ -1,6 +1,10 @@
 package net.dinkla.kpnk.domain
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
+import net.dinkla.kpnk.logger
+import net.dinkla.kpnk.utilities.parseFilesFromDirectory
 
 @Serializable
 data class FileInfo(
@@ -14,3 +18,19 @@ data class FileInfo(
 }
 
 typealias FileInfos = List<FileInfo>
+
+fun readFromDirectory(
+    directory: String,
+): FileInfos = runBlocking(Dispatchers.Default) {
+    logger.info("Reading and saving from directory '$directory'")
+    val allInfos = parseFilesFromDirectory(directory).map { it.await() }
+    reportErrors(allInfos)
+    allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
+}
+
+private fun reportErrors(infos: List<Result<FileInfo>>) {
+    infos.groupBy { it.isSuccess }.forEach {
+        logger.info("${if (it.key) "Successful" else "With error"}: ${it.value.size}")
+    }
+}
+

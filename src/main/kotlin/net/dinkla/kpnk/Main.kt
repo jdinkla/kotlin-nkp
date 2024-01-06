@@ -1,15 +1,9 @@
 package net.dinkla.kpnk
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import net.dinkla.kpnk.analysis.reportInheritance
-import net.dinkla.kpnk.analysis.reportLargeClasses
-import net.dinkla.kpnk.analysis.reportSearch
-import net.dinkla.kpnk.domain.FileInfo
+import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.domain.FileInfos
-import net.dinkla.kpnk.utilities.load
-import net.dinkla.kpnk.utilities.parseFilesFromDirectory
-import net.dinkla.kpnk.utilities.save
+import net.dinkla.kpnk.domain.readFromDirectory
+import net.dinkla.kpnk.utilities.loadFromJsonFile
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -17,59 +11,30 @@ import kotlin.system.exitProcess
 
 val logger: Logger = LoggerFactory.getLogger("Main")
 
-enum class Command {
-    READ_AND_SAVE, LOAD
-}
-
-// val command = Command.READ_AND_SAVE
-val command = Command.LOAD
-
-const val SAVE_FILE_NAME = "infos.json"
-
 fun main(args: Array<String>) {
-    val directoryString = parseArgs(args)
-    if (directoryString == null) {
+    CommandManager.add("dependencies", DependenciesCommand)
+    if (args.size < 2) {
+        CommandManager.synopsis()
+        exitProcess(-1)
+    }
+    val command = CommandManager.get(args[1])
+    if (command == null) {
+        CommandManager.synopsis()
         exitProcess(-1)
     } else {
-        val directory = File(directoryString).absolutePath
-        val infos = when (command) {
-            Command.READ_AND_SAVE -> {
-                read(directory, SAVE_FILE_NAME)
-            }
-
-            Command.LOAD -> {
-                load(SAVE_FILE_NAME)
-            }
-        }
-        // reportDependencies(infos)
-        reportLargeClasses(infos)
-        reportSearch(infos, "RectangleLight")
-        reportInheritance(infos)
+        val infos = read(args[0])
+        command.execute(args.drop(2).toTypedArray(), infos)
     }
+//    reportLargeClasses(infos)
+//    reportSearch(infos, "RectangleLight")
+//    reportInheritance(infos)
 }
 
-private fun read(
-    directory: String,
-    saveFileName: String,
-): FileInfos = runBlocking(Dispatchers.Default) {
-    logger.info("Reading and saving from directory '$directory'")
-    val allInfos = parseFilesFromDirectory(directory).map { it.await() }
-    reportErrors(allInfos)
-    val filtered = allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
-    save(filtered, saveFileName)
-    logger.info("saved to file '$saveFileName'")
-    filtered
-}
-
-private fun reportErrors(infos: List<Result<FileInfo>>) {
-    infos.groupBy { it.isSuccess }.forEach {
-        logger.info("${if (it.key) "Successful" else "With error"}: ${it.value.size}")
+private fun read(fileName: String): FileInfos {
+    val file = File(fileName)
+    return if (file.isDirectory) {
+        readFromDirectory(file.absolutePath)
+    } else {
+        loadFromJsonFile(file.absolutePath)
     }
-}
-
-internal fun parseArgs(args: Array<String>): String? = if (args.size != 1) {
-    println("Usage: kpnk <directory>")
-    null
-} else {
-    args[0]
 }

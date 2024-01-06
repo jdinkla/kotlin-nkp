@@ -3,8 +3,27 @@ package net.dinkla.kpnk.analysis
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.dinkla.kpnk.Command
+import net.dinkla.kpnk.CommandManager
 import net.dinkla.kpnk.domain.FileInfo
+import net.dinkla.kpnk.domain.FileInfos
 import java.io.File
+
+object DependenciesCommand : Command {
+    override val description: String = "reports dependencies to stdout or to a file with --output <filename>"
+    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
+        val dependencies = Dependencies.from(dependencies(fileInfos!!))
+        val string = Json.encodeToString(dependencies)
+        if (args.size == 2 && args[0] == "--output") {
+            val filename = args[1]
+            File(filename).writeText(string)
+        } else if (args.isEmpty()) {
+            println(string)
+        } else {
+            CommandManager.synopsis()
+        }
+    }
+}
 
 @Serializable
 data class Dependency(val name: String, val dependencies: Set<String>)
@@ -32,10 +51,4 @@ internal fun dependencies(infos: List<FileInfo>): Map<String, Set<String>> {
         }
     }
     return dependencies.mapValues { it.value.toSet() }
-}
-
-fun reportDependencies(infos: List<FileInfo>) {
-    val dependencies = Dependencies.from(dependencies(infos))
-    val string = Json.encodeToString(dependencies)
-    File("dependencies.json").writeText(string)
 }

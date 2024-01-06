@@ -25,7 +25,7 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     return files.toList()
 }
 
-internal fun load(fileName: String): FileInfos {
+internal fun loadFromJsonFile(fileName: String): FileInfos {
     val string = File(fileName).readText()
     return Json.decodeFromString<List<FileInfo>>(string)
 }
