@@ -1,26 +1,33 @@
 package net.dinkla.kpnk
 
+import net.dinkla.kpnk.analysis.ClassDiagram
 import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.analysis.Inheritance
 import net.dinkla.kpnk.analysis.Outliers
 import net.dinkla.kpnk.analysis.SaveCommand
 import net.dinkla.kpnk.analysis.Search
+import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
-import net.dinkla.kpnk.domain.readFromDirectory
-import net.dinkla.kpnk.utilities.loadFromJsonFile
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.system.exitProcess
 
-val logger: Logger = LoggerFactory.getLogger("Main")
+internal val logger: Logger = LoggerFactory.getLogger("Main")
+
+private val commands = listOf(
+    "dependencies" to DependenciesCommand,
+    "inheritance" to Inheritance,
+    "outliers" to Outliers,
+    "search" to Search,
+    "save" to SaveCommand,
+    "class_diagram" to ClassDiagram,
+)
 
 fun main(args: Array<String>) {
-    CommandManager.add("dependencies", DependenciesCommand)
-    CommandManager.add("inheritance", Inheritance)
-    CommandManager.add("outliers", Outliers)
-    CommandManager.add("search", Search)
-    CommandManager.add("save", SaveCommand)
+    commands.forEach { (name, command) ->
+        CommandManager.add(name, command)
+    }
     if (args.size < 2) {
         CommandManager.synopsis()
         exitProcess(-1)
@@ -30,7 +37,7 @@ fun main(args: Array<String>) {
         CommandManager.synopsis()
         exitProcess(-1)
     } else {
-        val infos = read(args[0])
+        val infos : FileInfos = read(args[0])
         command.execute(args.drop(2).toTypedArray(), infos)
     }
 }
@@ -38,8 +45,8 @@ fun main(args: Array<String>) {
 private fun read(fileName: String): FileInfos {
     val file = File(fileName)
     return if (file.isDirectory) {
-        readFromDirectory(file.absolutePath)
+        FileInfo.readFromDirectory(file.absolutePath)
     } else {
-        loadFromJsonFile(file.absolutePath)
+        FileInfo.loadFromJsonFile(file.absolutePath)
     }
 }

@@ -25,16 +25,6 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     return files.toList()
 }
 
-internal fun loadFromJsonFile(fileName: String): FileInfos {
-    val string = File(fileName).readText()
-    return Json.decodeFromString<List<FileInfo>>(string)
-}
-
-fun saveToJsonFile(infos: FileInfos, fileName: String) {
-    val string = Json.encodeToString(infos)
-    File(fileName).writeText(string)
-}
-
 internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
     fileInfos(getAllKotlinFilesInDirectory(directory))
 
