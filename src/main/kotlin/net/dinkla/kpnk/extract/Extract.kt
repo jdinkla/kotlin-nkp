@@ -89,7 +89,6 @@ internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
 }
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {
-    println(tree)
     val visibilityModifier = extractVisibilityModifier(tree)
     val inheritanceModifier = extractInheritanceModifier(tree)
     val classModifier = extractClassModifier(tree)
@@ -131,18 +130,24 @@ private fun extractClassParameters(tree: KotlinParseTree): List<ClassParameter> 
     } ?: listOf()
 }
 
-private fun extractClassParameter(it: KotlinParseTree): ClassParameter {
-    val paramName = extractSimpleIdentifier(it) ?: "ERROR PARAM NAME"
-    val paramType = it.children.find { it.name == "type" }?.let {
+private fun extractClassParameter(tree: KotlinParseTree): ClassParameter {
+    val visibilityModifier = extractVisibilityModifier(tree)
+    val propertyModifier = when (tree.children[if (visibilityModifier == null) 0 else 1].name) {
+        "VAL" -> PropertyModifier.VAL
+        "VAR" -> PropertyModifier.VAR
+        else -> null
+    }
+    val paramName = extractSimpleIdentifier(tree) ?: "ERROR PARAM NAME"
+    val paramType = tree.children.find { it.name == "type" }?.let {
         extractType(it)
     } ?: "ERROR PARAM TYPE"
-    return ClassParameter(paramName, paramType)
+    return ClassParameter(paramName, paramType, visibilityModifier, propertyModifier)
 }
 
 
-private fun extractParameter(it: KotlinParseTree): Parameter {
-    val paramName = extractSimpleIdentifier(it) ?: "ERROR PARAM NAME"
-    val paramType = it.children.find { it.name == "type" }?.let {
+private fun extractParameter(tree: KotlinParseTree): Parameter {
+    val paramName = extractSimpleIdentifier(tree) ?: "ERROR PARAM NAME"
+    val paramType = tree.children.find { it.name == "type" }?.let {
         extractType(it)
     } ?: "ERROR PARAM TYPE"
     return Parameter(paramName, paramType)

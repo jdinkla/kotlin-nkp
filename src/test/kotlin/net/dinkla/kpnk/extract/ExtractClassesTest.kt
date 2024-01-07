@@ -22,10 +22,22 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 listOf(),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
+            ),
+        )
+    }
+
+    "extractClasses should handle a data class with one private constructor argument and without a body" {
+        val classes = extractClasses(fromText("class HelloWorld(private val many: Int)"))
+        classes shouldBe listOf(
+            ClassSignature(
+                "HelloWorld",
+                listOf(ClassParameter("many", "Int", VisibilityModifier.PRIVATE, PropertyModifier.VAL)),
+                listOf(),
+                elementType = Type.CLASS,
             ),
         )
     }
@@ -35,7 +47,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
                 declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
@@ -50,7 +62,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
                 declarations = listOf(
@@ -66,7 +78,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 listOf(),
                 elementType = Type.CLASS,
             ),
@@ -78,7 +90,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 elementType = Type.CLASS,
                 declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
             ),
@@ -90,7 +102,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -102,7 +114,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 listOf("A", "B"),
                 elementType = Type.CLASS,
             ),
@@ -114,7 +126,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -126,7 +138,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(ClassParameter("many", "Int")),
+                listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -195,7 +207,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "ABC",
-                listOf(ClassParameter("i", "Int")),
+                listOf(ClassParameter("i", "Int", propertyModifier = PropertyModifier.VAL)),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.ENUM,
             ),
@@ -207,7 +219,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "A",
-                listOf(ClassParameter("i", "Int")),
+                listOf(ClassParameter("i", "Int", VisibilityModifier.INTERNAL, PropertyModifier.VAL)),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.ENUM,
             ),
@@ -252,7 +264,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                listOf(ClassParameter("x", "Int")),
+                listOf(ClassParameter("x", "Int", propertyModifier = PropertyModifier.VAL)),
                 visibilityModifier = VisibilityModifier.INTERNAL,
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
@@ -284,7 +296,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                listOf(ClassParameter("x", "Int")),
+                listOf(ClassParameter("x", "Int", propertyModifier = PropertyModifier.VAL)),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.VALUE,
             ),
@@ -406,7 +418,7 @@ class ExtractClassesTest : StringSpec({
                 declarations = listOf(
                     ClassSignature(
                         "DC",
-                        listOf(ClassParameter("name", "String")),
+                        listOf(ClassParameter("name", "String", propertyModifier = PropertyModifier.VAL)),
                         elementType = Type.CLASS,
                         classModifier = ClassModifier.DATA,
                         inheritedFrom = listOf("SI"),

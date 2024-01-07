@@ -56,7 +56,7 @@ internal val function5 = FunctionSignature(
 
 internal val class1 = ClassSignature(
     "HelloWorld",
-    listOf(ClassParameter("many", "Int")),
+    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
     declarations = listOf(
         FunctionSignature(
             "toString",
@@ -80,7 +80,7 @@ internal val class2 = ClassSignature(
 
 internal val class3 = ClassSignature(
     "GenImpl",
-    listOf(ClassParameter("many", "Int")),
+    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
     declarations = listOf(
         FunctionSignature(
             "gen",
@@ -117,7 +117,7 @@ internal val class5 = ClassSignature(
         ),
         ClassSignature(
             "I",
-            listOf(ClassParameter("name", "String")),
+            listOf(ClassParameter("name", "String", propertyModifier = PropertyModifier.VAL)),
             elementType = Type.CLASS,
         ),
     ),
@@ -133,7 +133,7 @@ internal val enum1 = ClassSignature(
 
 internal val enum2 = ClassSignature(
     "ABC",
-    listOf(ClassParameter("i", "Int")),
+    listOf(ClassParameter("i", "Int", VisibilityModifier.INTERNAL, PropertyModifier.VAL)),
     elementType = Type.CLASS,
     classModifier = ClassModifier.ENUM,
 )

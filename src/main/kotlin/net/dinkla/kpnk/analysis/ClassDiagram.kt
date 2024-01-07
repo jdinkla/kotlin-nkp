@@ -40,12 +40,12 @@ object ClassDiagram : Command {
             if (clazz.declarations.isNotEmpty() || clazz.parameters.isNotEmpty()) {
                 append(" {\n")
                 clazz.parameters.forEach { parameter ->
-                    val modSign = "+"
-                    append("  ${modSign} ${parameter.name}: ${parameter.type}\n")
+                    val modSign = modSign(parameter.visibilityModifier)
+                    append("  ${modSign} ${parameter.prettyPrint()}\n")
                 }
                 clazz.properties.forEach { property ->
                     val modSign = modSign(property.visibilityModifier)
-                    append("  ${modSign} ${property.name}: ${property.dataType}\n")
+                    append("  ${modSign} ${property.prettyPrint()}\n")
                 }
                 clazz.functions.forEach { function ->
                     val modSign = modSign(function.visibilityModifier)
