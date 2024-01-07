@@ -17,3 +17,8 @@ enum class PropertyModifier(val text: String) {
         }
     }
 }
+
+fun PropertyModifier?.prettyPrint() = when (this) {
+    null -> ""
+    else -> text
+}

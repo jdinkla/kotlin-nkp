@@ -6,7 +6,7 @@ import net.dinkla.kpnk.utilities.addSpaceAfter
 @Serializable
 data class ClassSignature(
     val name: String,
-    val parameters: List<Parameter> = listOf(),
+    val parameters: List<ClassParameter> = listOf(),
     val inheritedFrom: List<String> = listOf(),
     val visibilityModifier: VisibilityModifier? = null,
     val elementType: Type = Type.CLASS,

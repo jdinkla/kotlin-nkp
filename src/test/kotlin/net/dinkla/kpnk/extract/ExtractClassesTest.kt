@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.ClassModifier
+import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.InheritanceModifier
@@ -21,7 +22,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 listOf(),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
@@ -34,7 +35,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
                 declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
@@ -49,7 +50,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
                 declarations = listOf(
@@ -65,7 +66,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 listOf(),
                 elementType = Type.CLASS,
             ),
@@ -77,7 +78,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 elementType = Type.CLASS,
                 declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
             ),
@@ -89,7 +90,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -101,7 +102,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 listOf("A", "B"),
                 elementType = Type.CLASS,
             ),
@@ -113,7 +114,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -125,7 +126,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "HelloWorld",
-                listOf(Parameter("many", "Int")),
+                listOf(ClassParameter("many", "Int")),
                 listOf("A"),
                 elementType = Type.CLASS,
             ),
@@ -194,7 +195,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "ABC",
-                listOf(Parameter("i", "Int")),
+                listOf(ClassParameter("i", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.ENUM,
             ),
@@ -206,7 +207,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "A",
-                listOf(Parameter("i", "Int")),
+                listOf(ClassParameter("i", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.ENUM,
             ),
@@ -251,7 +252,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                listOf(Parameter("x", "Int")),
+                listOf(ClassParameter("x", "Int")),
                 visibilityModifier = VisibilityModifier.INTERNAL,
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.DATA,
@@ -283,7 +284,7 @@ class ExtractClassesTest : StringSpec({
         classes shouldBe listOf(
             ClassSignature(
                 "C",
-                listOf(Parameter("x", "Int")),
+                listOf(ClassParameter("x", "Int")),
                 elementType = Type.CLASS,
                 classModifier = ClassModifier.VALUE,
             ),
@@ -405,7 +406,7 @@ class ExtractClassesTest : StringSpec({
                 declarations = listOf(
                     ClassSignature(
                         "DC",
-                        listOf(Parameter("name", "String")),
+                        listOf(ClassParameter("name", "String")),
                         elementType = Type.CLASS,
                         classModifier = ClassModifier.DATA,
                         inheritedFrom = listOf("SI"),

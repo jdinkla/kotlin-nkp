@@ -1,6 +1,7 @@
 package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.domain.ClassModifier
+import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
@@ -55,7 +56,7 @@ internal val function5 = FunctionSignature(
 
 internal val class1 = ClassSignature(
     "HelloWorld",
-    listOf(Parameter("many", "Int")),
+    listOf(ClassParameter("many", "Int")),
     declarations = listOf(
         FunctionSignature(
             "toString",
@@ -79,7 +80,7 @@ internal val class2 = ClassSignature(
 
 internal val class3 = ClassSignature(
     "GenImpl",
-    listOf(Parameter("many", "Int")),
+    listOf(ClassParameter("many", "Int")),
     declarations = listOf(
         FunctionSignature(
             "gen",
@@ -116,7 +117,7 @@ internal val class5 = ClassSignature(
         ),
         ClassSignature(
             "I",
-            listOf(Parameter("name", "String")),
+            listOf(ClassParameter("name", "String")),
             elementType = Type.CLASS,
         ),
     ),
@@ -132,7 +133,7 @@ internal val enum1 = ClassSignature(
 
 internal val enum2 = ClassSignature(
     "ABC",
-    listOf(Parameter("i", "Int")),
+    listOf(ClassParameter("i", "Int")),
     elementType = Type.CLASS,
     classModifier = ClassModifier.ENUM,
 )

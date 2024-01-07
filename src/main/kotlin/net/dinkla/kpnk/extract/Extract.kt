@@ -1,5 +1,6 @@
 package net.dinkla.kpnk.extract
 
+import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FullyQualifiedName
@@ -88,12 +89,13 @@ internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
 }
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {
+    println(tree)
     val visibilityModifier = extractVisibilityModifier(tree)
     val inheritanceModifier = extractInheritanceModifier(tree)
     val classModifier = extractClassModifier(tree)
     val elementType = extractInterfaceOrClassType(tree)!!
     val name = extractSimpleIdentifier(tree)!!
-    val params = extractParameters(tree)
+    val params = extractClassParameters(tree)
     val inheritedFrom = extractSuperClasses(tree)
     val declarations = extractBody(tree)
     return ClassSignature(
@@ -118,16 +120,25 @@ private fun extractInterfaceOrClassType(tree: KotlinParseTree): Type? {
     }
 }
 
-private fun extractParameters(tree: KotlinParseTree): List<Parameter> {
+private fun extractClassParameters(tree: KotlinParseTree): List<ClassParameter> {
     return tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
         val it = primaryConstructor.children[0]
         it.children
             .filter { it.name == "classParameter" }
             .map {
-                extractParameter(it)
+                extractClassParameter(it)
             }
     } ?: listOf()
 }
+
+private fun extractClassParameter(it: KotlinParseTree): ClassParameter {
+    val paramName = extractSimpleIdentifier(it) ?: "ERROR PARAM NAME"
+    val paramType = it.children.find { it.name == "type" }?.let {
+        extractType(it)
+    } ?: "ERROR PARAM TYPE"
+    return ClassParameter(paramName, paramType)
+}
+
 
 private fun extractParameter(it: KotlinParseTree): Parameter {
     val paramName = extractSimpleIdentifier(it) ?: "ERROR PARAM NAME"

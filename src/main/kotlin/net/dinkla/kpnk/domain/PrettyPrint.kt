@@ -44,8 +44,6 @@ fun TopLevel.prettyPrint(): String {
     }
 }
 
-fun Parameter.prettyPrint(): String = "$name: $type"
-
 fun Import.prettyPrint(): String = "import $name"
 
 fun TypeAlias.prettyPrint(): String = "typealias $name = $def"
