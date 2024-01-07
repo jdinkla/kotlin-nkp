@@ -3,10 +3,7 @@ package net.dinkla.kpnk.utilities
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.domain.FileInfo
-import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.logger
