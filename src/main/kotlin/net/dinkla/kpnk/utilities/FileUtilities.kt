@@ -15,7 +15,14 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     if (file.isDirectory) {
         file.walk().forEach {
             if (it.isFile && it.extension == "kt") {
-                files.add(it.absolutePath)
+                if (it.absolutePath.contains("/.idea/")) {
+                    logger.trace("skipping file ${it.absolutePath}")
+                } else if (it.absolutePath.contains("/test/") && it.name.endsWith("Test.kt")) {
+                    logger.trace("skipping test  ${it.absolutePath}")
+                } else {
+                    files.add(it.absolutePath)
+                    logger.trace("adding file ${it.absolutePath}")
+                }
             }
         }
     }
