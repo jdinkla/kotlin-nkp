@@ -5,46 +5,52 @@ import io.kotest.matchers.shouldBe
 
 class PropertyTest : StringSpec({
     "prettyPrint should handle internal val" {
-        val property = property.copy(
-            dataType = "String",
-            modifier = PropertyModifier.VAL,
-            visibilityModifier = VisibilityModifier.INTERNAL,
-        )
+        val property =
+            property.copy(
+                dataType = "String",
+                modifier = PropertyModifier.VAL,
+                visibilityModifier = VisibilityModifier.INTERNAL,
+            )
         property.prettyPrint() shouldBe "internal val name : String"
     }
 
     "prettyPrint should handle val" {
-        val property = property.copy(
-            dataType = "String",
-            modifier = PropertyModifier.CONST_VAL,
-        )
+        val property =
+            property.copy(
+                dataType = "String",
+                modifier = PropertyModifier.CONST_VAL,
+            )
         property.prettyPrint() shouldBe "const val name : String"
     }
 
     "prettyPrint should handle implicit type" {
-        val property = property.copy(
-            modifier = PropertyModifier.VAR,
-        )
+        val property =
+            property.copy(
+                modifier = PropertyModifier.VAR,
+            )
         property.prettyPrint() shouldBe "var name"
     }
 
     "prettyPrint should handle override" {
-        val property = property.copy(
-            modifier = PropertyModifier.VAR,
-            memberModifier = listOf(MemberModifier.OVERRIDE),
-        )
+        val property =
+            property.copy(
+                modifier = PropertyModifier.VAR,
+                memberModifier = listOf(MemberModifier.OVERRIDE),
+            )
         property.prettyPrint() shouldBe "override var name"
     }
 
     "prettyPrint should handle override lateinit" {
-        val property = property.copy(
-            modifier = PropertyModifier.VAR,
-            memberModifier = listOf(MemberModifier.LATE_INIT, MemberModifier.OVERRIDE),
-        )
+        val property =
+            property.copy(
+                modifier = PropertyModifier.VAR,
+                memberModifier = listOf(MemberModifier.LATE_INIT, MemberModifier.OVERRIDE),
+            )
         property.prettyPrint() shouldBe "override lateinit var name"
     }
 })
 
-private val property = Property(
-    "name",
-)
+private val property =
+    Property(
+        "name",
+    )

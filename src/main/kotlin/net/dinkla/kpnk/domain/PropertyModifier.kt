@@ -10,15 +10,20 @@ enum class PropertyModifier(val text: String) {
     ;
 
     companion object {
-        fun create(hasConstModifier: Boolean, isMutable: Boolean): PropertyModifier = when {
-            hasConstModifier -> CONST_VAL
-            isMutable -> VAR
-            else -> VAL
-        }
+        fun create(
+            hasConstModifier: Boolean,
+            isMutable: Boolean,
+        ): PropertyModifier =
+            when {
+                hasConstModifier -> CONST_VAL
+                isMutable -> VAR
+                else -> VAL
+            }
     }
 }
 
-fun PropertyModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
+fun PropertyModifier?.prettyPrint() =
+    when (this) {
+        null -> ""
+        else -> text
+    }

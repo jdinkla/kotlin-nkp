@@ -20,21 +20,23 @@ data class FileInfo(
     }
 
     companion object {
-        fun readFromDirectory(
-            directory: String,
-        ): FileInfos = runBlocking(Dispatchers.Default) {
-            logger.info("Reading and saving from directory '$directory'")
-            val allInfos = parseFilesFromDirectory(directory).map { it.await() }
-            reportErrors(allInfos)
-            allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
-        }
+        fun readFromDirectory(directory: String): FileInfos =
+            runBlocking(Dispatchers.Default) {
+                logger.info("Reading and saving from directory '$directory'")
+                val allInfos = parseFilesFromDirectory(directory).map { it.await() }
+                reportErrors(allInfos)
+                allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
+            }
 
         fun loadFromJsonFile(fileName: String): FileInfos {
             val string = File(fileName).readText()
             return Json.decodeFromString<List<FileInfo>>(string)
         }
 
-        fun saveToJsonFile(infos: FileInfos, fileName: String) {
+        fun saveToJsonFile(
+            infos: FileInfos,
+            fileName: String,
+        ) {
             val string = Json.encodeToString(infos)
             File(fileName).writeText(string)
         }
@@ -48,4 +50,3 @@ private fun reportErrors(infos: List<Result<FileInfo>>) {
         logger.info("${if (it.key) "Successful" else "With error"}: ${it.value.size}")
     }
 }
-

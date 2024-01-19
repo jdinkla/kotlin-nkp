@@ -9,12 +9,18 @@ import net.dinkla.kpnk.logger
 object Outliers : Command {
     override val description: String = "reports outliers"
 
-    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
+    override fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    ) {
         reportLargeClasses(fileInfos!!)
     }
 }
 
-internal fun reportLargeClasses(infos: List<FileInfo>, topN: Int = 10) {
+internal fun reportLargeClasses(
+    infos: List<FileInfo>,
+    topN: Int = 10,
+) {
     logger.info("*** Large Classes ***")
     largeClasses(infos, topN).forEach { c ->
         println(
@@ -25,7 +31,10 @@ internal fun reportLargeClasses(infos: List<FileInfo>, topN: Int = 10) {
     }
 }
 
-internal fun largeClasses(infos: List<FileInfo>, topN: Int): List<ClassSignature> {
+internal fun largeClasses(
+    infos: List<FileInfo>,
+    topN: Int,
+): List<ClassSignature> {
     val allClasses = infos.flatMap { it.topLevel.classes }
     return allClasses.sortedByDescending { it.declarations.size }.take(topN)
 }

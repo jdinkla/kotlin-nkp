@@ -24,14 +24,17 @@ class OutliersTest : StringSpec({
 private fun info(classSignatures: List<ClassSignature>) =
     FileInfo(FileName("a"), TopLevel(FullyQualifiedName("name"), declarations = classSignatures))
 
-private fun cls(numElems: Int) = ClassSignature(
-    "A",
-    declarations = (1..numElems).map {
-        FunctionSignature(it.toString())
-    } + (1..numElems).map {
-        Property(
-            it.toString(),
-            "String",
-        )
-    },
-)
+private fun cls(numElems: Int) =
+    ClassSignature(
+        "A",
+        declarations =
+            (1..numElems).map {
+                FunctionSignature(it.toString())
+            } +
+                (1..numElems).map {
+                    Property(
+                        it.toString(),
+                        "String",
+                    )
+                },
+    )

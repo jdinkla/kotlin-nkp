@@ -10,7 +10,8 @@ enum class VisibilityModifier(val text: String) {
     PROTECTED("protected"),
 }
 
-fun VisibilityModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
+fun VisibilityModifier?.prettyPrint() =
+    when (this) {
+        null -> ""
+        else -> text
+    }

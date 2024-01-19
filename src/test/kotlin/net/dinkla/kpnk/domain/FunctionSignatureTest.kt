@@ -9,9 +9,10 @@ class FunctionSignatureTest : StringSpec({
             "f",
             "Int",
             listOf(Parameter("x", "Int")),
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             fun f(x: Int): Int
-        """.trimIndent()
+            """.trimIndent()
     }
 
     "prettyPrint should return a string representation of a function private fun f(x: Int): Int" {
@@ -20,9 +21,10 @@ class FunctionSignatureTest : StringSpec({
             "Int",
             listOf(Parameter("x", "Int")),
             visibilityModifier = VisibilityModifier.PRIVATE,
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             private fun f(x: Int): Int
-        """.trimIndent()
+            """.trimIndent()
     }
 
     "prettyPrint should return a string representation of a function fun Ext.f(x: Int): Int" {
@@ -31,9 +33,10 @@ class FunctionSignatureTest : StringSpec({
             "Int",
             listOf(Parameter("x", "Int")),
             extensionOf = "Ext",
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             fun Ext.f(x: Int): Int
-        """.trimIndent()
+            """.trimIndent()
     }
 
     "prettyPrint should return a string representation of a function override fun f(x: Int): Int" {
@@ -43,8 +46,9 @@ class FunctionSignatureTest : StringSpec({
             listOf(Parameter("x", "Int")),
             visibilityModifier = VisibilityModifier.PROTECTED,
             memberModifier = MemberModifier.OVERRIDE,
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             protected override fun f(x: Int): Int
-        """.trimIndent()
+            """.trimIndent()
     }
 })

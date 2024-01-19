@@ -5,10 +5,11 @@ import io.kotest.matchers.shouldBe
 
 class FileInfoTest : StringSpec({
     "packageName should return the package and the filename" {
-        val info = FileInfo(
-            FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-            TopLevel(FullyQualifiedName("net.dinkla.kpnk")),
-        )
+        val info =
+            FileInfo(
+                FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
+                TopLevel(FullyQualifiedName("net.dinkla.kpnk")),
+            )
         info.packageName() shouldBe "net.dinkla.kpnk.HelloWorld"
     }
 })

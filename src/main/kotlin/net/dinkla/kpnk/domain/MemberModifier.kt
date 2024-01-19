@@ -8,7 +8,8 @@ enum class MemberModifier(val text: String) {
     LATE_INIT("lateinit"),
 }
 
-fun MemberModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
+fun MemberModifier?.prettyPrint() =
+    when (this) {
+        null -> ""
+        else -> text
+    }

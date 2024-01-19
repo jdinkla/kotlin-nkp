@@ -2,18 +2,24 @@ package net.dinkla.kpnk
 
 import net.dinkla.kpnk.domain.FileInfos
 
-
 typealias CommandId = String
 
 interface Command {
     val description: String
-    fun execute(args: Array<String>, fileInfos: FileInfos?)
+
+    fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    )
 }
 
 object CommandManager {
     private val commands = mutableMapOf<CommandId, Command>()
 
-    fun add(id: CommandId, command: Command) {
+    fun add(
+        id: CommandId,
+        command: Command,
+    ) {
         assert(!commands.containsKey(id))
         commands[id] = command
     }

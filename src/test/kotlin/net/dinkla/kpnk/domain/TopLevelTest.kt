@@ -27,7 +27,8 @@ private val f2 = FunctionSignature("f2")
 private val c1 = ClassSignature("C")
 private val ta1 = TypeAlias("TA", "Int")
 private val p1 = Property("p1", "Int")
-private val topLevel = TopLevel(
-    FullyQualifiedName("net.dinkla.kpnk"),
-    declarations = listOf(f1, f2, c1, ta1, p1),
-)
+private val topLevel =
+    TopLevel(
+        FullyQualifiedName("net.dinkla.kpnk"),
+        declarations = listOf(f1, f2, c1, ta1, p1),
+    )

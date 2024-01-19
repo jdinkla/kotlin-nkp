@@ -55,29 +55,34 @@ fun ClassSignature.prettyPrint(): String {
         if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
     val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
 
-    val joined = declarations.map {
-        val text = when (it) {
-            is FunctionSignature -> it.prettyPrint()
-            is Property -> it.prettyPrint()
-            is ClassSignature -> it.prettyPrint()
-            else -> ""
+    val joined =
+        declarations.map {
+            val text =
+                when (it) {
+                    is FunctionSignature -> it.prettyPrint()
+                    is Property -> it.prettyPrint()
+                    is ClassSignature -> it.prettyPrint()
+                    else -> ""
+                }
+            "    $text"
+        }.joinToString("\n")
+    val joined2 =
+        if (joined.isNotEmpty()) {
+            "\n$joined\n"
+        } else {
+            joined
         }
-        "    $text"
-    }.joinToString("\n")
-    val joined2 = if (joined.isNotEmpty()) {
-        "\n$joined\n"
-    } else {
-        joined
-    }
     return "$visMod$classMod$inhMod$type $name($prettyParameters)$inherited {$joined2}"
 }
 
-fun ClassModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
+fun ClassModifier?.prettyPrint() =
+    when (this) {
+        null -> ""
+        else -> text
+    }
 
-fun InheritanceModifier?.prettyPrint() = when (this) {
-    null -> ""
-    else -> text
-}
+fun InheritanceModifier?.prettyPrint() =
+    when (this) {
+        null -> ""
+        else -> text
+    }

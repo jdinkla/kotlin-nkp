@@ -20,7 +20,10 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     return files.toList()
 }
 
-private fun addFileIfItMatches(it: File, files: MutableList<String>) {
+private fun addFileIfItMatches(
+    it: File,
+    files: MutableList<String>,
+) {
     if (it.isFile && it.extension == "kt") {
         if (shouldFileBeAdded(it)) {
             files.add(it.absolutePath)
@@ -28,32 +31,32 @@ private fun addFileIfItMatches(it: File, files: MutableList<String>) {
     }
 }
 
-private fun shouldFileBeAdded(it: File) = if (it.absolutePath.contains("/.idea/")) {
-    logger.trace("skipping file ${it.absolutePath}")
-    false
-} else if (it.absolutePath.contains("/test/") && it.name.endsWith("Test.kt")) {
-    logger.trace("skipping test  ${it.absolutePath}")
-    false
-} else {
-    logger.trace("adding file ${it.absolutePath}")
-    true
-}
+private fun shouldFileBeAdded(it: File) =
+    if (it.absolutePath.contains("/.idea/")) {
+        logger.trace("skipping file ${it.absolutePath}")
+        false
+    } else if (it.absolutePath.contains("/test/") && it.name.endsWith("Test.kt")) {
+        logger.trace("skipping test  ${it.absolutePath}")
+        false
+    } else {
+        logger.trace("adding file ${it.absolutePath}")
+        true
+    }
 
 internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
     fileInfos(getAllKotlinFilesInDirectory(directory))
 
-private fun CoroutineScope.fileInfos(
-    files: List<String>,
-): List<Deferred<Result<FileInfo>>> = files.map {
-    async {
-        try {
-            logger.trace("handling file $it")
-            val tree = fromFile(it)
-            val fileInfo = extract(tree)
-            Result.success(FileInfo(FileName(it), fileInfo))
-        } catch (e: Exception) {
-            logger.error("parsing '$it' yields ${e.message}")
-            Result.failure(e)
+private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<FileInfo>>> =
+    files.map {
+        async {
+            try {
+                logger.trace("handling file $it")
+                val tree = fromFile(it)
+                val fileInfo = extract(tree)
+                Result.success(FileInfo(FileName(it), fileInfo))
+            } catch (e: Exception) {
+                logger.error("parsing '$it' yields ${e.message}")
+                Result.failure(e)
+            }
         }
     }
-}

@@ -8,7 +8,7 @@ data class ClassParameter(
     val name: String,
     val type: String,
     val visibilityModifier: VisibilityModifier? = null,
-    val propertyModifier : PropertyModifier? = null,
+    val propertyModifier: PropertyModifier? = null,
 )
 
 fun ClassParameter.prettyPrint(): String {

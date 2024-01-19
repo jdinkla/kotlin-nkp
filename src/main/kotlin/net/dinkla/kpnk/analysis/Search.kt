@@ -10,7 +10,10 @@ import net.dinkla.kpnk.logger
 object Search : Command {
     override val description: String = "searches for a class <classname>"
 
-    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
+    override fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    ) {
         if (args.size == 1) {
             reportSearch(fileInfos!!, args[0])
         } else {
@@ -19,7 +22,10 @@ object Search : Command {
     }
 }
 
-fun reportSearch(infos: FileInfos, clazz: String) {
+fun reportSearch(
+    infos: FileInfos,
+    clazz: String,
+) {
     logger.info("*** searchClass ***")
     val found = infos.searchClass(clazz)
     found.forEach { println(it.prettyPrint()) }
@@ -39,8 +45,9 @@ fun FileInfos.searchClass(className: String): List<ClassSignature> =
 
 fun FileInfos.searchHierarchy(className: String): List<ClassSignature> {
     val cls = searchClass(className)
-    return cls + cls.flatMap { clazz -> clazz.inheritedFrom }
-        .flatMap { this.searchHierarchy(it) }
+    return cls +
+        cls.flatMap { clazz -> clazz.inheritedFrom }
+            .flatMap { this.searchHierarchy(it) }
 }
 
 fun FileInfos.searchImplementers(className: String): List<ClassSignature> {

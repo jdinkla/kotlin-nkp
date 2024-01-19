@@ -10,18 +10,20 @@ class PrettyPrintTest : StringSpec({
             listOf(ClassParameter("p", "Int")),
             declarations = listOf(FunctionSignature("toString", "String", listOf())),
             elementType = Type.CLASS,
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             class C(p: Int) {
                 fun toString(): String
             }
-        """.trimIndent()
+            """.trimIndent()
     }
 
     "prettyPrint should show the toplevel" {
-        val topLevel = TopLevel(
-            FullyQualifiedName("net.dinkla.kpnk"),
-            imports = listOf(Import(FullyQualifiedName("java.lang.Boolean.TRUE"))),
-        )
+        val topLevel =
+            TopLevel(
+                FullyQualifiedName("net.dinkla.kpnk"),
+                imports = listOf(Import(FullyQualifiedName("java.lang.Boolean.TRUE"))),
+            )
         val lines = topLevel.prettyPrint().lines()
         lines.size shouldBe 5
         lines[0] shouldBe "package net.dinkla.kpnk"

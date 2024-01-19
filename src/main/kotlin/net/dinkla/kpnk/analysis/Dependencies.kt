@@ -11,7 +11,11 @@ import java.io.File
 
 object DependenciesCommand : Command {
     override val description: String = "reports dependencies to stdout or to a file with --output <filename>"
-    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
+
+    override fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    ) {
         val dependencies = Dependencies.from(dependencies(fileInfos!!))
         val string = Json.encodeToString(dependencies)
         if (args.size == 2 && args[0] == "--output") {

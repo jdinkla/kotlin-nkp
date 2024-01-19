@@ -12,10 +12,14 @@ object ClassDiagram : Command {
     override val description: String =
         "Generate a mermaid class diagram to stdout or to a file if specified (.mermaid and .html are supported)"
 
-    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
-        val classes = fileInfos!!.flatMap { fileInfo ->
-            fileInfo.topLevel.classes
-        }
+    override fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    ) {
+        val classes =
+            fileInfos!!.flatMap { fileInfo ->
+                fileInfo.topLevel.classes
+            }
         val content = generateDiagram(classes)
         if (args.isEmpty()) {
             println(content)
@@ -32,46 +36,49 @@ object ClassDiagram : Command {
         }
     }
 
-    private fun generateDiagram(classes: List<ClassSignature>) = buildString {
-        append("classDiagram\n")
-        append("direction LR\n")
-        classes.forEach { clazz ->
-            append("class ${clazz.name}")
-            if (clazz.declarations.isNotEmpty() || clazz.parameters.isNotEmpty()) {
-                append(" {\n")
-                clazz.parameters.forEach { parameter ->
-                    val modSign = modSign(parameter.visibilityModifier)
-                    append("  ${modSign} ${parameter.prettyPrint()}\n")
+    private fun generateDiagram(classes: List<ClassSignature>) =
+        buildString {
+            append("classDiagram\n")
+            append("direction LR\n")
+            classes.forEach { clazz ->
+                append("class ${clazz.name}")
+                if (clazz.declarations.isNotEmpty() || clazz.parameters.isNotEmpty()) {
+                    append(" {\n")
+                    clazz.parameters.forEach { parameter ->
+                        val modSign = modSign(parameter.visibilityModifier)
+                        append("  $modSign ${parameter.prettyPrint()}\n")
+                    }
+                    clazz.properties.forEach { property ->
+                        val modSign = modSign(property.visibilityModifier)
+                        append("  $modSign ${property.prettyPrint()}\n")
+                    }
+                    clazz.functions.forEach { function ->
+                        val modSign = modSign(function.visibilityModifier)
+                        append("  $modSign ${function.prettyPrint()}\n")
+                    }
+                    append("}")
                 }
-                clazz.properties.forEach { property ->
-                    val modSign = modSign(property.visibilityModifier)
-                    append("  ${modSign} ${property.prettyPrint()}\n")
+                append("\n")
+                clazz.inheritedFrom.forEach { inheritedFrom ->
+                    append("$inheritedFrom <|-- ${clazz.name}\n")
                 }
-                clazz.functions.forEach { function ->
-                    val modSign = modSign(function.visibilityModifier)
-                    append("  ${modSign} ${function.prettyPrint()}\n")
-                }
-                append("}")
-            }
-            append("\n")
-            clazz.inheritedFrom.forEach { inheritedFrom ->
-                append("${inheritedFrom} <|-- ${clazz.name}\n")
             }
         }
+}
+
+private fun modSign(visibilityModifier: VisibilityModifier?) =
+    when (visibilityModifier) {
+        VisibilityModifier.PUBLIC -> "+"
+        VisibilityModifier.PRIVATE -> "-"
+        VisibilityModifier.PROTECTED -> "#"
+        VisibilityModifier.INTERNAL -> "~"
+        null -> "+" // Kotlin has public as default
     }
 
-
-}
-
-private fun modSign(visibilityModifier: VisibilityModifier?) = when (visibilityModifier) {
-    VisibilityModifier.PUBLIC -> "+"
-    VisibilityModifier.PRIVATE -> "-"
-    VisibilityModifier.PROTECTED -> "#"
-    VisibilityModifier.INTERNAL -> "~"
-    null -> "+" // Kotlin has public as default
-}
-
-private fun saveAsHtml(filename: String, content: String) {
+private fun saveAsHtml(
+    filename: String,
+    content: String,
+) {
     File(filename).writeText(
         """
         <html>
@@ -85,6 +92,6 @@ private fun saveAsHtml(filename: String, content: String) {
         </div>
         </body>
         </html>
-        """.trimIndent()
+        """.trimIndent(),
     )
 }

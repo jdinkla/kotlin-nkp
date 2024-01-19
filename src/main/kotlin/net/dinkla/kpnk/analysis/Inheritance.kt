@@ -7,7 +7,10 @@ import net.dinkla.kpnk.logger
 object Inheritance : Command {
     override val description: String = "shows inheritance"
 
-    override fun execute(args: Array<String>, fileInfos: FileInfos?) {
+    override fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    ) {
         reportInheritance(fileInfos!!)
     }
 }

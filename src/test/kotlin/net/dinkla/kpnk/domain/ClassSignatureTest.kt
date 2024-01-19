@@ -10,11 +10,12 @@ class ClassSignatureTest : StringSpec({
             listOf(ClassParameter("p", "Int")),
             declarations = listOf(FunctionSignature("toString", "String", listOf())),
             elementType = Type.CLASS,
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             class C(p: Int) {
                 fun toString(): String
             }
-        """.trimIndent()
+            """.trimIndent()
     }
 
     "prettyPrint should return a string representation of an internal data class" {
@@ -25,29 +26,32 @@ class ClassSignatureTest : StringSpec({
             visibilityModifier = VisibilityModifier.INTERNAL,
             elementType = Type.CLASS,
             classModifier = ClassModifier.DATA,
-        ).prettyPrint() shouldBe """
+        ).prettyPrint() shouldBe
+            """
             internal data class C(p: Int) {
                 fun toString(): String
             }
-        """.trimIndent()
+            """.trimIndent()
     }
 
     "prettyPrint should return a string representation of class with an inner class" {
-        val def = ClassSignature(
-            "C",
-            listOf(ClassParameter("p", "Int")),
-            elementType = Type.CLASS,
-            inheritanceModifier = InheritanceModifier.OPEN,
-            declarations = listOf(
-                FunctionSignature("toString", "String", listOf()),
-                ClassSignature(
-                    "D",
-                    listOf(ClassParameter("p", "Int")),
-                    elementType = Type.CLASS,
-                    classModifier = ClassModifier.INNER,
-                ),
-            ),
-        )
+        val def =
+            ClassSignature(
+                "C",
+                listOf(ClassParameter("p", "Int")),
+                elementType = Type.CLASS,
+                inheritanceModifier = InheritanceModifier.OPEN,
+                declarations =
+                    listOf(
+                        FunctionSignature("toString", "String", listOf()),
+                        ClassSignature(
+                            "D",
+                            listOf(ClassParameter("p", "Int")),
+                            elementType = Type.CLASS,
+                            classModifier = ClassModifier.INNER,
+                        ),
+                    ),
+            )
         val lines = def.prettyPrint().lines()
         lines[0] shouldBe "open class C(p: Int) {"
         lines[1] shouldBe "    fun toString(): String"

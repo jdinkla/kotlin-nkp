@@ -17,6 +17,7 @@ class GenImpl(val many: Int) : Gen {
 
 object MathUtils {
     private const val K_EPSILON = 0.01
+
     fun isZero(x: Double): Boolean = x > -K_EPSILON && x < K_EPSILON
 }
 
@@ -24,7 +25,10 @@ enum class AB { A, B }
 
 enum class ABC(internal val i: Int) { A(1), B(2), C(3) }
 
-internal fun topLevelFunction(n: Int, hw: HelloWorld): String {
+internal fun topLevelFunction(
+    n: Int,
+    hw: HelloWorld,
+): String {
     return FALSE.toString() + TRUE.toString() + hw.toString().repeat(n)
 }
 
@@ -32,10 +36,14 @@ private fun HelloWorld.extensionFun(): String = this.many.toString()
 
 open class O1 {
     protected fun f(x: Int): String = x.toString()
+
     class I(val name: String)
 }
 
-fun higherOrderFunction(f: (Int) -> String, x: Int): (Int) -> String = { y -> f(x + y) }
+fun higherOrderFunction(
+    f: (Int) -> String,
+    x: Int,
+): (Int) -> String = { y -> f(x + y) }
 
 typealias Dictionary = Map<String, String>
 

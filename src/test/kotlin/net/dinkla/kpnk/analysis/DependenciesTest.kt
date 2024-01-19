@@ -11,26 +11,27 @@ import net.dinkla.kpnk.domain.TopLevel
 
 class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
-        val infos = listOf(
-            FileInfo(
-                FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-                TopLevel(
-                    FullyQualifiedName("net.dinkla.kpnk"),
-                    listOf(
-                        Import(FullyQualifiedName("kotlin.math.max")),
-                        Import(FullyQualifiedName("kotlin.math.min")),
-                        Import(FullyQualifiedName("net.dinkla.kpnk.HelloWorld2")),
+        val infos =
+            listOf(
+                FileInfo(
+                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
+                    TopLevel(
+                        FullyQualifiedName("net.dinkla.kpnk"),
+                        listOf(
+                            Import(FullyQualifiedName("kotlin.math.max")),
+                            Import(FullyQualifiedName("kotlin.math.min")),
+                            Import(FullyQualifiedName("net.dinkla.kpnk.HelloWorld2")),
+                        ),
                     ),
                 ),
-            ),
-            FileInfo(
-                FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
-                TopLevel(
-                    FullyQualifiedName("net.dinkla.kpnk"),
-                    listOf(Import(FullyQualifiedName("kotlin.math.min"))),
+                FileInfo(
+                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
+                    TopLevel(
+                        FullyQualifiedName("net.dinkla.kpnk"),
+                        listOf(Import(FullyQualifiedName("kotlin.math.min"))),
+                    ),
                 ),
-            ),
-        )
+            )
         val deps = dependencies(infos)
         deps.size shouldBe 2
         println(deps)

@@ -39,46 +39,50 @@ class ExtractPropertyTest : StringSpec({
 
     "extractProperty should handle visibility modifier private" {
         val properties = extractProperties(fromText("private val x: Int = 1"))
-        properties shouldContainExactly listOf(
-            Property(
-                "x",
-                "Int",
-                PropertyModifier.VAL,
-                VisibilityModifier.PRIVATE,
-            ),
-        )
+        properties shouldContainExactly
+            listOf(
+                Property(
+                    "x",
+                    "Int",
+                    PropertyModifier.VAL,
+                    VisibilityModifier.PRIVATE,
+                ),
+            )
     }
 
     "extractProperty should handle overriden property" {
         val properties = extractProperties(fromText("override val x: Int = 1"))
-        properties shouldContainExactly listOf(
-            Property(
-                "x",
-                "Int",
-                PropertyModifier.VAL,
-                memberModifier = listOf(MemberModifier.OVERRIDE),
-            ),
-        )
+        properties shouldContainExactly
+            listOf(
+                Property(
+                    "x",
+                    "Int",
+                    PropertyModifier.VAL,
+                    memberModifier = listOf(MemberModifier.OVERRIDE),
+                ),
+            )
     }
 
     "extractProperty should handle lateinit" {
         val properties = extractProperties(fromText("lateinit var x: Int"))
-        properties shouldContainExactly listOf(
-            Property(
-                "x",
-                "Int",
-                PropertyModifier.VAR,
-                memberModifier = listOf(MemberModifier.LATE_INIT),
-            ),
-        )
+        properties shouldContainExactly
+            listOf(
+                Property(
+                    "x",
+                    "Int",
+                    PropertyModifier.VAR,
+                    memberModifier = listOf(MemberModifier.LATE_INIT),
+                ),
+            )
     }
 
     "extractProperties should extract all properties" {
         val properties = extractProperties(fromText("val x: Int = 1; var y: String = \"2\""))
-        properties shouldContainExactlyInAnyOrder listOf(
-            Property("x", "Int", PropertyModifier.VAL),
-            Property("y", "String", PropertyModifier.VAR),
-        )
+        properties shouldContainExactlyInAnyOrder
+            listOf(
+                Property("x", "Int", PropertyModifier.VAL),
+                Property("y", "String", PropertyModifier.VAR),
+            )
     }
 })
 

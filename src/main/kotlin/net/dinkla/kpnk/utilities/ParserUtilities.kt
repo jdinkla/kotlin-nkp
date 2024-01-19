@@ -9,7 +9,10 @@ internal fun fromText(text: String): KotlinParseTree = parseKotlinCode(tokenizeK
 
 internal fun fromFile(file: String): KotlinParseTree = fromText(File(file).readText())
 
-fun walk(node: KotlinParseTree, indent: Int = 0) {
+fun walk(
+    node: KotlinParseTree,
+    indent: Int = 0,
+) {
     println("${" ".repeat(indent)}${node.name} ${node.text ?: ""}")
     for (child in node.children) {
         walk(child, indent + 2)
@@ -21,11 +24,12 @@ internal fun KotlinParseTree.namesOfChildren(): List<String> = children.map { it
 fun KotlinParseTree.findName(name: String): KotlinParseTree? {
     var node: KotlinParseTree? = this
     while (node != null && node.name != name) {
-        node = if (node.children.isEmpty()) {
-            null
-        } else {
-            node.children[0]
-        }
+        node =
+            if (node.children.isEmpty()) {
+                null
+            } else {
+                node.children[0]
+            }
     }
     return node
 }

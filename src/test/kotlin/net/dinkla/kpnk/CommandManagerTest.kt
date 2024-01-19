@@ -6,7 +6,11 @@ import net.dinkla.kpnk.domain.FileInfos
 
 private object DummyCommand : Command {
     override val description: String = "dummy command"
-    override fun execute(args: Array<String>, fileInfos: FileInfos?) = Unit
+
+    override fun execute(
+        args: Array<String>,
+        fileInfos: FileInfos?,
+    ) = Unit
 }
 
 class CommandManagerTest : StringSpec({

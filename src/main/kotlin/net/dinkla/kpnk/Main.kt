@@ -15,14 +15,15 @@ import kotlin.system.exitProcess
 
 internal val logger: Logger = LoggerFactory.getLogger("Main")
 
-private val commands = listOf(
-    "dependencies" to DependenciesCommand,
-    "inheritance" to Inheritance,
-    "outliers" to Outliers,
-    "search" to Search,
-    "save" to SaveCommand,
-    "class_diagram" to ClassDiagram,
-)
+private val commands =
+    listOf(
+        "dependencies" to DependenciesCommand,
+        "inheritance" to Inheritance,
+        "outliers" to Outliers,
+        "search" to Search,
+        "save" to SaveCommand,
+        "class_diagram" to ClassDiagram,
+    )
 
 fun main(args: Array<String>) {
     commands.forEach { (name, command) ->
@@ -37,7 +38,7 @@ fun main(args: Array<String>) {
         CommandManager.synopsis()
         exitProcess(-1)
     } else {
-        val infos : FileInfos = read(args[0])
+        val infos: FileInfos = read(args[0])
         command.execute(args.drop(2).toTypedArray(), infos)
     }
 }

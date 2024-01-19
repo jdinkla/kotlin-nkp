@@ -6,7 +6,6 @@ import kotlin.math.max
 @Serializable
 @JvmInline
 value class FileName(val name: String) {
-
     val basename: String
         get() {
             val index = max(name.lastIndexOf("/"), name.lastIndexOf("\\"))
