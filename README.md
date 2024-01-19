@@ -46,4 +46,4 @@ $ ./gradlew publishToMavenLocal
 $ cd ..
 ```
 
-(c) 2023 Jörn Dinkla https://www.dinkla.net
+(c) 2023 - 2024 Jörn Dinkla https://www.dinkla.net
