@@ -14,19 +14,29 @@ fun getAllKotlinFilesInDirectory(root: String): List<String> {
     val file = File(root)
     if (file.isDirectory) {
         file.walk().forEach {
-            if (it.isFile && it.extension == "kt") {
-                if (it.absolutePath.contains("/.idea/")) {
-                    logger.trace("skipping file ${it.absolutePath}")
-                } else if (it.absolutePath.contains("/test/") && it.name.endsWith("Test.kt")) {
-                    logger.trace("skipping test  ${it.absolutePath}")
-                } else {
-                    files.add(it.absolutePath)
-                    logger.trace("adding file ${it.absolutePath}")
-                }
-            }
+            addFileIfItMatches(it, files)
         }
     }
     return files.toList()
+}
+
+private fun addFileIfItMatches(it: File, files: MutableList<String>) {
+    if (it.isFile && it.extension == "kt") {
+        if (shouldFileBeAdded(it)) {
+            files.add(it.absolutePath)
+        }
+    }
+}
+
+private fun shouldFileBeAdded(it: File) = if (it.absolutePath.contains("/.idea/")) {
+    logger.trace("skipping file ${it.absolutePath}")
+    false
+} else if (it.absolutePath.contains("/test/") && it.name.endsWith("Test.kt")) {
+    logger.trace("skipping test  ${it.absolutePath}")
+    false
+} else {
+    logger.trace("adding file ${it.absolutePath}")
+    true
 }
 
 internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
