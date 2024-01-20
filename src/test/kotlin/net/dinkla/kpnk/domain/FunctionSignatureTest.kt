@@ -8,7 +8,7 @@ class FunctionSignatureTest : StringSpec({
         FunctionSignature(
             "f",
             Type("Int"),
-            listOf(Parameter("x", Type("Int"))),
+            listOf(FunctionParameter("x", Type("Int"))),
         ).prettyPrint() shouldBe
             """
             fun f(x: Int): Int
@@ -19,7 +19,7 @@ class FunctionSignatureTest : StringSpec({
         FunctionSignature(
             "f",
             Type("Int"),
-            listOf(Parameter("x", Type("Int"))),
+            listOf(FunctionParameter("x", Type("Int"))),
             visibilityModifier = VisibilityModifier.PRIVATE,
         ).prettyPrint() shouldBe
             """
@@ -31,7 +31,7 @@ class FunctionSignatureTest : StringSpec({
         FunctionSignature(
             "f",
             Type("Int"),
-            listOf(Parameter("x", Type("Int"))),
+            listOf(FunctionParameter("x", Type("Int"))),
             extensionOf = "Ext",
         ).prettyPrint() shouldBe
             """
@@ -43,7 +43,7 @@ class FunctionSignatureTest : StringSpec({
         FunctionSignature(
             "f",
             Type("Int"),
-            listOf(Parameter("x", Type("Int"))),
+            listOf(FunctionParameter("x", Type("Int"))),
             visibilityModifier = VisibilityModifier.PROTECTED,
             memberModifier = MemberModifier.OVERRIDE,
         ).prettyPrint() shouldBe

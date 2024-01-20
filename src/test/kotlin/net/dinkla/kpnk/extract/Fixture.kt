@@ -4,11 +4,11 @@ import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FullyQualifiedName
+import net.dinkla.kpnk.domain.FunctionParameter
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Import
 import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.MemberModifier
-import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
@@ -29,7 +29,7 @@ internal val function1 =
     FunctionSignature(
         "topLevelFunction",
         Type("String"),
-        listOf(Parameter("n", Type("Int")), Parameter("hw", Type("HelloWorld"))),
+        listOf(FunctionParameter("n", Type("Int")), FunctionParameter("hw", Type("HelloWorld"))),
         visibilityModifier = VisibilityModifier.INTERNAL,
     )
 
@@ -50,14 +50,14 @@ internal val function4 =
     FunctionSignature(
         "higherOrderFunction",
         Type("(Int) -> String"),
-        listOf(Parameter("f", Type("(Int) -> String")), Parameter("x", Type("Int"))),
+        listOf(FunctionParameter("f", Type("(Int) -> String")), FunctionParameter("x", Type("Int"))),
     )
 
 internal val function5 =
     FunctionSignature(
         "create",
         Type("Dictionary"),
-        listOf(Parameter("ls", Type("List"))),
+        listOf(FunctionParameter("ls", Type("List"))),
     )
 
 internal val class1 =
@@ -82,7 +82,7 @@ internal val class2 =
     ClassSignature(
         "Gen",
         listOf(),
-        declarations = listOf(FunctionSignature("gen", Type("String?"), listOf(Parameter("n", Type("Int"))))),
+        declarations = listOf(FunctionSignature("gen", Type("String?"), listOf(FunctionParameter("n", Type("Int"))))),
         visibilityModifier = VisibilityModifier.PRIVATE,
         elementType = ClassSignature.Type.INTERFACE,
     )
@@ -96,7 +96,7 @@ internal val class3 =
                 FunctionSignature(
                     "gen",
                     Type("String"),
-                    listOf(Parameter("n", Type("Int"))),
+                    listOf(FunctionParameter("n", Type("Int"))),
                     memberModifier = MemberModifier.OVERRIDE,
                 ),
             ),
@@ -113,7 +113,7 @@ internal val class4 =
                 FunctionSignature(
                     "isZero",
                     Type("Boolean"),
-                    listOf(Parameter("x", Type("Double"))),
+                    listOf(FunctionParameter("x", Type("Double"))),
                 ),
             ),
         elementType = ClassSignature.Type.OBJECT,
@@ -127,7 +127,7 @@ internal val class5 =
                 FunctionSignature(
                     "f",
                     Type("String"),
-                    listOf(Parameter("x", Type("Int"))),
+                    listOf(FunctionParameter("x", Type("Int"))),
                     visibilityModifier = VisibilityModifier.PROTECTED,
                 ),
                 ClassSignature(

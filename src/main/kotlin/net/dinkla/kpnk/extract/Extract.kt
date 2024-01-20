@@ -4,9 +4,9 @@ import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FullyQualifiedName
+import net.dinkla.kpnk.domain.FunctionParameter
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Import
-import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TopLevel
@@ -148,13 +148,13 @@ private fun extractClassParameter(tree: KotlinParseTree): ClassParameter {
     return ClassParameter(paramName, paramType, visibilityModifier, propertyModifier)
 }
 
-private fun extractParameter(tree: KotlinParseTree): Parameter {
+private fun extractParameter(tree: KotlinParseTree): FunctionParameter {
     val paramName = extractSimpleIdentifier(tree) ?: "ERROR PARAM NAME"
     val paramType =
         tree.children.find { it.name == "type" }?.let {
             extractType(it)
         } ?: Type("ERROR PARAM TYPE")
-    return Parameter(paramName, paramType)
+    return FunctionParameter(paramName, paramType)
 }
 
 private fun extractSuperClasses(tree: KotlinParseTree): List<String> =

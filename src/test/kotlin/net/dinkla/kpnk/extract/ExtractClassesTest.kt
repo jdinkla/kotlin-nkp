@@ -6,9 +6,9 @@ import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.FunctionParameter
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.InheritanceModifier
-import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
@@ -53,7 +53,14 @@ class ExtractClassesTest : StringSpec({
                     listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.DATA,
-                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int"))))),
+                    declarations =
+                        listOf(
+                            FunctionSignature(
+                                "f",
+                                null,
+                                listOf(FunctionParameter("x", Type("Int"))),
+                            ),
+                        ),
                 ),
             )
     }
@@ -100,7 +107,14 @@ class ExtractClassesTest : StringSpec({
                     "HelloWorld",
                     listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     elementType = ClassSignature.Type.CLASS,
-                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int"))))),
+                    declarations =
+                        listOf(
+                            FunctionSignature(
+                                "f",
+                                null,
+                                listOf(FunctionParameter("x", Type("Int"))),
+                            ),
+                        ),
                 ),
             )
     }
@@ -163,7 +177,14 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int"))))),
+                    declarations =
+                        listOf(
+                            FunctionSignature(
+                                "f",
+                                null,
+                                listOf(FunctionParameter("x", Type("Int"))),
+                            ),
+                        ),
                     elementType = ClassSignature.Type.OBJECT,
                 ),
             )
@@ -175,7 +196,13 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "Interface",
-                    declarations = listOf(FunctionSignature("f", Type("Int"), listOf(Parameter("x", Type("Int"))))),
+                    declarations =
+                        listOf(
+                            FunctionSignature(
+                                "f",
+                                Type("Int"), listOf(FunctionParameter("x", Type("Int"))),
+                            ),
+                        ),
                     elementType = ClassSignature.Type.INTERFACE,
                 ),
             )
@@ -187,7 +214,14 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "Interface",
-                    declarations = listOf(FunctionSignature("f", Type("Int"), listOf(Parameter("x", Type("Int"))))),
+                    declarations =
+                        listOf(
+                            FunctionSignature(
+                                "f",
+                                Type("Int"),
+                                listOf(FunctionParameter("x", Type("Int"))),
+                            ),
+                        ),
                     visibilityModifier = VisibilityModifier.PRIVATE,
                     elementType = ClassSignature.Type.INTERFACE,
                 ),
