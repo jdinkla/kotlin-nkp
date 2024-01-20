@@ -25,8 +25,8 @@ class TopLevelTest : StringSpec({
 private val f1 = FunctionSignature("f1")
 private val f2 = FunctionSignature("f2")
 private val c1 = ClassSignature("C")
-private val ta1 = TypeAlias("TA", "Int")
-private val p1 = Property("p1", "Int")
+private val ta1 = TypeAlias("TA", Type("Int"))
+private val p1 = Property("p1", Type("Int"))
 private val topLevel =
     TopLevel(
         FullyQualifiedName("net.dinkla.kpnk"),

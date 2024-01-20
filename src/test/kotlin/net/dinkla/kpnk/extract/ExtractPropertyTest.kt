@@ -6,6 +6,7 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
+import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -14,22 +15,22 @@ class ExtractPropertyTest : StringSpec({
 
     "extractProperty should handle one val property" {
         val properties = extractProperties(fromText("val x: Int = 1"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.VAL))
+        properties shouldContainExactlyInAnyOrder listOf(Property("x", Type("Int"), PropertyModifier.VAL))
     }
 
     "extractProperty should handle one var property" {
         val properties = extractProperties(fromText("var x: Int = 1"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.VAR))
+        properties shouldContainExactlyInAnyOrder listOf(Property("x", Type("Int"), PropertyModifier.VAR))
     }
 
     "extractProperty should handle a const val property" {
         val properties = extractProperties(fromText("const val x: Int = 1"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "Int", PropertyModifier.CONST_VAL))
+        properties shouldContainExactlyInAnyOrder listOf(Property("x", Type("Int"), PropertyModifier.CONST_VAL))
     }
 
     "extractProperty should handle a constructor call with explicit type" {
         val properties = extractProperties(fromText("val x : C = C(1)"))
-        properties shouldContainExactlyInAnyOrder listOf(Property("x", "C", PropertyModifier.VAL))
+        properties shouldContainExactlyInAnyOrder listOf(Property("x", Type("C"), PropertyModifier.VAL))
     }
 
     "extractProperty should handle a constructor call with implicit type" {
@@ -43,7 +44,7 @@ class ExtractPropertyTest : StringSpec({
             listOf(
                 Property(
                     "x",
-                    "Int",
+                    Type("Int"),
                     PropertyModifier.VAL,
                     VisibilityModifier.PRIVATE,
                 ),
@@ -56,7 +57,7 @@ class ExtractPropertyTest : StringSpec({
             listOf(
                 Property(
                     "x",
-                    "Int",
+                    Type("Int"),
                     PropertyModifier.VAL,
                     memberModifier = listOf(MemberModifier.OVERRIDE),
                 ),
@@ -69,7 +70,7 @@ class ExtractPropertyTest : StringSpec({
             listOf(
                 Property(
                     "x",
-                    "Int",
+                    Type("Int"),
                     PropertyModifier.VAR,
                     memberModifier = listOf(MemberModifier.LATE_INIT),
                 ),
@@ -80,8 +81,8 @@ class ExtractPropertyTest : StringSpec({
         val properties = extractProperties(fromText("val x: Int = 1; var y: String = \"2\""))
         properties shouldContainExactlyInAnyOrder
             listOf(
-                Property("x", "Int", PropertyModifier.VAL),
-                Property("y", "String", PropertyModifier.VAR),
+                Property("x", Type("Int"), PropertyModifier.VAL),
+                Property("y", Type("String"), PropertyModifier.VAR),
             )
     }
 })

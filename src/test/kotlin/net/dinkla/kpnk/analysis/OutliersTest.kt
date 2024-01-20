@@ -9,6 +9,7 @@ import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.TopLevel
+import net.dinkla.kpnk.domain.Type
 
 class OutliersTest : StringSpec({
     "largeClasses should return the top 2 classes with most functions and properties" {
@@ -34,7 +35,7 @@ private fun cls(numElems: Int) =
                 (1..numElems).map {
                     Property(
                         it.toString(),
-                        "String",
+                        Type("String"),
                     )
                 },
     )

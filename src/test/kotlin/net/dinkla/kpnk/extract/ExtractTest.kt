@@ -6,6 +6,7 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
+import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -37,12 +38,12 @@ class ExtractTest : StringSpec({
 
     "extractTypeAlias should extract typealias" {
         val typeAliases = extractTypeAliases(fromText("typealias Dictionary = Map<String, String>"))
-        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", "Map"))
+        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", Type("Map")))
     }
 
     "extractTypeAlias should extract generic typealias" {
         val typeAliases = extractTypeAliases(fromText("typealias Dictionary<K> = Map<K, String>"))
-        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", "Map"))
+        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", Type("Map")))
     }
 })
 

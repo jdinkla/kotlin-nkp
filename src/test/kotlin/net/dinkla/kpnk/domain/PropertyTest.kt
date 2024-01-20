@@ -7,7 +7,7 @@ class PropertyTest : StringSpec({
     "prettyPrint should handle internal val" {
         val property =
             property.copy(
-                dataType = "String",
+                dataType = Type("String"),
                 modifier = PropertyModifier.VAL,
                 visibilityModifier = VisibilityModifier.INTERNAL,
             )
@@ -17,7 +17,7 @@ class PropertyTest : StringSpec({
     "prettyPrint should handle val" {
         val property =
             property.copy(
-                dataType = "String",
+                dataType = Type("String"),
                 modifier = PropertyModifier.CONST_VAL,
             )
         property.prettyPrint() shouldBe "const val name : String"

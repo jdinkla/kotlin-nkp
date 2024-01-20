@@ -7,8 +7,8 @@ class ClassSignatureTest : StringSpec({
     "prettyPrint should return a string representation of default class" {
         ClassSignature(
             "C",
-            listOf(ClassParameter("p", "Int")),
-            declarations = listOf(FunctionSignature("toString", "String", listOf())),
+            listOf(ClassParameter("p", Type("Int"))),
+            declarations = listOf(FunctionSignature("toString", Type("String"), listOf())),
             elementType = ClassSignature.Type.CLASS,
         ).prettyPrint() shouldBe
             """
@@ -21,8 +21,8 @@ class ClassSignatureTest : StringSpec({
     "prettyPrint should return a string representation of an internal data class" {
         ClassSignature(
             "C",
-            listOf(ClassParameter("p", "Int")),
-            declarations = listOf(FunctionSignature("toString", "String", listOf())),
+            listOf(ClassParameter("p", Type("Int"))),
+            declarations = listOf(FunctionSignature("toString", Type("String"), listOf())),
             visibilityModifier = VisibilityModifier.INTERNAL,
             elementType = ClassSignature.Type.CLASS,
             classModifier = ClassModifier.DATA,
@@ -38,15 +38,15 @@ class ClassSignatureTest : StringSpec({
         val def =
             ClassSignature(
                 "C",
-                listOf(ClassParameter("p", "Int")),
+                listOf(ClassParameter("p", Type("Int"))),
                 elementType = ClassSignature.Type.CLASS,
                 inheritanceModifier = InheritanceModifier.OPEN,
                 declarations =
                     listOf(
-                        FunctionSignature("toString", "String", listOf()),
+                        FunctionSignature("toString", Type("String"), listOf()),
                         ClassSignature(
                             "D",
-                            listOf(ClassParameter("p", "Int")),
+                            listOf(ClassParameter("p", Type("Int"))),
                             elementType = ClassSignature.Type.CLASS,
                             classModifier = ClassModifier.INNER,
                         ),

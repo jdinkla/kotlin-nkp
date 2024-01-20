@@ -6,7 +6,7 @@ import net.dinkla.kpnk.utilities.addSpaceAfter
 @Serializable
 data class FunctionSignature(
     val name: String,
-    val returnType: String? = null,
+    val returnType: Type? = null,
     val parameters: List<Parameter> = listOf(),
     val extensionOf: String? = null,
     val visibilityModifier: VisibilityModifier? = null,

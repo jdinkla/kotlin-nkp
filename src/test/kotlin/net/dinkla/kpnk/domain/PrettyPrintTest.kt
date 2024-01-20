@@ -7,8 +7,8 @@ class PrettyPrintTest : StringSpec({
     "prettyPrint should return a string representation of default class" {
         ClassSignature(
             "C",
-            listOf(ClassParameter("p", "Int")),
-            declarations = listOf(FunctionSignature("toString", "String", listOf())),
+            listOf(ClassParameter("p", Type("Int"))),
+            declarations = listOf(FunctionSignature("toString", Type("String"), listOf())),
             elementType = ClassSignature.Type.CLASS,
         ).prettyPrint() shouldBe
             """

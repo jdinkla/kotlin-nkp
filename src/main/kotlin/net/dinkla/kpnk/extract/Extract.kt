@@ -2,7 +2,6 @@ package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.ClassSignature.Type
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
@@ -11,6 +10,7 @@ import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TopLevel
+import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -111,12 +111,12 @@ internal fun extractClass(tree: KotlinParseTree): ClassSignature {
     )
 }
 
-private fun extractInterfaceOrClassType(tree: KotlinParseTree): Type? {
+private fun extractInterfaceOrClassType(tree: KotlinParseTree): ClassSignature.Type? {
     val isInterface = tree.children.find { it.name == "INTERFACE" } != null
     val isClass = tree.children.find { it.name == "CLASS" } != null
     return when {
-        isInterface -> Type.INTERFACE
-        isClass -> Type.CLASS
+        isInterface -> ClassSignature.Type.INTERFACE
+        isClass -> ClassSignature.Type.CLASS
         else -> null
     }
 }
@@ -144,7 +144,7 @@ private fun extractClassParameter(tree: KotlinParseTree): ClassParameter {
     val paramType =
         tree.children.find { it.name == "type" }?.let {
             extractType(it)
-        } ?: "ERROR PARAM TYPE"
+        } ?: Type("ERROR PARAM TYPE")
     return ClassParameter(paramName, paramType, visibilityModifier, propertyModifier)
 }
 
@@ -153,7 +153,7 @@ private fun extractParameter(tree: KotlinParseTree): Parameter {
     val paramType =
         tree.children.find { it.name == "type" }?.let {
             extractType(it)
-        } ?: "ERROR PARAM TYPE"
+        } ?: Type("ERROR PARAM TYPE")
     return Parameter(paramName, paramType)
 }
 
@@ -173,7 +173,13 @@ internal fun extractObject(tree: KotlinParseTree): ClassSignature {
             }
         } ?: listOf()
     val declarations = extractBody(tree)
-    return ClassSignature(name, listOf(), inheritedFrom, elementType = Type.OBJECT, declarations = declarations)
+    return ClassSignature(
+        name,
+        listOf(),
+        inheritedFrom,
+        elementType = ClassSignature.Type.OBJECT,
+        declarations = declarations,
+    )
 }
 
 private fun extractBody(tree: KotlinParseTree): List<Defined> {
@@ -195,16 +201,16 @@ private fun extractBody(tree: KotlinParseTree): List<Defined> {
     } ?: listOf()
 }
 
-private fun extractType(tree: KotlinParseTree): String? {
+private fun extractType(tree: KotlinParseTree): Type? {
     return when (val subtype = tree.children[0].name) {
         "nullableType" -> {
             tree.children[0].findName("Identifier")?.let {
-                "${it.text}?"
+                Type("${it.text}?")
             }
         }
 
         "typeReference" -> {
-            tree.children[0].findName("Identifier")?.text
+            Type(tree.children[0].findName("Identifier")?.text)
         }
 
         "functionType" -> {
@@ -215,7 +221,7 @@ private fun extractType(tree: KotlinParseTree): String? {
                     .map { extractType(it) }
                     .joinToString(",")
             val returnType = tree.children[0].children[2].findName("Identifier")?.text!!
-            "($params) -> $returnType"
+            Type("($params) -> $returnType")
         }
 
         else -> throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")

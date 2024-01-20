@@ -6,7 +6,7 @@ import net.dinkla.kpnk.utilities.addSpaceAfter
 @Serializable
 data class ClassParameter(
     val name: String,
-    val type: String,
+    val type: Type,
     val visibilityModifier: VisibilityModifier? = null,
     val propertyModifier: PropertyModifier? = null,
 )

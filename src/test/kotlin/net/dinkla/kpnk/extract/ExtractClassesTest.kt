@@ -6,12 +6,12 @@ import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.ClassSignature.Type
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
+import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -23,9 +23,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     listOf(),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.DATA,
                 ),
             )
@@ -37,9 +37,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", VisibilityModifier.PRIVATE, PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), VisibilityModifier.PRIVATE, PropertyModifier.VAL)),
                     listOf(),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -50,10 +50,10 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
-                    elementType = Type.CLASS,
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.DATA,
-                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int"))))),
                 ),
             )
     }
@@ -67,8 +67,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
-                    elementType = Type.CLASS,
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.DATA,
                     declarations =
                         listOf(
@@ -85,9 +85,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     listOf(),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -98,9 +98,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
-                    elementType = Type.CLASS,
-                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
+                    elementType = ClassSignature.Type.CLASS,
+                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int"))))),
                 ),
             )
     }
@@ -111,9 +111,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     listOf("A"),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -124,9 +124,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     listOf("A", "B"),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -137,9 +137,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     listOf("A"),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -150,9 +150,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    listOf(ClassParameter("many", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("many", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     listOf("A"),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -163,8 +163,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "HelloWorld",
-                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int")))),
-                    elementType = Type.OBJECT,
+                    declarations = listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int"))))),
+                    elementType = ClassSignature.Type.OBJECT,
                 ),
             )
     }
@@ -175,8 +175,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "Interface",
-                    declarations = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
-                    elementType = Type.INTERFACE,
+                    declarations = listOf(FunctionSignature("f", Type("Int"), listOf(Parameter("x", Type("Int"))))),
+                    elementType = ClassSignature.Type.INTERFACE,
                 ),
             )
     }
@@ -187,9 +187,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "Interface",
-                    declarations = listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int")))),
+                    declarations = listOf(FunctionSignature("f", Type("Int"), listOf(Parameter("x", Type("Int"))))),
                     visibilityModifier = VisibilityModifier.PRIVATE,
-                    elementType = Type.INTERFACE,
+                    elementType = ClassSignature.Type.INTERFACE,
                 ),
             )
     }
@@ -202,7 +202,7 @@ class ExtractClassesTest : StringSpec({
                     "Interface",
                     declarations = listOf(FunctionSignature("f")),
                     visibilityModifier = VisibilityModifier.PUBLIC,
-                    elementType = Type.INTERFACE,
+                    elementType = ClassSignature.Type.INTERFACE,
                 ),
             )
     }
@@ -213,7 +213,7 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "AB",
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.ENUM,
                 ),
             )
@@ -225,8 +225,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "ABC",
-                    listOf(ClassParameter("i", "Int", propertyModifier = PropertyModifier.VAL)),
-                    elementType = Type.CLASS,
+                    listOf(ClassParameter("i", Type("Int"), propertyModifier = PropertyModifier.VAL)),
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.ENUM,
                 ),
             )
@@ -238,8 +238,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "A",
-                    listOf(ClassParameter("i", "Int", VisibilityModifier.INTERNAL, PropertyModifier.VAL)),
-                    elementType = Type.CLASS,
+                    listOf(ClassParameter("i", Type("Int"), VisibilityModifier.INTERNAL, PropertyModifier.VAL)),
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.ENUM,
                 ),
             )
@@ -252,7 +252,7 @@ class ExtractClassesTest : StringSpec({
                 ClassSignature(
                     "C",
                     visibilityModifier = VisibilityModifier.PRIVATE,
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -264,7 +264,7 @@ class ExtractClassesTest : StringSpec({
                 ClassSignature(
                     "C",
                     visibilityModifier = VisibilityModifier.INTERNAL,
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                 ),
             )
     }
@@ -275,7 +275,7 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     inheritanceModifier = InheritanceModifier.ABSTRACT,
                 ),
             )
@@ -287,9 +287,9 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    listOf(ClassParameter("x", "Int", propertyModifier = PropertyModifier.VAL)),
+                    listOf(ClassParameter("x", Type("Int"), propertyModifier = PropertyModifier.VAL)),
                     visibilityModifier = VisibilityModifier.INTERNAL,
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.DATA,
                 ),
             )
@@ -305,12 +305,12 @@ class ExtractClassesTest : StringSpec({
                         listOf(
                             FunctionSignature(
                                 "f",
-                                "Int",
+                                Type("Int"),
                                 listOf(),
                                 visibilityModifier = VisibilityModifier.PROTECTED,
                             ),
                         ),
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     inheritanceModifier = InheritanceModifier.OPEN,
                 ),
             )
@@ -322,8 +322,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    listOf(ClassParameter("x", "Int", propertyModifier = PropertyModifier.VAL)),
-                    elementType = Type.CLASS,
+                    listOf(ClassParameter("x", Type("Int"), propertyModifier = PropertyModifier.VAL)),
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.VALUE,
                 ),
             )
@@ -335,8 +335,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    elementType = Type.CLASS,
-                    declarations = listOf(Property("y", "Int")),
+                    elementType = ClassSignature.Type.CLASS,
+                    declarations = listOf(Property("y", Type("Int"))),
                 ),
             )
     }
@@ -347,8 +347,8 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "O",
-                    elementType = Type.OBJECT,
-                    declarations = listOf(Property("y", "Int")),
+                    elementType = ClassSignature.Type.OBJECT,
+                    declarations = listOf(Property("y", Type("Int"))),
                 ),
             )
     }
@@ -359,12 +359,12 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "D",
-                                elementType = Type.CLASS,
+                                elementType = ClassSignature.Type.CLASS,
                             ),
                         ),
                 ),
@@ -377,12 +377,12 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "D",
-                                elementType = Type.CLASS,
+                                elementType = ClassSignature.Type.CLASS,
                                 classModifier = ClassModifier.INNER,
                             ),
                         ),
@@ -396,12 +396,12 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "O",
-                    elementType = Type.OBJECT,
+                    elementType = ClassSignature.Type.OBJECT,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "D",
-                                elementType = Type.CLASS,
+                                elementType = ClassSignature.Type.CLASS,
                             ),
                         ),
                 ),
@@ -414,12 +414,12 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "O",
-                    elementType = Type.OBJECT,
+                    elementType = ClassSignature.Type.OBJECT,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "P",
-                                elementType = Type.OBJECT,
+                                elementType = ClassSignature.Type.OBJECT,
                                 declarations = listOf(FunctionSignature("f")),
                             ),
                         ),
@@ -433,12 +433,12 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "C",
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "P",
-                                elementType = Type.OBJECT,
+                                elementType = ClassSignature.Type.OBJECT,
                                 declarations = listOf(FunctionSignature("f")),
                             ),
                         ),
@@ -452,14 +452,14 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "SI",
-                    elementType = Type.INTERFACE,
+                    elementType = ClassSignature.Type.INTERFACE,
                     classModifier = ClassModifier.SEALED,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "DC",
-                                listOf(ClassParameter("name", "String", propertyModifier = PropertyModifier.VAL)),
-                                elementType = Type.CLASS,
+                                listOf(ClassParameter("name", Type("String"), propertyModifier = PropertyModifier.VAL)),
+                                elementType = ClassSignature.Type.CLASS,
                                 classModifier = ClassModifier.DATA,
                                 inheritedFrom = listOf("SI"),
                             ),
@@ -474,13 +474,13 @@ class ExtractClassesTest : StringSpec({
             listOf(
                 ClassSignature(
                     "V",
-                    elementType = Type.CLASS,
+                    elementType = ClassSignature.Type.CLASS,
                     classModifier = ClassModifier.SEALED,
                     declarations =
                         listOf(
                             ClassSignature(
                                 "O",
-                                elementType = Type.OBJECT,
+                                elementType = ClassSignature.Type.OBJECT,
                                 inheritedFrom = listOf("V"),
                                 declarations = listOf(Property("name", null, PropertyModifier.CONST_VAL)),
                             ),

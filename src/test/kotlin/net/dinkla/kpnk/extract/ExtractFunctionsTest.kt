@@ -7,6 +7,7 @@ import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Parameter
+import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -21,24 +22,24 @@ class ExtractFunctionsTest : StringSpec({
         val functions = extractFunctions(fromText("fun f(x: Int): Int = x+1; fun g() = 3"))
         functions shouldContainExactly
             listOf(
-                FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))),
+                FunctionSignature("f", Type("Int"), listOf(Parameter("x", Type("Int")))),
                 FunctionSignature("g", null, listOf()),
             )
     }
 
     "extractFunctions should handle function with parameters and return type" {
         val functions = extractFunctions(fromText("fun f(x: Int): Int = x+1"))
-        functions shouldBe listOf(FunctionSignature("f", "Int", listOf(Parameter("x", "Int"))))
+        functions shouldBe listOf(FunctionSignature("f", Type("Int"), listOf(Parameter("x", Type("Int")))))
     }
 
     "extractFunctions should handle function with parameters without explicit simple return type" {
         val functions = extractFunctions(fromText("fun f(x: Int) = x+1"))
-        functions shouldBe listOf(FunctionSignature("f", null, listOf(Parameter("x", "Int"))))
+        functions shouldBe listOf(FunctionSignature("f", null, listOf(Parameter("x", Type("Int")))))
     }
 
     "extractFunctions should handle function without parameters but with explicit simple return type" {
         val functions = extractFunctions(fromText("fun f(): Int = 1"))
-        functions shouldBe listOf(FunctionSignature("f", "Int", listOf()))
+        functions shouldBe listOf(FunctionSignature("f", Type("Int"), listOf()))
     }
 
     "extractFunctions should handle function without parameters and without explicit simple return type" {
@@ -52,8 +53,8 @@ class ExtractFunctionsTest : StringSpec({
             listOf(
                 FunctionSignature(
                     "f",
-                    "Int",
-                    listOf(Parameter("x", "Int")),
+                    Type("Int"),
+                    listOf(Parameter("x", Type("Int"))),
                     visibilityModifier = VisibilityModifier.INTERNAL,
                 ),
             )
@@ -65,8 +66,8 @@ class ExtractFunctionsTest : StringSpec({
             listOf(
                 FunctionSignature(
                     "f",
-                    "Int",
-                    listOf(Parameter("x", "Int")),
+                    Type("Int"),
+                    listOf(Parameter("x", Type("Int"))),
                     visibilityModifier = VisibilityModifier.PRIVATE,
                 ),
             )
@@ -78,20 +79,20 @@ class ExtractFunctionsTest : StringSpec({
             listOf(
                 FunctionSignature(
                     "plus",
-                    "Int",
-                    listOf(Parameter("x", "Int"), Parameter("y", "Int")),
+                    Type("Int"),
+                    listOf(Parameter("x", Type("Int")), Parameter("y", Type("Int"))),
                 ),
             )
     }
 
     "extractFunctions should handle function with Any as parameter and Any as return type" {
         val functions = extractFunctions(fromText("fun f(x: Any): Any = x"))
-        functions shouldBe listOf(FunctionSignature("f", "Any", listOf(Parameter("x", "Any"))))
+        functions shouldBe listOf(FunctionSignature("f", Type("Any"), listOf(Parameter("x", Type("Any")))))
     }
 
     "extractFunctions should handle nullable parameters" {
         val functions = extractFunctions(fromText("fun f(x: Int?): Int? = x"))
-        functions shouldBe listOf(FunctionSignature("f", "Int?", listOf(Parameter("x", "Int?"))))
+        functions shouldBe listOf(FunctionSignature("f", Type("Int?"), listOf(Parameter("x", Type("Int?")))))
     }
 
     "extractFunctions should handle higher order functions as arguments" {
@@ -100,10 +101,10 @@ class ExtractFunctionsTest : StringSpec({
             listOf(
                 FunctionSignature(
                     "f",
-                    "String",
+                    Type("String"),
                     listOf(
-                        Parameter("f", "(Int) -> String"),
-                        Parameter("x", "Int"),
+                        Parameter("f", Type("(Int) -> String")),
+                        Parameter("x", Type("Int")),
                     ),
                 ),
             )
@@ -115,7 +116,7 @@ class ExtractFunctionsTest : StringSpec({
             listOf(
                 FunctionSignature(
                     "f",
-                    "(Int) -> String",
+                    Type("(Int) -> String"),
                 ),
             )
     }
@@ -126,8 +127,8 @@ class ExtractFunctionsTest : StringSpec({
             listOf(
                 FunctionSignature(
                     "f",
-                    "Int",
-                    listOf(Parameter("x", "Int")),
+                    Type("Int"),
+                    listOf(Parameter("x", Type("Int"))),
                     memberModifier = MemberModifier.OVERRIDE,
                 ),
             )
