@@ -31,21 +31,6 @@ data class ClassSignature(
     }
 }
 
-@Serializable
-enum class ClassModifier(val text: String) {
-    DATA("data"),
-    ENUM("enum"),
-    VALUE("value"),
-    INNER("inner"),
-    SEALED("sealed"),
-}
-
-@Serializable
-enum class InheritanceModifier(val text: String) {
-    OPEN("open"),
-    ABSTRACT("abstract"),
-}
-
 fun ClassSignature.prettyPrint(): String {
     val visMod = addSpaceAfter(visibilityModifier.prettyPrint())
     val classMod = addSpaceAfter(classModifier.prettyPrint())
@@ -74,15 +59,3 @@ fun ClassSignature.prettyPrint(): String {
         }
     return "$visMod$classMod$inhMod$type $name($prettyParameters)$inherited {$joined2}"
 }
-
-fun ClassModifier?.prettyPrint() =
-    when (this) {
-        null -> ""
-        else -> text
-    }
-
-fun InheritanceModifier?.prettyPrint() =
-    when (this) {
-        null -> ""
-        else -> text
-    }
