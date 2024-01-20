@@ -2,6 +2,7 @@ package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.ClassSignature.Type
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
@@ -10,7 +11,6 @@ import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.TopLevel
-import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree

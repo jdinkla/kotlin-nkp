@@ -22,13 +22,13 @@ data class ClassSignature(
 
     val classes: List<ClassSignature>
         get() = declarations.filterIsInstance<ClassSignature>()
-}
 
-@Serializable
-enum class Type(val text: String) {
-    CLASS("class"),
-    OBJECT("object"),
-    INTERFACE("interface"),
+    @Serializable
+    enum class Type(val text: String) {
+        CLASS("class"),
+        OBJECT("object"),
+        INTERFACE("interface"),
+    }
 }
 
 @Serializable

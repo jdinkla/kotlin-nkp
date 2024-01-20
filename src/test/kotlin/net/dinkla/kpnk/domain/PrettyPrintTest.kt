@@ -9,7 +9,7 @@ class PrettyPrintTest : StringSpec({
             "C",
             listOf(ClassParameter("p", "Int")),
             declarations = listOf(FunctionSignature("toString", "String", listOf())),
-            elementType = Type.CLASS,
+            elementType = ClassSignature.Type.CLASS,
         ).prettyPrint() shouldBe
             """
             class C(p: Int) {

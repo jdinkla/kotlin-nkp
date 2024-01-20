@@ -6,12 +6,12 @@ import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.ClassSignature.Type
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.Parameter
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
-import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
