@@ -11,7 +11,7 @@ import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-class ExtractTest : StringSpec({
+class TopLevelTest : StringSpec({
     "extract should return all information" {
         val file = extract(tree)
         file.packageName shouldBe FullyQualifiedName("example")

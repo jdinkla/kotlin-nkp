@@ -16,9 +16,9 @@ import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-class ExtractClassesTest : StringSpec({
+class ClassTest : StringSpec({
     "extractClasses should handle a data class with one constructor argument and without a body" {
-        val classes = extractClasses(fromText("data class HelloWorld(val many: Int)"))
+        val classes = extractClassesAndObjects(fromText("data class HelloWorld(val many: Int)"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -32,7 +32,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a data class with one private constructor argument and without a body" {
-        val classes = extractClasses(fromText("class HelloWorld(private val many: Int)"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(private val many: Int)"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -45,7 +45,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a data class with one constructor argument with one method f(x) = x+1" {
-        val classes = extractClasses(fromText("data class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
+        val classes = extractClassesAndObjects(fromText("data class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -67,7 +67,7 @@ class ExtractClassesTest : StringSpec({
 
     "extractClasses should handle a data class with one constructor argument with two methods f and g" {
         val classes =
-            extractClasses(
+            extractClassesAndObjects(
                 fromText("data class HelloWorld(val many: Int) { fun f() = 1; fun g() = 2 }"),
             )
         classes shouldBe
@@ -87,7 +87,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a class with one constructor argument many: Int without any methods" {
-        val classes = extractClasses(fromText("class HelloWorld(val many: Int)"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(val many: Int)"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -100,7 +100,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a class with one constructor argument many: Int with one method f(x) = x+1" {
-        val classes = extractClasses(fromText("class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -120,7 +120,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a class that inherits from interface A" {
-        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(val many: Int): A"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -133,7 +133,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a class that inherits from interfaces A and B" {
-        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A, B"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(val many: Int): A, B"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -146,7 +146,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a class that inherits from class A" {
-        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A()"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(val many: Int): A()"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -159,7 +159,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a class that inherits from class A and pass an argument" {
-        val classes = extractClasses(fromText("class HelloWorld(val many: Int): A(many)"))
+        val classes = extractClassesAndObjects(fromText("class HelloWorld(val many: Int): A(many)"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -172,7 +172,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle an object" {
-        val classes = extractClasses(fromText("object HelloWorld { fun f(x: Int) = x+1 }"))
+        val classes = extractClassesAndObjects(fromText("object HelloWorld { fun f(x: Int) = x+1 }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -191,7 +191,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle an interface" {
-        val classes = extractClasses(fromText("interface Interface { fun f(x: Int): Int }"))
+        val classes = extractClassesAndObjects(fromText("interface Interface { fun f(x: Int): Int }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -209,7 +209,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a private interface" {
-        val classes = extractClasses(fromText("private interface Interface { fun f(x: Int): Int }"))
+        val classes = extractClassesAndObjects(fromText("private interface Interface { fun f(x: Int): Int }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -229,7 +229,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a public interface" {
-        val classes = extractClasses(fromText("public interface Interface { fun f() }"))
+        val classes = extractClassesAndObjects(fromText("public interface Interface { fun f() }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -242,7 +242,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle the enum AB" {
-        val classes = extractClasses(fromText("enum class AB { A, B }"))
+        val classes = extractClassesAndObjects(fromText("enum class AB { A, B }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -254,7 +254,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle the enum ABC" {
-        val classes = extractClasses(fromText("enum class ABC(val i: Int) { A(1), B(2), C(3) }"))
+        val classes = extractClassesAndObjects(fromText("enum class ABC(val i: Int) { A(1), B(2), C(3) }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -267,7 +267,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle an enum with internal constructor parameter" {
-        val classes = extractClasses(fromText("enum class A(internal val i: Int) { A(1) }"))
+        val classes = extractClassesAndObjects(fromText("enum class A(internal val i: Int) { A(1) }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -280,7 +280,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle a private class" {
-        val classes = extractClasses(fromText("private class C()"))
+        val classes = extractClassesAndObjects(fromText("private class C()"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -292,7 +292,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle an internal class" {
-        val classes = extractClasses(fromText("internal class C()"))
+        val classes = extractClassesAndObjects(fromText("internal class C()"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -304,7 +304,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle an abstract class" {
-        val classes = extractClasses(fromText("abstract class C()"))
+        val classes = extractClassesAndObjects(fromText("abstract class C()"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -316,7 +316,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should handle an internal data class" {
-        val classes = extractClasses(fromText("internal data class C(val x: Int)"))
+        val classes = extractClassesAndObjects(fromText("internal data class C(val x: Int)"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -330,7 +330,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle an open class with a protected function" {
-        val classes = extractClasses(fromText("open class C() { protected fun f(): Int = 1 }"))
+        val classes = extractClassesAndObjects(fromText("open class C() { protected fun f(): Int = 1 }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -351,7 +351,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a value class" {
-        val classes = extractClasses(fromText("value class C(val x: Int)"))
+        val classes = extractClassesAndObjects(fromText("value class C(val x: Int)"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -364,7 +364,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a property inside a class" {
-        val classes = extractClasses(fromText("class C() { val y: Int = 1 }"))
+        val classes = extractClassesAndObjects(fromText("class C() { val y: Int = 1 }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -376,7 +376,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a property inside an object" {
-        val classes = extractClasses(fromText("object O { val y: Int = 1 }"))
+        val classes = extractClassesAndObjects(fromText("object O { val y: Int = 1 }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -388,7 +388,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a class inside a class" {
-        val classes = extractClasses(fromText("class C() { class D() }"))
+        val classes = extractClassesAndObjects(fromText("class C() { class D() }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -406,7 +406,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle an inner class inside a class" {
-        val classes = extractClasses(fromText("class C() { inner class D() }"))
+        val classes = extractClassesAndObjects(fromText("class C() { inner class D() }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -425,7 +425,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a class inside an object" {
-        val classes = extractClasses(fromText("object O { class D() }"))
+        val classes = extractClassesAndObjects(fromText("object O { class D() }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -443,7 +443,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle an object inside an object" {
-        val classes = extractClasses(fromText("object O { object P { fun f() = 1 } }"))
+        val classes = extractClassesAndObjects(fromText("object O { object P { fun f() = 1 } }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -462,7 +462,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle an object inside a class" {
-        val classes = extractClasses(fromText("class C { object P { fun f() = 1 } }"))
+        val classes = extractClassesAndObjects(fromText("class C { object P { fun f() = 1 } }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -481,7 +481,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a sealed interface" {
-        val classes = extractClasses(fromText("sealed interface SI { data class DC(val name: String) : SI }"))
+        val classes = extractClassesAndObjects(fromText("sealed interface SI { data class DC(val name: String) : SI }"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -503,7 +503,7 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClass should handle a sealed class" {
-        val classes = extractClasses(fromText("sealed class V { object O : V() { const val name = \"x\" }}"))
+        val classes = extractClassesAndObjects(fromText("sealed class V { object O : V() { const val name = \"x\" }}"))
         classes shouldBe
             listOf(
                 ClassSignature(
@@ -524,12 +524,12 @@ class ExtractClassesTest : StringSpec({
     }
 
     "extractClasses should return all classes" {
-        val classes = extractClasses(tree)
+        val classes = extractClassesAndObjects(tree)
         classes shouldContainExactlyInAnyOrder listOf(class1, class2, class3, class4, class5, enum1, enum2)
     }
 })
 
-private fun extractClasses(tree: KotlinParseTree): List<ClassSignature> {
+private fun extractClassesAndObjects(tree: KotlinParseTree): List<ClassSignature> {
     val result = mutableListOf<ClassSignature>()
     for (declaration in getDeclarations(tree)) {
         if (declaration.name == "classDeclaration") {

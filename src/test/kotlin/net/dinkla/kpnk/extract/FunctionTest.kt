@@ -12,7 +12,7 @@ import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-class ExtractFunctionsTest : StringSpec({
+class FunctionTest : StringSpec({
     "extractFunctions should return all functions in example code" {
         val functions = extractFunctions(tree)
         functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4, function5)
