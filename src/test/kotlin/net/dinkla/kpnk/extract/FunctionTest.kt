@@ -138,4 +138,4 @@ class FunctionTest : StringSpec({
 internal fun extractFunctions(tree: KotlinParseTree): List<FunctionSignature> =
     getDeclarations(tree)
         .filter { it.name == "functionDeclaration" }
-        .map { extractFunction(it) }
+        .map { extractFunctionSignature(it) }

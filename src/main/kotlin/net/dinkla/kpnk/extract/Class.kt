@@ -81,7 +81,7 @@ internal fun extractBody(tree: KotlinParseTree): List<Defined> {
                     .map { classMemberDeclaration ->
                         val declaration = classMemberDeclaration.children[0].children[0]
                         when (declaration.name) {
-                            "functionDeclaration" -> extractFunction(declaration)
+                            "functionDeclaration" -> extractFunctionSignature(declaration)
                             "propertyDeclaration" -> extractProperty(declaration)
                             "classDeclaration" -> extractClass(declaration)
                             "objectDeclaration" -> extractObject(declaration)

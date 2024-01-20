@@ -46,7 +46,7 @@ internal fun extractDefinitions(tree: KotlinParseTree): List<Defined> {
         when (declaration.name) {
             "classDeclaration" -> result += extractClass(declaration)
             "objectDeclaration" -> result += extractObject(declaration)
-            "functionDeclaration" -> result += extractFunction(declaration)
+            "functionDeclaration" -> result += extractFunctionSignature(declaration)
             "typeAlias" -> result += extractTypeAlias(declaration)
             "propertyDeclaration" -> result += extractProperty(declaration)
         }

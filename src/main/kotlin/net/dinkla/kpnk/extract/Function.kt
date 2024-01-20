@@ -5,7 +5,7 @@ import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-internal fun extractFunction(tree: KotlinParseTree): FunctionSignature {
+internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature {
     val memberModifier = extractMemberModifier(tree)
     val visibility = extractVisibilityModifier(tree)
     val name = extractSimpleIdentifier(tree)!!
