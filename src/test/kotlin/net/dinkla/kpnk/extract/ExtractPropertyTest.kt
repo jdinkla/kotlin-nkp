@@ -85,6 +85,42 @@ class ExtractPropertyTest : StringSpec({
                 Property("y", Type("String"), PropertyModifier.VAR),
             )
     }
+
+    "extractProperty should handle generic type List<String>" {
+        val properties = extractProperties(fromText("val x: List<String> = listOf()"))
+        properties shouldContainExactlyInAnyOrder
+            listOf(
+                Property(
+                    "x",
+                    Type("List<String>"),
+                    PropertyModifier.VAL,
+                ),
+            )
+    }
+
+    "extractProperty should handle generic type with multiple arguments" {
+        val properties = extractProperties(fromText("val x: Map<String, Int>"))
+        properties shouldContainExactlyInAnyOrder
+            listOf(
+                Property(
+                    "x",
+                    Type("Map<String,Int>"),
+                    PropertyModifier.VAL,
+                ),
+            )
+    }
+
+    "extractProperty should handle nested generic types" {
+        val properties = extractProperties(fromText("val x: List<Map<String, List<Int>>> = listOf()"))
+        properties shouldContainExactlyInAnyOrder
+            listOf(
+                Property(
+                    "x",
+                    Type("List<Map<String,List<Int>>>"),
+                    PropertyModifier.VAL,
+                ),
+            )
+    }
 })
 
 internal fun extractProperties(tree: KotlinParseTree): List<Property> =

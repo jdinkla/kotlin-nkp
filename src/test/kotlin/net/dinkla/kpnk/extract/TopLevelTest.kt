@@ -38,12 +38,12 @@ class TopLevelTest : StringSpec({
 
     "extractTypeAlias should extract typealias" {
         val typeAliases = extractTypeAliases(fromText("typealias Dictionary = Map<String, String>"))
-        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", Type("Map")))
+        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", Type("Map<String,String>")))
     }
 
     "extractTypeAlias should extract generic typealias" {
         val typeAliases = extractTypeAliases(fromText("typealias Dictionary<K> = Map<K, String>"))
-        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", Type("Map")))
+        typeAliases shouldContainExactly listOf(TypeAlias("Dictionary", Type("Map<K,String>")))
     }
 })
 

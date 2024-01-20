@@ -57,7 +57,7 @@ internal val function5 =
     FunctionSignature(
         "create",
         Type("Dictionary"),
-        listOf(FunctionParameter("ls", Type("List"))),
+        listOf(FunctionParameter("ls", Type("List<String>"))),
     )
 
 internal val class1 =

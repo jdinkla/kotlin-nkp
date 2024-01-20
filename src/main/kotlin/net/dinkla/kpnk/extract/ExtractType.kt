@@ -13,7 +13,23 @@ internal fun extractType(tree: KotlinParseTree): Type? {
         }
 
         "typeReference" -> {
-            Type(tree.children[0].findName("Identifier")?.text)
+            val simpleUserType = tree.children[0].findName("simpleUserType")!!
+            val identifier = simpleUserType.children[0].findName("Identifier")?.text
+            var rest: List<String> = listOf()
+            if (simpleUserType.children.size > 1) {
+                val typeArguments = simpleUserType.children[1]
+                assert(typeArguments.name == "typeArguments")
+                rest =
+                    typeArguments.children.map {
+                        when (it.name) {
+                            "LANGLE" -> "<"
+                            "RANGLE" -> ">"
+                            "COMMA" -> ","
+                            else -> extractType(it.children[0])?.name ?: "ERROR IN extractType"
+                        }
+                    }
+            }
+            Type("$identifier${rest.joinToString("")}")
         }
 
         "functionType" -> {
