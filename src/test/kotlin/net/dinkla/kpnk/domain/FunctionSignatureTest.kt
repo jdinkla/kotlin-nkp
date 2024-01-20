@@ -9,10 +9,7 @@ class FunctionSignatureTest : StringSpec({
             "f",
             Type("Int"),
             listOf(FunctionParameter("x", Type("Int"))),
-        ).prettyPrint() shouldBe
-            """
-            fun f(x: Int): Int
-            """.trimIndent()
+        ).prettyPrint() shouldBe "fun f(x: Int): Int"
     }
 
     "prettyPrint should return a string representation of a function private fun f(x: Int): Int" {
@@ -21,10 +18,7 @@ class FunctionSignatureTest : StringSpec({
             Type("Int"),
             listOf(FunctionParameter("x", Type("Int"))),
             visibilityModifier = VisibilityModifier.PRIVATE,
-        ).prettyPrint() shouldBe
-            """
-            private fun f(x: Int): Int
-            """.trimIndent()
+        ).prettyPrint() shouldBe "private fun f(x: Int): Int"
     }
 
     "prettyPrint should return a string representation of a function fun Ext.f(x: Int): Int" {
@@ -33,10 +27,7 @@ class FunctionSignatureTest : StringSpec({
             Type("Int"),
             listOf(FunctionParameter("x", Type("Int"))),
             extensionOf = "Ext",
-        ).prettyPrint() shouldBe
-            """
-            fun Ext.f(x: Int): Int
-            """.trimIndent()
+        ).prettyPrint() shouldBe "fun Ext.f(x: Int): Int"
     }
 
     "prettyPrint should return a string representation of a function override fun f(x: Int): Int" {
@@ -46,9 +37,14 @@ class FunctionSignatureTest : StringSpec({
             listOf(FunctionParameter("x", Type("Int"))),
             visibilityModifier = VisibilityModifier.PROTECTED,
             memberModifier = MemberModifier.OVERRIDE,
-        ).prettyPrint() shouldBe
-            """
-            protected override fun f(x: Int): Int
-            """.trimIndent()
+        ).prettyPrint() shouldBe "protected override fun f(x: Int): Int"
+    }
+
+    "prettyPrint should return a string representation of a function with generic arguments" {
+        FunctionSignature(
+            "reverse",
+            Type("List<Int>"),
+            listOf(FunctionParameter("xs", Type("List<Int>"))),
+        ).prettyPrint() shouldBe "fun reverse(xs: List<Int>): List<Int>"
     }
 })

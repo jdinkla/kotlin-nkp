@@ -2,10 +2,14 @@ package net.dinkla.kpnk.analysis
 
 import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.command.CommandManager
+import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.domain.prettyPrint
+import net.dinkla.kpnk.utilities.addSpaceAfter
 import java.io.File
 
 object ClassDiagram : Command {
@@ -16,23 +20,12 @@ object ClassDiagram : Command {
         args: Array<String>,
         fileInfos: FileInfos?,
     ) {
-        val classes =
-            fileInfos!!.flatMap { fileInfo ->
-                fileInfo.topLevel.classes
-            }
+        val classes = fileInfos!!.flatMap { it.topLevel.classes }.filter { !it.name.endsWith("Test") }
         val content = generateDiagram(classes)
         if (args.isEmpty()) {
             println(content)
         } else {
-            val filename = args[0]
-            if (filename.endsWith(".mermaid")) {
-                File(filename).writeText(content)
-            } else if (filename.endsWith(".html")) {
-                saveAsHtml(filename, content)
-            } else {
-                println("Unknown file extension: $filename")
-                CommandManager.synopsis()
-            }
+            writeFile(args[0], content)
         }
     }
 
@@ -42,19 +35,20 @@ object ClassDiagram : Command {
             append("direction LR\n")
             classes.forEach { clazz ->
                 append("class ${clazz.name}")
-                if (clazz.declarations.isNotEmpty() || clazz.parameters.isNotEmpty()) {
+                val isEmpty = clazz.parameters.isEmpty() && clazz.properties.isEmpty() && clazz.functions.isEmpty()
+                if (!isEmpty) {
                     append(" {\n")
                     clazz.parameters.forEach { parameter ->
                         val modSign = modSign(parameter.visibilityModifier)
-                        append("  $modSign ${parameter.prettyPrint()}\n")
+                        append("  $modSign ${parameter.mermaid()}\n")
                     }
                     clazz.properties.forEach { property ->
                         val modSign = modSign(property.visibilityModifier)
-                        append("  $modSign ${property.prettyPrint()}\n")
+                        append("  $modSign ${property.mermaid()}\n")
                     }
                     clazz.functions.forEach { function ->
                         val modSign = modSign(function.visibilityModifier)
-                        append("  $modSign ${function.prettyPrint()}\n")
+                        append("  $modSign ${function.mermaid()}\n")
                     }
                     append("}")
                 }
@@ -94,4 +88,43 @@ private fun saveAsHtml(
         </html>
         """.trimIndent(),
     )
+}
+
+val re = Regex("[<>]")
+
+fun String.fix(): String = replace(re, "~").replace("-~", "->")
+
+private fun FunctionSignature.mermaid(): String {
+    val prettyReturnType = if (returnType == null) "" else ": $returnType".fix()
+    val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint().fix() }
+    val ext = if (extensionOf == null) "" else "$extensionOf."
+    val memberMod = addSpaceAfter(memberModifier.prettyPrint())
+    return "${memberMod}fun $ext$name($prettyParameters)$prettyReturnType"
+}
+
+private fun Property.mermaid(): String {
+    val mMod = addSpaceAfter(memberModifier.map { it.prettyPrint() }.sortedDescending().joinToString(" "))
+    val mod = modifier.text
+    val type = if (dataType != null) " : $dataType" else ""
+    return "$mMod$mod $name$type"
+}
+
+private fun ClassParameter.mermaid(): String {
+    val property = addSpaceAfter(propertyModifier.prettyPrint())
+    return "$property$name: $type"
+}
+
+private fun writeFile(
+    filename: String,
+    content: String,
+) {
+    if (filename.endsWith(".mermaid")) {
+        File(filename).writeText(content)
+    } else if (filename.endsWith(".html")) {
+        saveAsHtml(filename, content)
+    } else {
+        println("Unknown file extension: $filename")
+        CommandManager.synopsis()
+    }
 }
