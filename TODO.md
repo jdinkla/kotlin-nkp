@@ -9,11 +9,7 @@ Kotlin language
 
 2. secondary constructor see MeshTriangle
 3. open fun f()
-4. type parameter are ignored or now
-    - List vs List<String>
-    - Map<String, String> in extractType()
-    - Dict<K> in extractTypeAlias()
-5. private constructor
+4. private constructor
 
 bug: a property called property has a PROPERTY node
 
