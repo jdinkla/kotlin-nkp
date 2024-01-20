@@ -4,8 +4,9 @@ import net.dinkla.kpnk.analysis.ClassDiagram
 import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.analysis.Inheritance
 import net.dinkla.kpnk.analysis.Outliers
-import net.dinkla.kpnk.analysis.SaveCommand
 import net.dinkla.kpnk.analysis.Search
+import net.dinkla.kpnk.command.CommandManager
+import net.dinkla.kpnk.command.SaveCommand
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
 import org.slf4j.Logger

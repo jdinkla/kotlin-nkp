@@ -1,7 +1,7 @@
 package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.Command
-import net.dinkla.kpnk.CommandManager
+import net.dinkla.kpnk.command.Command
+import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.domain.VisibilityModifier

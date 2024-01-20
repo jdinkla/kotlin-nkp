@@ -1,6 +1,6 @@
 package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.Command
+import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos

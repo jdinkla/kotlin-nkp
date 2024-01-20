@@ -3,8 +3,8 @@ package net.dinkla.kpnk.analysis
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import net.dinkla.kpnk.Command
-import net.dinkla.kpnk.CommandManager
+import net.dinkla.kpnk.command.Command
+import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
 import java.io.File

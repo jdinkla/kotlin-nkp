@@ -1,7 +1,5 @@
-package net.dinkla.kpnk.analysis
+package net.dinkla.kpnk.command
 
-import net.dinkla.kpnk.Command
-import net.dinkla.kpnk.CommandManager
 import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
 
