@@ -3,6 +3,11 @@ package net.dinkla.kpnk.extract
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.class1
+import net.dinkla.kpnk.class2
+import net.dinkla.kpnk.class3
+import net.dinkla.kpnk.class4
+import net.dinkla.kpnk.class5
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
@@ -13,6 +18,9 @@ import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
+import net.dinkla.kpnk.enum1
+import net.dinkla.kpnk.enum2
+import net.dinkla.kpnk.tree
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
@@ -200,7 +208,8 @@ class ClassTest : StringSpec({
                         listOf(
                             FunctionSignature(
                                 "f",
-                                Type("Int"), listOf(FunctionParameter("x", Type("Int"))),
+                                Type("Int"),
+                                listOf(FunctionParameter("x", Type("Int"))),
                             ),
                         ),
                     elementType = ClassSignature.Type.INTERFACE,

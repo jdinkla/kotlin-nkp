@@ -1,4 +1,4 @@
-package net.dinkla.kpnk.extract
+package net.dinkla.kpnk
 
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
@@ -11,7 +11,9 @@ import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
+import net.dinkla.kpnk.domain.TopLevel
 import net.dinkla.kpnk.domain.Type
+import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.utilities.fromFile
 
@@ -158,3 +160,15 @@ internal val enum2 =
 internal val property1 = Property("myProperty", Type("String"), PropertyModifier.VAL)
 internal val property2 = Property("THE_ANSWER", Type("Int"), PropertyModifier.CONST_VAL, VisibilityModifier.INTERNAL)
 internal val property3 = Property("twentyOne", null, PropertyModifier.VAL, VisibilityModifier.PRIVATE)
+
+internal val f1 = FunctionSignature("f1")
+internal val f2 = FunctionSignature("f2")
+internal val c1 = ClassSignature("C")
+internal val ta1 = TypeAlias("TA", Type("Int"))
+internal val p1 = Property("p1", Type("Int"))
+internal val topLevel =
+    TopLevel(
+        FullyQualifiedName("net.dinkla.kpnk"),
+        imports = expectedImports,
+        declarations = listOf(f1, f2, c1, ta1, p1),
+    )

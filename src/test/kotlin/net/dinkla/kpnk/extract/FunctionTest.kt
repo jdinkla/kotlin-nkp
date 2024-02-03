@@ -9,6 +9,12 @@ import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.VisibilityModifier
+import net.dinkla.kpnk.function1
+import net.dinkla.kpnk.function2
+import net.dinkla.kpnk.function3
+import net.dinkla.kpnk.function4
+import net.dinkla.kpnk.function5
+import net.dinkla.kpnk.tree
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 

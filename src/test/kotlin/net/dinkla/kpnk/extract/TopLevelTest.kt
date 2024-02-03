@@ -4,10 +4,27 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import net.dinkla.kpnk.class1
+import net.dinkla.kpnk.class2
+import net.dinkla.kpnk.class3
+import net.dinkla.kpnk.class4
+import net.dinkla.kpnk.class5
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
+import net.dinkla.kpnk.enum1
+import net.dinkla.kpnk.enum2
+import net.dinkla.kpnk.expectedImports
+import net.dinkla.kpnk.function1
+import net.dinkla.kpnk.function2
+import net.dinkla.kpnk.function3
+import net.dinkla.kpnk.function4
+import net.dinkla.kpnk.function5
+import net.dinkla.kpnk.property1
+import net.dinkla.kpnk.property2
+import net.dinkla.kpnk.property3
+import net.dinkla.kpnk.tree
 import net.dinkla.kpnk.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
