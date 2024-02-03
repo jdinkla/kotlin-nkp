@@ -2,7 +2,7 @@ package net.dinkla.kpnk.command
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 
 class CommandManagerTest : StringSpec({
     "get should return a command after it was inserted" {
@@ -22,6 +22,6 @@ private object DummyCommand : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos,
+        files: Files,
     ) = Unit
 }

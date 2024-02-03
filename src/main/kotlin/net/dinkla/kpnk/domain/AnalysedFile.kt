@@ -2,7 +2,7 @@ package net.dinkla.kpnk.domain
 
 import kotlinx.serialization.Serializable
 
-typealias FileInfos = List<AnalysedFile>
+typealias Files = List<AnalysedFile>
 
 @Serializable
 data class AnalysedFile(

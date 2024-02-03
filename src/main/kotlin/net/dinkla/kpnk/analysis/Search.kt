@@ -3,7 +3,7 @@ package net.dinkla.kpnk.analysis
 import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.logger
 
@@ -12,10 +12,10 @@ object Search : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos,
+        files: Files,
     ) {
         if (args.size == 1) {
-            reportSearch(fileInfos!!, args[0])
+            reportSearch(files!!, args[0])
         } else {
             CommandManager.synopsis()
         }
@@ -23,7 +23,7 @@ object Search : Command {
 }
 
 fun reportSearch(
-    infos: FileInfos,
+    infos: Files,
     clazz: String,
 ) {
     logger.info("*** searchClass ***")
@@ -39,18 +39,18 @@ fun reportSearch(
     impls.forEach { println(it.prettyPrint()) }
 }
 
-fun FileInfos.searchClass(className: String): List<ClassSignature> =
-    flatMap { fileInfo -> fileInfo.classes }
+fun Files.searchClass(className: String): List<ClassSignature> =
+    flatMap { file -> file.classes }
         .filter { clazz -> clazz.name == className }
 
-fun FileInfos.searchHierarchy(className: String): List<ClassSignature> {
+fun Files.searchHierarchy(className: String): List<ClassSignature> {
     val cls = searchClass(className)
     return cls +
         cls.flatMap { clazz -> clazz.inheritedFrom }
             .flatMap { this.searchHierarchy(it) }
 }
 
-fun FileInfos.searchImplementers(className: String): List<ClassSignature> {
-    return flatMap { fileInfo -> fileInfo.classes }
+fun Files.searchImplementers(className: String): List<ClassSignature> {
+    return flatMap { file -> file.classes }
         .filter { clazz -> clazz.inheritedFrom.contains(className) }
 }

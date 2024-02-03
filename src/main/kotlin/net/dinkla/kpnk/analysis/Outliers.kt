@@ -3,7 +3,7 @@ package net.dinkla.kpnk.analysis
 import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.logger
 
 object Outliers : Command {
@@ -11,9 +11,9 @@ object Outliers : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos,
+        files: Files,
     ) {
-        reportLargeClasses(fileInfos)
+        reportLargeClasses(files)
     }
 }
 

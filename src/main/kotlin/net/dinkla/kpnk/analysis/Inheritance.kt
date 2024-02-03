@@ -1,7 +1,7 @@
 package net.dinkla.kpnk.analysis
 
 import net.dinkla.kpnk.command.Command
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.logger
 
 object Inheritance : Command {
@@ -9,21 +9,21 @@ object Inheritance : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos,
+        files: Files,
     ) {
-        reportInheritance(fileInfos)
+        reportInheritance(files)
     }
 }
 
-internal fun reportInheritance(infos: FileInfos) {
+internal fun reportInheritance(infos: Files) {
     logger.info("*** Inheritance ***")
     infos.inheritance().sortedByDescending { it.second + it.third }.forEach {
         println(it)
     }
 }
 
-internal fun FileInfos.inheritance(): List<Triple<String, Int, Int>> {
-    return flatMap { fileInfo -> fileInfo.classes }.map {
+internal fun Files.inheritance(): List<Triple<String, Int, Int>> {
+    return flatMap { file -> file.classes }.map {
         val h = this.searchHierarchy(it.name)
         val l = this.searchImplementers(it.name)
         Triple(it.name, h.size - 1, l.size)

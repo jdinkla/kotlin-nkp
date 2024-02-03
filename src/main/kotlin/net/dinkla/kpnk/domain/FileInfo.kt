@@ -9,7 +9,7 @@ import net.dinkla.kpnk.utilities.parseFilesFromDirectory
 import java.io.File
 
 object FileInfo {
-    fun readFromDirectory(directory: String): FileInfos =
+    fun readFromDirectory(directory: String): Files =
         runBlocking(Dispatchers.Default) {
             logger.info("Reading and saving from directory '$directory'")
             val allInfos = parseFilesFromDirectory(directory).map { it.await() }
@@ -17,13 +17,13 @@ object FileInfo {
             allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
         }
 
-    fun loadFromJsonFile(fileName: String): FileInfos {
+    fun loadFromJsonFile(fileName: String): Files {
         val string = File(fileName).readText()
         return Json.decodeFromString<List<AnalysedFile>>(string)
     }
 
     fun saveToJsonFile(
-        infos: FileInfos,
+        infos: Files,
         fileName: String,
     ) {
         val string = Json.encodeToString(infos)

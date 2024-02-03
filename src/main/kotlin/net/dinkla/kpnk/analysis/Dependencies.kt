@@ -5,7 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.command.CommandManager
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 import java.io.File
 
 object DependenciesCommand : Command {
@@ -13,9 +13,9 @@ object DependenciesCommand : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos,
+        files: Files,
     ) {
-        val dependencies = Dependencies.from(dependencies(fileInfos))
+        val dependencies = Dependencies.from(dependencies(files))
         val string = Json.encodeToString(dependencies)
         if (args.size == 2 && args[0] == "--output") {
             val filename = args[1]
@@ -43,7 +43,7 @@ internal data class Dependencies(val dependencies: List<Dependency>) {
     }
 }
 
-internal fun dependencies(files: FileInfos): Map<String, Set<String>> {
+internal fun dependencies(files: Files): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
     for (file in files) {
         val name = file.packageName()

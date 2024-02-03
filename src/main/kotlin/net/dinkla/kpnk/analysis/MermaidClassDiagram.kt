@@ -4,7 +4,7 @@ import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.VisibilityModifier
@@ -18,9 +18,9 @@ object MermaidClassDiagram : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos,
+        files: Files,
     ) {
-        val classes = fileInfos.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
+        val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
         val content = generateDiagram(classes)
         if (args.isEmpty()) {
             println(content)

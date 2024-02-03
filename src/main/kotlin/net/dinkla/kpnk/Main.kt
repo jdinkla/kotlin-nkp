@@ -8,7 +8,7 @@ import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.command.SaveCommand
 import net.dinkla.kpnk.domain.FileInfo
-import net.dinkla.kpnk.domain.FileInfos
+import net.dinkla.kpnk.domain.Files
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -39,12 +39,12 @@ fun main(args: Array<String>) {
         CommandManager.synopsis()
         exitProcess(-1)
     } else {
-        val infos: FileInfos = read(args[0])
+        val infos: Files = read(args[0])
         command.execute(args.drop(2).toTypedArray(), infos)
     }
 }
 
-private fun read(fileName: String): FileInfos {
+private fun read(fileName: String): Files {
     val file = File(fileName)
     return if (file.isDirectory) {
         FileInfo.readFromDirectory(file.absolutePath)
