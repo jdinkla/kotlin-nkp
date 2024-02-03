@@ -20,4 +20,9 @@ data class TopLevel(
 
     val typeAliases: List<TypeAlias>
         get() = declarations.filterIsInstance<TypeAlias>()
+
+    fun packageName(): String {
+        val name = fileName.basename.replace(".kt", "")
+        return "$packageName.$name"
+    }
 }

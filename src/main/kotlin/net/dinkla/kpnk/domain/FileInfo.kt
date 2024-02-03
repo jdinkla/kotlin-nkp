@@ -14,11 +14,6 @@ data class FileInfo(
     val fileName: FileName,
     val topLevel: TopLevel,
 ) {
-    fun packageName(): String {
-        val name = fileName.basename.replace(".kt", "")
-        return topLevel.packageName.toString() + "." + name
-    }
-
     companion object {
         fun readFromDirectory(directory: String): FileInfos =
             runBlocking(Dispatchers.Default) {

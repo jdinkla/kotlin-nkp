@@ -6,12 +6,13 @@ import kotlin.io.path.name
 
 class FileInfoTest : StringSpec({
     "packageName should return the package and the filename" {
+        val fileName = FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt")
         val info =
             FileInfo(
-                FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-                TopLevel(FileName(""), FullyQualifiedName("net.dinkla.kpnk")),
+                fileName,
+                TopLevel(fileName, FullyQualifiedName("net.dinkla.kpnk")),
             )
-        info.packageName() shouldBe "net.dinkla.kpnk.HelloWorld"
+        info.topLevel.packageName() shouldBe "net.dinkla.kpnk.HelloWorld"
     }
 
     "readFromDirectory should read directory" {

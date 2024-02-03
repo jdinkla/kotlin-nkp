@@ -11,12 +11,14 @@ import net.dinkla.kpnk.domain.TopLevel
 
 class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
+        val fileName1 = FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt")
+        val fileName2 = FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt")
         val infos =
             listOf(
                 FileInfo(
-                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
+                    fileName1,
                     TopLevel(
-                        FileName(""),
+                        fileName1,
                         FullyQualifiedName("net.dinkla.kpnk"),
                         listOf(
                             Import(FullyQualifiedName("kotlin.math.max")),
@@ -26,9 +28,9 @@ class DependenciesTest : StringSpec({
                     ),
                 ),
                 FileInfo(
-                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
+                    fileName2,
                     TopLevel(
-                        FileName(""),
+                        fileName2,
                         FullyQualifiedName("net.dinkla.kpnk"),
                         listOf(Import(FullyQualifiedName("kotlin.math.min"))),
                     ),
