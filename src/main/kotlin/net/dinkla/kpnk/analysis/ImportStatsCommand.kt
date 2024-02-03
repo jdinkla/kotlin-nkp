@@ -9,7 +9,7 @@ import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.Package
 import java.io.File
 
-object ImportsCommand : Command {
+object ImportStatsCommand : Command {
     override val description: String = "reports details about imports to stdout or to a file with --output <filename>"
 
     override fun execute(
