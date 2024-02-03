@@ -6,6 +6,7 @@ import net.dinkla.kpnk.analysis.ImportsCommand
 import net.dinkla.kpnk.analysis.Inheritance
 import net.dinkla.kpnk.analysis.MermaidClassDiagram
 import net.dinkla.kpnk.analysis.Outliers
+import net.dinkla.kpnk.analysis.OverviewCommand
 import net.dinkla.kpnk.analysis.PackagesCommand
 import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.command.CommandManager
@@ -29,6 +30,7 @@ private val commands =
         "details" to DetailsCommand,
         "packages" to PackagesCommand,
         "imports" to ImportsCommand,
+        "overview" to OverviewCommand,
     )
 
 fun main(args: Array<String>) {
