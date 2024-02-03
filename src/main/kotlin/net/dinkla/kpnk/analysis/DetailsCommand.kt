@@ -13,7 +13,7 @@ object DetailsCommand : Command {
         files: Files,
     ) {
         // val classDetails = "ClassDetails.from(classDetails(fileInfos!!))"
-        f(files)
+        details(files)
         val string = "Json.encodeToString(classDetails)"
         if (args.size == 2 && args[0] == "--output") {
             val filename = args[1]
@@ -26,7 +26,7 @@ object DetailsCommand : Command {
     }
 }
 
-fun f(files: Files) {
+private fun details(files: Files) {
     for (file in files) {
         println(
             """
@@ -48,18 +48,4 @@ fun f(files: Files) {
             )
         }
     }
-}
-
-fun String.addIndent(n: Int): String {
-    val sb = StringBuilder()
-    for (line in this.lines()) {
-        if (line.isBlank()) {
-            sb.append("\n")
-        } else {
-            sb.append(" ".repeat(n))
-            sb.append(line)
-            sb.append("\n")
-        }
-    }
-    return sb.toString()
 }
