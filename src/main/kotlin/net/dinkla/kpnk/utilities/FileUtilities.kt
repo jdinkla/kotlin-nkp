@@ -31,7 +31,7 @@ private fun addFileIfItMatches(
     }
 }
 
-private fun shouldFileBeAdded(it: File) =
+internal fun shouldFileBeAdded(it: File) =
     if (it.absolutePath.contains("/.idea/")) {
         logger.trace("skipping file ${it.absolutePath}")
         false
