@@ -1,8 +1,8 @@
 package net.dinkla.kpnk
 
-import net.dinkla.kpnk.analysis.ClassDiagram
 import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.analysis.Inheritance
+import net.dinkla.kpnk.analysis.MermaidClassDiagram
 import net.dinkla.kpnk.analysis.Outliers
 import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.command.CommandManager
@@ -23,7 +23,7 @@ private val commands =
         "outliers" to Outliers,
         "search" to Search,
         "save" to SaveCommand,
-        "class_diagram" to ClassDiagram,
+        "mermaid-class-diagram" to MermaidClassDiagram,
     )
 
 fun main(args: Array<String>) {
