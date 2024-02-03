@@ -24,4 +24,15 @@ lambda with receiver
 fun with receiver
 
 
+## Ideas for analysis
+
+### Imports
+
+Import from same package
+Import from sub package
+Import from same project
+Other imports
+
+
+
 
