@@ -2,6 +2,7 @@ package net.dinkla.kpnk
 
 import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.analysis.DetailsCommand
+import net.dinkla.kpnk.analysis.ImportsCommand
 import net.dinkla.kpnk.analysis.Inheritance
 import net.dinkla.kpnk.analysis.MermaidClassDiagram
 import net.dinkla.kpnk.analysis.Outliers
@@ -27,6 +28,7 @@ private val commands =
         "mermaid-class-diagram" to MermaidClassDiagram,
         "details" to DetailsCommand,
         "packages" to PackagesCommand,
+        "imports" to ImportsCommand,
     )
 
 fun main(args: Array<String>) {
