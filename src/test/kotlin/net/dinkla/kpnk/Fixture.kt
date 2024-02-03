@@ -3,6 +3,7 @@ package net.dinkla.kpnk
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
+import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionParameter
 import net.dinkla.kpnk.domain.FunctionSignature
@@ -168,6 +169,7 @@ internal val ta1 = TypeAlias("TA", Type("Int"))
 internal val p1 = Property("p1", Type("Int"))
 internal val topLevel =
     TopLevel(
+        FileName("exampleFile.kt"),
         FullyQualifiedName("net.dinkla.kpnk"),
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),

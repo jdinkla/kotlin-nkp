@@ -52,7 +52,7 @@ private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<
             try {
                 logger.trace("handling file $it")
                 val tree = fromFile(it)
-                val fileInfo = extract(tree)
+                val fileInfo = extract(FileName(it), tree)
                 Result.success(FileInfo(FileName(it), fileInfo))
             } catch (e: Exception) {
                 logger.error("parsing '$it' yields ${e.message}")

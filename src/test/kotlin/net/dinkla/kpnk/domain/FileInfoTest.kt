@@ -9,7 +9,7 @@ class FileInfoTest : StringSpec({
         val info =
             FileInfo(
                 FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-                TopLevel(FullyQualifiedName("net.dinkla.kpnk")),
+                TopLevel(FileName(""), FullyQualifiedName("net.dinkla.kpnk")),
             )
         info.packageName() shouldBe "net.dinkla.kpnk.HelloWorld"
     }

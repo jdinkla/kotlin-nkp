@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TopLevel(
+    val fileName: FileName,
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),
     val declarations: List<Defined> = listOf(),

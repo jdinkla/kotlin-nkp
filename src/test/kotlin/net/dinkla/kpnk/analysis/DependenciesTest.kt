@@ -16,6 +16,7 @@ class DependenciesTest : StringSpec({
                 FileInfo(
                     FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
                     TopLevel(
+                        FileName(""),
                         FullyQualifiedName("net.dinkla.kpnk"),
                         listOf(
                             Import(FullyQualifiedName("kotlin.math.max")),
@@ -27,6 +28,7 @@ class DependenciesTest : StringSpec({
                 FileInfo(
                     FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
                     TopLevel(
+                        FileName(""),
                         FullyQualifiedName("net.dinkla.kpnk"),
                         listOf(Import(FullyQualifiedName("kotlin.math.min"))),
                     ),

@@ -5,7 +5,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.command.CommandManager
-import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
 import java.io.File
 
@@ -44,7 +43,7 @@ internal data class Dependencies(val dependencies: List<Dependency>) {
     }
 }
 
-internal fun dependencies(infos: List<FileInfo>): Map<String, Set<String>> {
+internal fun dependencies(infos: FileInfos): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
     for (info in infos) {
         val name = info.packageName()
