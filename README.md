@@ -46,4 +46,12 @@ $ ./gradlew publishToMavenLocal
 $ cd ..
 ```
 
+### Upgrade dependencies
+
+The project uses [refreshVersions](https://splitties.github.io/refreshVersions/)
+
+```sh
+$ gradle refreshVersions
+```
+
 (c) 2023 - 2024 Jörn Dinkla https://www.dinkla.net
