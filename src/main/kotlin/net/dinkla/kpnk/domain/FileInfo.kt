@@ -11,7 +11,6 @@ import java.io.File
 
 @Serializable
 data class FileInfo(
-    val fileName: FileName,
     val topLevel: TopLevel,
 ) {
     companion object {

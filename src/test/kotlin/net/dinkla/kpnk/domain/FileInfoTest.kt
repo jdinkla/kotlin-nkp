@@ -6,11 +6,12 @@ import kotlin.io.path.name
 
 class FileInfoTest : StringSpec({
     "packageName should return the package and the filename" {
-        val fileName = FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt")
         val info =
             FileInfo(
-                fileName,
-                TopLevel(fileName, FullyQualifiedName("net.dinkla.kpnk")),
+                TopLevel(
+                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
+                    FullyQualifiedName("net.dinkla.kpnk"),
+                ),
             )
         info.topLevel.packageName() shouldBe "net.dinkla.kpnk.HelloWorld"
     }

@@ -23,7 +23,7 @@ class OutliersTest : StringSpec({
 })
 
 private fun info(classSignatures: List<ClassSignature>) =
-    FileInfo(FileName("a"), TopLevel(FileName(""), FullyQualifiedName("name"), declarations = classSignatures))
+    FileInfo(TopLevel(FileName("a"), FullyQualifiedName("name"), declarations = classSignatures))
 
 private fun cls(numElems: Int) =
     ClassSignature(
