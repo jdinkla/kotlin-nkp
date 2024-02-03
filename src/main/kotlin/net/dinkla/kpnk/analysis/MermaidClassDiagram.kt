@@ -20,7 +20,7 @@ object MermaidClassDiagram : Command {
         args: Array<String>,
         fileInfos: FileInfos?,
     ) {
-        val classes = fileInfos!!.flatMap { it.topLevel.classes }.filter { !it.name.endsWith("Test") }
+        val classes = fileInfos!!.flatMap { it.analysedFile.classes }.filter { !it.name.endsWith("Test") }
         val content = generateDiagram(classes)
         if (args.isEmpty()) {
             println(content)

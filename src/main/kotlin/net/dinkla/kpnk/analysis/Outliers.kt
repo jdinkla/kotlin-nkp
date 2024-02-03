@@ -35,6 +35,6 @@ internal fun largeClasses(
     infos: List<FileInfo>,
     topN: Int,
 ): List<ClassSignature> {
-    val allClasses = infos.flatMap { it.topLevel.classes }
+    val allClasses = infos.flatMap { it.analysedFile.classes }
     return allClasses.sortedByDescending { it.declarations.size }.take(topN)
 }

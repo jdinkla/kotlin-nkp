@@ -3,7 +3,7 @@ package net.dinkla.kpnk.domain
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import net.dinkla.kpnk.topLevel
+import net.dinkla.kpnk.analysedFile
 
 class PrettyPrintTest : StringSpec({
     "prettyPrint should return a string representation of default class" {
@@ -21,7 +21,7 @@ class PrettyPrintTest : StringSpec({
     }
 
     "prettyPrint should show the toplevel" {
-        val lines = topLevel.prettyPrint().lines()
+        val lines = analysedFile.prettyPrint().lines()
         lines.size shouldBe 14
         val text = lines.joinToString("\n")
         text shouldContain "import"

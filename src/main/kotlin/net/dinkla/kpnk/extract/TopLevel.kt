@@ -1,20 +1,20 @@
 package net.dinkla.kpnk.extract
 
+import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
-import net.dinkla.kpnk.domain.TopLevel
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun extract(
     fileName: FileName,
     tree: KotlinParseTree,
-): TopLevel {
+): AnalysedFile {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val declarations = extractDefinitions(tree)
-    return TopLevel(fileName, packageName, imports, declarations)
+    return AnalysedFile(fileName, packageName, imports, declarations)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {

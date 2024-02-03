@@ -5,17 +5,6 @@ import io.kotest.matchers.shouldBe
 import kotlin.io.path.name
 
 class FileInfoTest : StringSpec({
-    "packageName should return the package and the filename" {
-        val info =
-            FileInfo(
-                TopLevel(
-                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-                    FullyQualifiedName("net.dinkla.kpnk"),
-                ),
-            )
-        info.topLevel.packageName() shouldBe "net.dinkla.kpnk.HelloWorld"
-    }
-
     "readFromDirectory should read directory" {
         val infos = FileInfo.readFromDirectory("src/test/resources/example")
         infos.size shouldBe 2

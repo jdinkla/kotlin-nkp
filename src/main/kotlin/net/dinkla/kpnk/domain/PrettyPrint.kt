@@ -1,6 +1,6 @@
 package net.dinkla.kpnk.domain
 
-fun TopLevel.prettyPrint(): String {
+fun AnalysedFile.prettyPrint(): String {
     var isLineNeeded = false
     return buildString {
         appendLine("package $packageName")

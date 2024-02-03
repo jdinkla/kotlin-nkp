@@ -3,7 +3,7 @@ package net.dinkla.kpnk.domain
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TopLevel(
+data class AnalysedFile(
     val fileName: FileName,
     val packageName: FullyQualifiedName,
     val imports: List<Import> = listOf(),

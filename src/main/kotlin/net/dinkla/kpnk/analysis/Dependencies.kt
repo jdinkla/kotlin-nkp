@@ -46,8 +46,8 @@ internal data class Dependencies(val dependencies: List<Dependency>) {
 internal fun dependencies(infos: FileInfos): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
     for (info in infos) {
-        val name = info.topLevel.packageName()
-        for (imp in info.topLevel.imports) {
+        val name = info.analysedFile.packageName()
+        for (imp in info.analysedFile.imports) {
             val set = dependencies.getOrDefault(name, mutableSetOf())
             set += imp.packageName
             dependencies[name] = set

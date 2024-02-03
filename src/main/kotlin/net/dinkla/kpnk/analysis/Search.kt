@@ -40,7 +40,7 @@ fun reportSearch(
 }
 
 fun FileInfos.searchClass(className: String): List<ClassSignature> =
-    flatMap { fileInfo -> fileInfo.topLevel.classes }
+    flatMap { fileInfo -> fileInfo.analysedFile.classes }
         .filter { clazz -> clazz.name == className }
 
 fun FileInfos.searchHierarchy(className: String): List<ClassSignature> {
@@ -51,6 +51,6 @@ fun FileInfos.searchHierarchy(className: String): List<ClassSignature> {
 }
 
 fun FileInfos.searchImplementers(className: String): List<ClassSignature> {
-    return flatMap { fileInfo -> fileInfo.topLevel.classes }
+    return flatMap { fileInfo -> fileInfo.analysedFile.classes }
         .filter { clazz -> clazz.inheritedFrom.contains(className) }
 }

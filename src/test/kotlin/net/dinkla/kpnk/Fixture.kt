@@ -1,5 +1,6 @@
 package net.dinkla.kpnk
 
+import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
@@ -12,7 +13,6 @@ import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
-import net.dinkla.kpnk.domain.TopLevel
 import net.dinkla.kpnk.domain.Type
 import net.dinkla.kpnk.domain.TypeAlias
 import net.dinkla.kpnk.domain.VisibilityModifier
@@ -167,9 +167,9 @@ internal val f2 = FunctionSignature("f2")
 internal val c1 = ClassSignature("C")
 internal val ta1 = TypeAlias("TA", Type("Int"))
 internal val p1 = Property("p1", Type("Int"))
-internal val topLevel =
-    TopLevel(
-        FileName("exampleFile.kt"),
+internal val analysedFile =
+    AnalysedFile(
+        FileName("ExampleFile.kt"),
         FullyQualifiedName("net.dinkla.kpnk"),
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),

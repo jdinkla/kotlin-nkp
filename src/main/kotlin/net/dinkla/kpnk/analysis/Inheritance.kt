@@ -23,7 +23,7 @@ internal fun reportInheritance(infos: FileInfos) {
 }
 
 internal fun FileInfos.inheritance(): List<Triple<String, Int, Int>> {
-    return flatMap { fileInfo -> fileInfo.topLevel.classes }.map {
+    return flatMap { fileInfo -> fileInfo.analysedFile.classes }.map {
         val h = this.searchHierarchy(it.name)
         val l = this.searchImplementers(it.name)
         Triple(it.name, h.size - 1, l.size)

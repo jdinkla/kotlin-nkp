@@ -11,7 +11,7 @@ import java.io.File
 
 @Serializable
 data class FileInfo(
-    val topLevel: TopLevel,
+    val analysedFile: AnalysedFile,
 ) {
     companion object {
         fun readFromDirectory(directory: String): FileInfos =
