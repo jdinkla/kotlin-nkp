@@ -14,7 +14,7 @@ class FilesTest : StringSpec({
         packages.size shouldBe 1
         packages shouldContainExactly
             listOf(
-                PackageName("example"),
+                Package(PackageName("example"), files),
             )
     }
 
