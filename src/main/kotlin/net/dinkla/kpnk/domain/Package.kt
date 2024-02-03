@@ -10,6 +10,8 @@ data class Package(
     override val declarations: List<Defined>
         get() = files.flatMap { it.declarations }
 
+    fun imports(): List<Import> = files.flatMap { it.imports }
+
     override fun toString(): String {
         return "${packageName.name}: ${files.joinToString(", ") { it.packageName() }}"
     }

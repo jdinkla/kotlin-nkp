@@ -23,6 +23,7 @@ object ImportsCommand : Command {
             val string = Json.encodeToString(imports)
             File(filename).writeText(string)
         } else if (args.isEmpty()) {
+            println("Package,Total,FromSubPackage,FromSuperPackage,FromSidePackage,FromOtherPackage")
             println(imports.joinToString("\n"))
         } else {
             CommandManager.synopsis()
@@ -31,28 +32,30 @@ object ImportsCommand : Command {
 }
 
 @Serializable
-private data class Stats(
+private data class ImportStats(
     val name: String,
-    val files: Int,
-    val functions: Int,
-    val properties: Int,
-    val classes: Int,
-    val typeAliases: Int,
+    val total: Int,
+    val fromSubPackage: Int,
+    val fromSuperPackage: Int,
+    val fromSidePackage: Int,
+    val fromOtherPackage: Int,
 ) {
-    override fun toString(): String =
-        "$name, $files files, $classes classes $functions functions, $properties properties, $typeAliases type aliases"
+    override fun toString(): String
+        = "$name, $total, $fromSubPackage, $fromSuperPackage, $fromSidePackage, $fromOtherPackage"
 
     companion object {
-        fun from(p: Package): Stats {
-            val name = p.packageName.name
-            val files = p.files.size
-            val functions = p.functions.size
-            val properties = p.properties.size
-            val classes = p.classes.size
-            val typeAliases = p.typeAliases.size
-            return Stats(name, files, functions, properties, classes, typeAliases)
+        fun from(p: Package): ImportStats {
+            val packages = p.imports().map { it.name.packageName }.distinct()
+            return ImportStats(
+                p.packageName.name,
+                p.imports().size,
+                packages.count { it.isSubPackageOf(p.packageName) },
+                packages.count { it.isSuperPackage(p.packageName) },
+                packages.count { it.isSidePackage(p.packageName) },
+                packages.count { it.isOtherPackage(p.packageName) },
+            )
         }
     }
 }
 
-private fun imports(packages: List<Package>): List<Stats> = packages.map { Stats.from(it) }
+private fun imports(packages: List<Package>): List<ImportStats> = packages.map { ImportStats.from(it) }
