@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AnalysedFile(
     val fileName: FileName,
-    val packageName: FullyQualifiedName,
+    val packageName: PackageName,
     val imports: List<Import> = listOf(),
     val declarations: List<Defined> = listOf(),
 ) {
@@ -23,6 +23,6 @@ data class AnalysedFile(
 
     fun packageName(): String {
         val name = fileName.basename.replace(".kt", "")
-        return "$packageName.$name"
+        return "${packageName.name}.$name"
     }
 }

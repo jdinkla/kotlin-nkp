@@ -15,7 +15,7 @@ object Search : Command {
         files: Files,
     ) {
         if (args.size == 1) {
-            reportSearch(files!!, args[0])
+            reportSearch(files, args[0])
         } else {
             CommandManager.synopsis()
         }

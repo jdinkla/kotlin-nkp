@@ -5,12 +5,13 @@ import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileName
-import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionParameter
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Import
+import net.dinkla.kpnk.domain.ImportedElement
 import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.MemberModifier
+import net.dinkla.kpnk.domain.PackageName
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
@@ -24,8 +25,8 @@ internal val tree = fromFile(KOTLIN_EXAMPLE_FILE)
 
 internal val expectedImports =
     listOf(
-        Import(FullyQualifiedName("java.lang.Boolean.FALSE")),
-        Import(FullyQualifiedName("java.lang.Boolean.TRUE")),
+        Import(ImportedElement("java.lang.Boolean.FALSE")),
+        Import(ImportedElement("java.lang.Boolean.TRUE")),
     )
 
 internal val function1 =
@@ -170,7 +171,7 @@ internal val p1 = Property("p1", Type("Int"))
 internal val analysedFile =
     AnalysedFile(
         FileName("ExampleFile.kt"),
-        FullyQualifiedName("net.dinkla.kpnk"),
+        PackageName("net.dinkla.kpnk"),
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),
     )

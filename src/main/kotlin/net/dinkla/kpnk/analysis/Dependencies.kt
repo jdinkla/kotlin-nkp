@@ -1,56 +1,37 @@
 package net.dinkla.kpnk.analysis
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import net.dinkla.kpnk.command.Command
-import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.Files
-import java.io.File
-
-object DependenciesCommand : Command {
-    override val description: String = "reports dependencies to stdout or to a file with --output <filename>"
-
-    override fun execute(
-        args: Array<String>,
-        files: Files,
-    ) {
-        val dependencies = Dependencies.from(dependencies(files))
-        val string = Json.encodeToString(dependencies)
-        if (args.size == 2 && args[0] == "--output") {
-            val filename = args[1]
-            File(filename).writeText(string)
-        } else if (args.isEmpty()) {
-            println(string)
-        } else {
-            CommandManager.synopsis()
-        }
-    }
-}
+import net.dinkla.kpnk.domain.ImportedElement
+import net.dinkla.kpnk.domain.PackageName
 
 @Serializable
-internal data class Dependency(val name: String, val dependencies: Set<String>)
+data class Dependency(val name: PackageName, val dependencies: Set<ImportedElement>)
 
 @Serializable
-internal data class Dependencies(val dependencies: List<Dependency>) {
+data class Dependencies(val dependencies: List<Dependency>) {
     companion object {
-        fun from(dependencies: Map<String, Set<String>>): Dependencies =
-            Dependencies(
-                dependencies.map { (key, value) ->
-                    Dependency(key, value)
-                },
-            )
+        fun from(files: Files): Dependencies = from(dependencies(files))
     }
 }
 
-internal fun dependencies(files: Files): Map<String, Set<String>> {
-    val dependencies = mutableMapOf<String, MutableSet<String>>()
+private typealias InternalMap = Map<PackageName, Set<ImportedElement>>
+
+private fun from(dependencies: InternalMap): Dependencies =
+    Dependencies(
+        dependencies.map { (key, value) ->
+            Dependency(key, value)
+        },
+    )
+
+private fun dependencies(files: Files): InternalMap {
+    val dependencies = mutableMapOf<PackageName, MutableSet<ImportedElement>>()
     for (file in files) {
-        val name = file.packageName()
+        val packageName = file.packageName
         for (imp in file.imports) {
-            val set = dependencies.getOrDefault(name, mutableSetOf())
-            set += imp.packageName
-            dependencies[name] = set
+            val set = dependencies.getOrDefault(packageName, mutableSetOf())
+            set += imp.name
+            dependencies[packageName] = set
         }
     }
     return dependencies.mapValues { it.value.toSet() }

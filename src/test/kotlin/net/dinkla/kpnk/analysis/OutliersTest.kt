@@ -5,8 +5,8 @@ import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileName
-import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.PackageName
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.Type
 
@@ -22,7 +22,11 @@ class OutliersTest : StringSpec({
 })
 
 private fun info(classSignatures: List<ClassSignature>) =
-    AnalysedFile(FileName("a"), FullyQualifiedName("name"), declarations = classSignatures)
+    AnalysedFile(
+        FileName("a"),
+        PackageName("name"),
+        declarations = classSignatures,
+    )
 
 private fun cls(numElems: Int) =
     ClassSignature(

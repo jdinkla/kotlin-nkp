@@ -3,8 +3,9 @@ package net.dinkla.kpnk.extract
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.FileName
-import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
+import net.dinkla.kpnk.domain.ImportedElement
+import net.dinkla.kpnk.domain.PackageName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun extract(
@@ -17,9 +18,9 @@ fun extract(
     return AnalysedFile(fileName, packageName, imports, declarations)
 }
 
-internal fun extractPackageName(tree: KotlinParseTree): FullyQualifiedName {
+internal fun extractPackageName(tree: KotlinParseTree): PackageName {
     val packageHeader = tree.children.find { it.name == "packageHeader" }
-    return FullyQualifiedName(
+    return PackageName(
         if (packageHeader != null) {
             extractFullyQualifiedPackageName(packageHeader)
         } else {
@@ -40,7 +41,7 @@ internal fun extractImports(tree: KotlinParseTree): List<Import> =
             assert(importHeader.name == "importHeader")
             val fullyQualifiedImport =
                 importHeader.children[1].children.joinToString("", transform = ::extractIdentifier)
-            Import(FullyQualifiedName(fullyQualifiedImport))
+            Import(ImportedElement(fullyQualifiedImport))
         }
     } ?: listOf()
 

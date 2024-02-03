@@ -1,13 +1,20 @@
 package net.dinkla.kpnk.analysis
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.domain.Files
-import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
+import net.dinkla.kpnk.domain.ImportedElement
+import net.dinkla.kpnk.domain.PackageName
+
+val elementMax = ImportedElement("kotlin.math.max")
+val elementMin = ImportedElement("kotlin.math.min")
+val elementHello = ImportedElement("net.dinkla.kpnk.HelloWorld2")
+const val PATH1 = "src/test/resources/example/net/kpnk"
+const val PATH2 = "src/test/resources/example/net/xyz"
 
 class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
@@ -15,25 +22,40 @@ class DependenciesTest : StringSpec({
             Files(
                 listOf(
                     AnalysedFile(
-                        FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-                        FullyQualifiedName("net.dinkla.kpnk"),
+                        FileName("$PATH1/HelloWorld.kt"),
+                        PackageName("net.dinkla.kpnk"),
                         listOf(
-                            Import(FullyQualifiedName("kotlin.math.max")),
-                            Import(FullyQualifiedName("kotlin.math.min")),
-                            Import(FullyQualifiedName("net.dinkla.kpnk.HelloWorld2")),
+                            Import(elementMax),
+                            Import(elementMin),
                         ),
                     ),
                     AnalysedFile(
-                        FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
-                        FullyQualifiedName("net.dinkla.kpnk"),
-                        listOf(Import(FullyQualifiedName("kotlin.math.min"))),
+                        FileName("$PATH1/HelloWorld2.kt"),
+                        PackageName("net.dinkla.kpnk"),
+                        listOf(
+                            Import(elementHello),
+                        ),
+                    ),
+                    AnalysedFile(
+                        FileName("$PATH2/HelloWorld3.kt"),
+                        PackageName("net.dinkla.xyz"),
+                        listOf(
+                            Import(elementHello),
+                        ),
                     ),
                 ),
             )
-        val deps = dependencies(infos)
-        deps.size shouldBe 2
-        println(deps)
-        deps["net.dinkla.kpnk.HelloWorld"] shouldContainExactly setOf("kotlin.math", "net.dinkla.kpnk")
-        deps["net.dinkla.kpnk.HelloWorld2"] shouldBe setOf("kotlin.math")
+        val dependencies = Dependencies.from(infos)
+        dependencies.dependencies.size shouldBe 2
+        dependencies.dependencies shouldContain
+            Dependency(
+                PackageName("net.dinkla.kpnk"),
+                setOf(elementMax, elementMin, elementHello),
+            )
+        dependencies.dependencies shouldContain
+            Dependency(
+                PackageName("net.dinkla.xyz"),
+                setOf(elementHello),
+            )
     }
 })

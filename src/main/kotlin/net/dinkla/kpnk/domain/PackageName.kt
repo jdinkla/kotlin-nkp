@@ -2,5 +2,6 @@ package net.dinkla.kpnk.domain
 
 import kotlinx.serialization.Serializable
 
+@JvmInline
 @Serializable
-data class Import(val name: ImportedElement)
+value class PackageName(val name: String)
