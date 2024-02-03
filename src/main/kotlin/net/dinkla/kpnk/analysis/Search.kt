@@ -12,7 +12,7 @@ object Search : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     ) {
         if (args.size == 1) {
             reportSearch(fileInfos!!, args[0])
@@ -40,7 +40,7 @@ fun reportSearch(
 }
 
 fun FileInfos.searchClass(className: String): List<ClassSignature> =
-    flatMap { fileInfo -> fileInfo.analysedFile.classes }
+    flatMap { fileInfo -> fileInfo.classes }
         .filter { clazz -> clazz.name == className }
 
 fun FileInfos.searchHierarchy(className: String): List<ClassSignature> {
@@ -51,6 +51,6 @@ fun FileInfos.searchHierarchy(className: String): List<ClassSignature> {
 }
 
 fun FileInfos.searchImplementers(className: String): List<ClassSignature> {
-    return flatMap { fileInfo -> fileInfo.analysedFile.classes }
+    return flatMap { fileInfo -> fileInfo.classes }
         .filter { clazz -> clazz.inheritedFrom.contains(className) }
 }

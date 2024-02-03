@@ -18,9 +18,9 @@ object MermaidClassDiagram : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     ) {
-        val classes = fileInfos!!.flatMap { it.analysedFile.classes }.filter { !it.name.endsWith("Test") }
+        val classes = fileInfos.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
         val content = generateDiagram(classes)
         if (args.isEmpty()) {
             println(content)

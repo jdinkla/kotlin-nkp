@@ -22,6 +22,6 @@ private object DummyCommand : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     ) = Unit
 }

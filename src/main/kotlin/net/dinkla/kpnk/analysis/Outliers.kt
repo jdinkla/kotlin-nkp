@@ -1,8 +1,8 @@
 package net.dinkla.kpnk.analysis
 
 import net.dinkla.kpnk.command.Command
+import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.FileInfos
 import net.dinkla.kpnk.logger
 
@@ -11,14 +11,14 @@ object Outliers : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     ) {
-        reportLargeClasses(fileInfos!!)
+        reportLargeClasses(fileInfos)
     }
 }
 
 internal fun reportLargeClasses(
-    infos: List<FileInfo>,
+    infos: List<AnalysedFile>,
     topN: Int = 10,
 ) {
     logger.info("*** Large Classes ***")
@@ -32,9 +32,9 @@ internal fun reportLargeClasses(
 }
 
 internal fun largeClasses(
-    infos: List<FileInfo>,
+    infos: List<AnalysedFile>,
     topN: Int,
 ): List<ClassSignature> {
-    val allClasses = infos.flatMap { it.analysedFile.classes }
+    val allClasses = infos.flatMap { it.classes }
     return allClasses.sortedByDescending { it.declarations.size }.take(topN)
 }

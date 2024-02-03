@@ -9,6 +9,6 @@ interface Command {
 
     fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     )
 }

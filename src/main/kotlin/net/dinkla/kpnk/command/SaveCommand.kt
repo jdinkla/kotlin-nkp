@@ -8,10 +8,10 @@ object SaveCommand : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     ) {
         if (args.size == 1) {
-            FileInfo.saveToJsonFile(fileInfos!!, args[0])
+            FileInfo.saveToJsonFile(fileInfos, args[0])
         } else {
             CommandManager.synopsis()
         }

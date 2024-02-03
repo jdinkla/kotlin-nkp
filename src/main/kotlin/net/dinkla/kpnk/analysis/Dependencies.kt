@@ -13,9 +13,9 @@ object DependenciesCommand : Command {
 
     override fun execute(
         args: Array<String>,
-        fileInfos: FileInfos?,
+        fileInfos: FileInfos,
     ) {
-        val dependencies = Dependencies.from(dependencies(fileInfos!!))
+        val dependencies = Dependencies.from(dependencies(fileInfos))
         val string = Json.encodeToString(dependencies)
         if (args.size == 2 && args[0] == "--output") {
             val filename = args[1]
@@ -43,11 +43,11 @@ internal data class Dependencies(val dependencies: List<Dependency>) {
     }
 }
 
-internal fun dependencies(infos: FileInfos): Map<String, Set<String>> {
+internal fun dependencies(files: FileInfos): Map<String, Set<String>> {
     val dependencies = mutableMapOf<String, MutableSet<String>>()
-    for (info in infos) {
-        val name = info.analysedFile.packageName()
-        for (imp in info.analysedFile.imports) {
+    for (file in files) {
+        val name = file.packageName()
+        for (imp in file.imports) {
             val set = dependencies.getOrDefault(name, mutableSetOf())
             set += imp.packageName
             dependencies[name] = set

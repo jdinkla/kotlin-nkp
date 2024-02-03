@@ -3,7 +3,7 @@ package net.dinkla.kpnk.utilities
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import net.dinkla.kpnk.domain.FileInfo
+import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.logger
@@ -43,17 +43,16 @@ internal fun shouldFileBeAdded(it: File) =
         true
     }
 
-internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<FileInfo>>> =
+internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<AnalysedFile>>> =
     fileInfos(getAllKotlinFilesInDirectory(directory))
 
-private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<FileInfo>>> =
+private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<AnalysedFile>>> =
     files.map {
         async {
             try {
                 logger.trace("handling file $it")
-                val tree = fromFile(it)
-                val fileInfo = extract(FileName(it), tree)
-                Result.success(FileInfo(fileInfo))
+                val file = extract(FileName(it), fromFile(it))
+                Result.success(file)
             } catch (e: Exception) {
                 logger.error("parsing '$it' yields ${e.message}")
                 Result.failure(e)
