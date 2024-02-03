@@ -14,12 +14,12 @@ object FileInfo {
             logger.info("Reading and saving from directory '$directory'")
             val allInfos = parseFilesFromDirectory(directory).map { it.await() }
             reportErrors(allInfos)
-            allInfos.filter { it.isSuccess }.map { it.getOrThrow() }
+            Files(allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
         }
 
     fun loadFromJsonFile(fileName: String): Files {
         val string = File(fileName).readText()
-        return Json.decodeFromString<List<AnalysedFile>>(string)
+        return Json.decodeFromString<Files>(string)
     }
 
     fun saveToJsonFile(

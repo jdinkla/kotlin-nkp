@@ -5,26 +5,29 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.FileName
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.FullyQualifiedName
 import net.dinkla.kpnk.domain.Import
 
 class DependenciesTest : StringSpec({
     "dependencies should return the packages and their imports" {
         val infos =
-            listOf(
-                AnalysedFile(
-                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
-                    FullyQualifiedName("net.dinkla.kpnk"),
-                    listOf(
-                        Import(FullyQualifiedName("kotlin.math.max")),
-                        Import(FullyQualifiedName("kotlin.math.min")),
-                        Import(FullyQualifiedName("net.dinkla.kpnk.HelloWorld2")),
+            Files(
+                listOf(
+                    AnalysedFile(
+                        FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld.kt"),
+                        FullyQualifiedName("net.dinkla.kpnk"),
+                        listOf(
+                            Import(FullyQualifiedName("kotlin.math.max")),
+                            Import(FullyQualifiedName("kotlin.math.min")),
+                            Import(FullyQualifiedName("net.dinkla.kpnk.HelloWorld2")),
+                        ),
                     ),
-                ),
-                AnalysedFile(
-                    FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
-                    FullyQualifiedName("net.dinkla.kpnk"),
-                    listOf(Import(FullyQualifiedName("kotlin.math.min"))),
+                    AnalysedFile(
+                        FileName("src/test/resources/example/net/dinkla/kpnk/HelloWorld2.kt"),
+                        FullyQualifiedName("net.dinkla.kpnk"),
+                        listOf(Import(FullyQualifiedName("kotlin.math.min"))),
+                    ),
                 ),
             )
         val deps = dependencies(infos)
