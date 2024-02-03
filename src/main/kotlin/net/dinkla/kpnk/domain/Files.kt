@@ -11,6 +11,8 @@ import java.io.File
 
 @Serializable
 class Files(private val items: List<AnalysedFile>) : List<AnalysedFile> by items {
+    fun packages(): List<PackageName> = items.map { it.packageName }.distinct()
+
     fun saveToJsonFile(fileName: String) {
         val string = Json.encodeToString(this)
         File(fileName).writeText(string)
