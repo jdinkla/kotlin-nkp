@@ -1,9 +1,11 @@
 package net.dinkla.kpnk
 
 import net.dinkla.kpnk.analysis.DependenciesCommand
+import net.dinkla.kpnk.analysis.DetailsCommand
 import net.dinkla.kpnk.analysis.Inheritance
 import net.dinkla.kpnk.analysis.MermaidClassDiagram
 import net.dinkla.kpnk.analysis.Outliers
+import net.dinkla.kpnk.analysis.PackagesCommand
 import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.command.SaveCommand
@@ -23,6 +25,8 @@ private val commands =
         "search" to Search,
         "save" to SaveCommand,
         "mermaid-class-diagram" to MermaidClassDiagram,
+        "details" to DetailsCommand,
+        "packages" to PackagesCommand,
     )
 
 fun main(args: Array<String>) {
