@@ -1,6 +1,5 @@
 package net.dinkla.kpnk.command
 
-import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.Files
 
 object SaveCommand : Command {
@@ -11,7 +10,7 @@ object SaveCommand : Command {
         files: Files,
     ) {
         if (args.size == 1) {
-            FileInfo.saveToJsonFile(files, args[0])
+            files.saveToJsonFile(args[0])
         } else {
             CommandManager.synopsis()
         }

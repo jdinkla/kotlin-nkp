@@ -7,7 +7,6 @@ import net.dinkla.kpnk.analysis.Outliers
 import net.dinkla.kpnk.analysis.Search
 import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.command.SaveCommand
-import net.dinkla.kpnk.domain.FileInfo
 import net.dinkla.kpnk.domain.Files
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -47,8 +46,8 @@ fun main(args: Array<String>) {
 private fun read(fileName: String): Files {
     val file = File(fileName)
     return if (file.isDirectory) {
-        FileInfo.readFromDirectory(file.absolutePath)
+        Files.readFromDirectory(file.absolutePath)
     } else {
-        FileInfo.loadFromJsonFile(file.absolutePath)
+        Files.loadFromJsonFile(file.absolutePath)
     }
 }
