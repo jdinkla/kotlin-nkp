@@ -2,6 +2,7 @@ package net.dinkla.kpnk.domain
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import java.io.File
 import kotlin.io.path.name
 
 class FileInfoTest : StringSpec({
@@ -11,10 +12,14 @@ class FileInfoTest : StringSpec({
     }
 
     "saveToJsonFile should save to temporary file" {
-        val infos = FileInfo.readFromDirectory("src/test/resources/example")
         val fileName = kotlin.io.path.createTempFile().fileName.name
-        FileInfo.saveToJsonFile(infos, fileName)
-        val infos2 = FileInfo.loadFromJsonFile(fileName)
-        infos2.size shouldBe infos.size
+        try {
+            val infos = FileInfo.readFromDirectory("src/test/resources/example")
+            FileInfo.saveToJsonFile(infos, fileName)
+            val infos2 = FileInfo.loadFromJsonFile(fileName)
+            infos2.size shouldBe infos.size
+        } finally {
+            File(fileName).delete()
+        }
     }
 })
