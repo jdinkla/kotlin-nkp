@@ -11,6 +11,7 @@ import net.dinkla.kpnk.domain.Import
 import net.dinkla.kpnk.domain.ImportedElement
 import net.dinkla.kpnk.domain.InheritanceModifier
 import net.dinkla.kpnk.domain.MemberModifier
+import net.dinkla.kpnk.domain.Package
 import net.dinkla.kpnk.domain.PackageName
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
@@ -168,6 +169,7 @@ internal val f2 = FunctionSignature("f2")
 internal val c1 = ClassSignature("C")
 internal val ta1 = TypeAlias("TA", Type("Int"))
 internal val p1 = Property("p1", Type("Int"))
+
 internal val analysedFile =
     AnalysedFile(
         FileName("ExampleFile.kt"),
@@ -175,3 +177,21 @@ internal val analysedFile =
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),
     )
+
+internal val analysedFile1 =
+    AnalysedFile(
+        FileName("ExampleFile1.kt"),
+        PackageName("net.dinkla.kpnk"),
+        imports = expectedImports,
+        declarations = listOf(f1, c1, ta1),
+    )
+
+internal val analysedFile2 =
+    AnalysedFile(
+        FileName("ExampleFile2.kt"),
+        PackageName("net.dinkla.kpnk"),
+        imports = expectedImports,
+        declarations = listOf(f2, p1),
+    )
+
+val examplePackage = Package(PackageName("net.dinkla.kpnk"), listOf(analysedFile1, analysedFile2))
