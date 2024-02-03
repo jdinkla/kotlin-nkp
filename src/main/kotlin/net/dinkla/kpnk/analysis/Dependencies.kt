@@ -6,7 +6,9 @@ import net.dinkla.kpnk.domain.ImportedElement
 import net.dinkla.kpnk.domain.PackageName
 
 @Serializable
-data class Dependency(val name: PackageName, val dependencies: Set<ImportedElement>)
+data class Dependency(val name: PackageName, val dependencies: Set<ImportedElement>) {
+    override fun toString(): String = "${name.name}: ${dependencies.joinToString(", ")}"
+}
 
 @Serializable
 data class Dependencies(val dependencies: List<Dependency>) {

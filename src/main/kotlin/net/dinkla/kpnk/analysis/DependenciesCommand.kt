@@ -15,12 +15,12 @@ object DependenciesCommand : Command {
         files: Files,
     ) {
         val dependencies = Dependencies.from(files)
-        val string = Json.encodeToString(dependencies)
         if (args.size == 2 && args[0] == "--output") {
             val filename = args[1]
+            val string = Json.encodeToString(dependencies)
             File(filename).writeText(string)
         } else if (args.isEmpty()) {
-            println(string)
+            println(dependencies.dependencies.joinToString("\n"))
         } else {
             CommandManager.synopsis()
         }
