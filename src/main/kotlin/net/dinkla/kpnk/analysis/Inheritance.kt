@@ -3,15 +3,7 @@ package net.dinkla.kpnk.analysis
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.logger
 
-object Inheritance  {
-    fun execute(
-        files: Files,
-    ) {
-        reportInheritance(files)
-    }
-}
-
-internal fun reportInheritance(infos: Files) {
+fun inheritance(infos: Files) {
     logger.info("*** Inheritance ***")
     infos.inheritance().sortedByDescending { it.second + it.third }.forEach {
         println(it)

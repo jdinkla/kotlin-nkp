@@ -4,15 +4,15 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
-import net.dinkla.kpnk.analysis.DependenciesCommand
-import net.dinkla.kpnk.analysis.DetailsCommand
-import net.dinkla.kpnk.analysis.ImportStatsCommand
-import net.dinkla.kpnk.analysis.Inheritance
-import net.dinkla.kpnk.analysis.MermaidClassDiagram
-import net.dinkla.kpnk.analysis.Outliers
-import net.dinkla.kpnk.analysis.OverviewCommand
-import net.dinkla.kpnk.analysis.PackagesCommand
-import net.dinkla.kpnk.analysis.Search
+import net.dinkla.kpnk.analysis.dependencies
+import net.dinkla.kpnk.analysis.details
+import net.dinkla.kpnk.analysis.importStatistics
+import net.dinkla.kpnk.analysis.inheritance
+import net.dinkla.kpnk.analysis.mermaidClassDiagram
+import net.dinkla.kpnk.analysis.outliers
+import net.dinkla.kpnk.analysis.overview
+import net.dinkla.kpnk.analysis.packages
+import net.dinkla.kpnk.analysis.search
 import net.dinkla.kpnk.domain.Files
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -22,8 +22,8 @@ internal val logger: Logger = LoggerFactory.getLogger("Main")
 
 class Nkp : CliktCommand() {
     val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
-    val save by option(help = "save parsed source code information to file").file(canBeDir = false)
-    val dependencies by option().file(canBeDir = false)
+    val save by option(help = "save parsed source code as json").file(canBeDir = false)
+    val dependencies by option(help = "save as json").file(canBeDir = false)
     val inheritance by option().file(canBeDir = false)
     val outliers by option().file(canBeDir = false)
     val search by option()
@@ -33,9 +33,9 @@ class Nkp : CliktCommand() {
         canBeDir = false,
     )
     val details by option().file(canBeDir = false)
-    val packages by option().file(canBeDir = false)
-    val importStatistics by option().file(canBeDir = false)
-    val overview by option().file(canBeDir = false)
+    val packages by option(help = "save as json").file(canBeDir = false)
+    val importStatistics by option(help = "save as json").file(canBeDir = false)
+    val overview by option(help = "save as json").file(canBeDir = false)
 
     override fun run() {
         logger.info("Reading from ${source.absolutePath}")
@@ -44,31 +44,31 @@ class Nkp : CliktCommand() {
             files.saveToJsonFile(save!!.absolutePath)
         }
         if (dependencies != null) {
-            DependenciesCommand.execute(files, dependencies!!)
+            dependencies(files, dependencies!!)
         }
         if (inheritance != null) {
-            Inheritance.execute(files)
+            inheritance(files)
         }
         if (outliers != null) {
-            Outliers.execute(files)
+            outliers(files)
         }
         if (search != null) {
-            Search.execute(files, search!!)
+            search(files, search!!)
         }
         if (mermaidClassDiagram != null) {
-            MermaidClassDiagram.execute(files, mermaidClassDiagram!!)
+            mermaidClassDiagram(files, mermaidClassDiagram!!)
         }
         if (details != null) {
-            DetailsCommand.execute(files)
+            details(files)
         }
         if (packages != null) {
-            PackagesCommand.execute(files, packages!!)
+            packages(files, packages!!)
         }
         if (importStatistics != null) {
-            ImportStatsCommand.execute(files, importStatistics!!)
+            importStatistics(files, importStatistics!!)
         }
         if (overview != null) {
-            OverviewCommand.execute(files, overview!!)
+            overview(files, overview!!)
         }
     }
 }

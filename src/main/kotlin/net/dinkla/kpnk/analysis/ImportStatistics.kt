@@ -7,16 +7,14 @@ import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.Package
 import java.io.File
 
-object ImportStatsCommand  {
-    fun execute(
-        files: Files,
-        file: File
-    ) {
-        val packages = files.packages()
-        val imports = imports(packages)
-        val string = Json.encodeToString(imports)
-        file.writeText(string)
-    }
+fun importStatistics(
+    files: Files,
+    file: File,
+) {
+    val packages = files.packages()
+    val imports = imports(packages)
+    val string = Json.encodeToString(imports)
+    file.writeText(string)
 }
 
 @Serializable

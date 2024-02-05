@@ -10,46 +10,44 @@ import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.utilities.addSpaceAfter
 import java.io.File
 
-object MermaidClassDiagram {
-    fun execute(
-        files: Files,
-        file: File,
-    ) {
-        val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
-        val content = generateDiagram(classes)
-        writeFile(file, content)
-    }
+fun mermaidClassDiagram(
+    files: Files,
+    file: File,
+) {
+    val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
+    val content = generateDiagram(classes)
+    writeFile(file, content)
+}
 
-    private fun generateDiagram(classes: List<ClassSignature>) =
-        buildString {
-            append("classDiagram\n")
-            append("direction LR\n")
-            classes.forEach { clazz ->
-                append("class ${clazz.name}")
-                val isEmpty = clazz.parameters.isEmpty() && clazz.properties.isEmpty() && clazz.functions.isEmpty()
-                if (!isEmpty) {
-                    append(" {\n")
-                    clazz.parameters.forEach { parameter ->
-                        val modSign = modSign(parameter.visibilityModifier)
-                        append("  $modSign ${parameter.mermaid()}\n")
-                    }
-                    clazz.properties.forEach { property ->
-                        val modSign = modSign(property.visibilityModifier)
-                        append("  $modSign ${property.mermaid()}\n")
-                    }
-                    clazz.functions.forEach { function ->
-                        val modSign = modSign(function.visibilityModifier)
-                        append("  $modSign ${function.mermaid()}\n")
-                    }
-                    append("}")
+private fun generateDiagram(classes: List<ClassSignature>) =
+    buildString {
+        append("classDiagram\n")
+        append("direction LR\n")
+        classes.forEach { clazz ->
+            append("class ${clazz.name}")
+            val isEmpty = clazz.parameters.isEmpty() && clazz.properties.isEmpty() && clazz.functions.isEmpty()
+            if (!isEmpty) {
+                append(" {\n")
+                clazz.parameters.forEach { parameter ->
+                    val modSign = modSign(parameter.visibilityModifier)
+                    append("  $modSign ${parameter.mermaid()}\n")
                 }
-                append("\n")
-                clazz.inheritedFrom.forEach { inheritedFrom ->
-                    append("$inheritedFrom <|-- ${clazz.name}\n")
+                clazz.properties.forEach { property ->
+                    val modSign = modSign(property.visibilityModifier)
+                    append("  $modSign ${property.mermaid()}\n")
                 }
+                clazz.functions.forEach { function ->
+                    val modSign = modSign(function.visibilityModifier)
+                    append("  $modSign ${function.mermaid()}\n")
+                }
+                append("}")
+            }
+            append("\n")
+            clazz.inheritedFrom.forEach { inheritedFrom ->
+                append("$inheritedFrom <|-- ${clazz.name}\n")
             }
         }
-}
+    }
 
 private fun modSign(visibilityModifier: VisibilityModifier?) =
     when (visibilityModifier) {

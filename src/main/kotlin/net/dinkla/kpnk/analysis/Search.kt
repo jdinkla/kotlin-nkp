@@ -5,16 +5,7 @@ import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.logger
 
-object Search  {
-    fun execute(
-        files: Files,
-        className: String
-    ) {
-        reportSearch(files, className)
-    }
-}
-
-fun reportSearch(
+fun search(
     infos: Files,
     clazz: String,
 ) {

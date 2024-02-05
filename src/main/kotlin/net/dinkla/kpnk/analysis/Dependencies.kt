@@ -1,9 +1,23 @@
 package net.dinkla.kpnk.analysis
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.ImportedElement
 import net.dinkla.kpnk.domain.PackageName
+import net.dinkla.kpnk.logger
+import java.io.File
+
+fun dependencies(
+    files: Files,
+    file: File
+) {
+    val dependencies = Dependencies.from(files)
+    logger.info("Writing dependencies to ${file.absolutePath}")
+    val string = Json.encodeToString(dependencies)
+    file.writeText(string)
+}
 
 @Serializable
 data class Dependency(val name: PackageName, val dependencies: Set<ImportedElement>) {
@@ -13,7 +27,7 @@ data class Dependency(val name: PackageName, val dependencies: Set<ImportedEleme
 @Serializable
 data class Dependencies(val dependencies: List<Dependency>) {
     companion object {
-        fun from(files: Files): Dependencies = from(dependencies(files))
+        fun from(files: Files): Dependencies = from(dependencyMap(files))
     }
 }
 
@@ -26,7 +40,7 @@ private fun from(dependencies: InternalMap): Dependencies =
         },
     )
 
-private fun dependencies(files: Files): InternalMap {
+private fun dependencyMap(files: Files): InternalMap {
     val dependencies = mutableMapOf<PackageName, MutableSet<ImportedElement>>()
     for (file in files) {
         val packageName = file.packageName

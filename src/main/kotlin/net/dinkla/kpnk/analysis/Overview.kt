@@ -7,16 +7,14 @@ import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.Package
 import java.io.File
 
-object OverviewCommand  {
-    fun execute(
-        files: Files,
-        file: File
-    ) {
-        val packages = files.packages()
-        val imports = overview(packages)
-        val string = Json.encodeToString(imports)
-        file.writeText(string)
-    }
+fun overview(
+    files: Files,
+    file: File
+) {
+    val packages = files.packages()
+    val imports = overviewStats(packages)
+    val string = Json.encodeToString(imports)
+    file.writeText(string)
 }
 
 @Serializable
@@ -43,4 +41,4 @@ private data class OverviewStats(
     }
 }
 
-private fun overview(packages: List<Package>): List<OverviewStats> = packages.map { OverviewStats.from(it) }
+private fun overviewStats(packages: List<Package>): List<OverviewStats> = packages.map { OverviewStats.from(it) }

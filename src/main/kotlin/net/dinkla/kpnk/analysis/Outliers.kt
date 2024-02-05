@@ -5,15 +5,7 @@ import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.logger
 
-object Outliers {
-    fun execute(
-        files: Files,
-    ) {
-        reportLargeClasses(files)
-    }
-}
-
-internal fun reportLargeClasses(
+fun outliers(
     infos: List<AnalysedFile>,
     topN: Int = 10,
 ) {

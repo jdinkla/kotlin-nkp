@@ -2,15 +2,7 @@ package net.dinkla.kpnk.analysis
 
 import net.dinkla.kpnk.domain.Files
 
-object DetailsCommand{
-    fun execute(
-        files: Files,
-    ) {
-        details(files)
-    }
-}
-
-private fun details(files: Files) {
+fun details(files: Files) {
     for (file in files) {
         println(
             """
