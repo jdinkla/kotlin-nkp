@@ -1,28 +1,12 @@
 package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.command.Command
-import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.Files
-import java.io.File
 
-object DetailsCommand : Command {
-    override val description: String = "reports class details to stdout or to a file with --output <filename>"
-
-    override fun execute(
-        args: Array<String>,
+object DetailsCommand{
+    fun execute(
         files: Files,
     ) {
-        // val classDetails = "ClassDetails.from(classDetails(fileInfos!!))"
         details(files)
-        val string = "Json.encodeToString(classDetails)"
-        if (args.size == 2 && args[0] == "--output") {
-            val filename = args[1]
-            File(filename).writeText(string)
-        } else if (args.isEmpty()) {
-            println(string)
-        } else {
-            CommandManager.synopsis()
-        }
     }
 }
 

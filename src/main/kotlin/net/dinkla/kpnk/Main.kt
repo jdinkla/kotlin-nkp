@@ -1,5 +1,9 @@
 package net.dinkla.kpnk
 
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.kpnk.analysis.DependenciesCommand
 import net.dinkla.kpnk.analysis.DetailsCommand
 import net.dinkla.kpnk.analysis.ImportStatsCommand
@@ -9,53 +13,73 @@ import net.dinkla.kpnk.analysis.Outliers
 import net.dinkla.kpnk.analysis.OverviewCommand
 import net.dinkla.kpnk.analysis.PackagesCommand
 import net.dinkla.kpnk.analysis.Search
-import net.dinkla.kpnk.command.CommandManager
-import net.dinkla.kpnk.command.SaveCommand
 import net.dinkla.kpnk.domain.Files
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
-import kotlin.system.exitProcess
 
 internal val logger: Logger = LoggerFactory.getLogger("Main")
 
-private val commands =
-    listOf(
-        "dependencies" to DependenciesCommand,
-        "inheritance" to Inheritance,
-        "outliers" to Outliers,
-        "search" to Search,
-        "save" to SaveCommand,
-        "mermaid-class-diagram" to MermaidClassDiagram,
-        "details" to DetailsCommand,
-        "packages" to PackagesCommand,
-        "import-statistics" to ImportStatsCommand,
-        "overview" to OverviewCommand,
+class Nkp : CliktCommand() {
+    val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
+    val save by option(help = "save parsed source code information to file").file(canBeDir = false)
+    val dependencies by option().file(canBeDir = false)
+    val inheritance by option().file(canBeDir = false)
+    val outliers by option().file(canBeDir = false)
+    val search by option()
+    val mermaidClassDiagram by option(
+        help = "Generate a mermaid class diagram (.mermaid or .html)",
+    ).file(
+        canBeDir = false,
     )
+    val details by option().file(canBeDir = false)
+    val packages by option().file(canBeDir = false)
+    val importStatistics by option().file(canBeDir = false)
+    val overview by option().file(canBeDir = false)
 
-fun main(args: Array<String>) {
-    commands.forEach { (name, command) ->
-        CommandManager.add(name, command)
-    }
-    if (args.size < 2) {
-        CommandManager.synopsis()
-        exitProcess(-1)
-    }
-    val command = CommandManager.get(args[1])
-    if (command == null) {
-        CommandManager.synopsis()
-        exitProcess(-1)
-    } else {
-        val infos: Files = read(args[0])
-        command.execute(args.drop(2).toTypedArray(), infos)
+    override fun run() {
+        logger.info("Reading from ${source.absolutePath}")
+        val files: Files = read(source)
+        if (save != null) {
+            files.saveToJsonFile(save!!.absolutePath)
+        }
+        if (dependencies != null) {
+            DependenciesCommand.execute(files, dependencies!!)
+        }
+        if (inheritance != null) {
+            Inheritance.execute(files)
+        }
+        if (outliers != null) {
+            Outliers.execute(files)
+        }
+        if (search != null) {
+            Search.execute(files, search!!)
+        }
+        if (mermaidClassDiagram != null) {
+            MermaidClassDiagram.execute(files, mermaidClassDiagram!!)
+        }
+        if (details != null) {
+            DetailsCommand.execute(files)
+        }
+        if (packages != null) {
+            PackagesCommand.execute(files, packages!!)
+        }
+        if (importStatistics != null) {
+            ImportStatsCommand.execute(files, importStatistics!!)
+        }
+        if (overview != null) {
+            OverviewCommand.execute(files, overview!!)
+        }
     }
 }
 
-private fun read(fileName: String): Files {
-    val file = File(fileName)
-    return if (file.isDirectory) {
+fun main(args: Array<String>) {
+    Nkp().main(args)
+}
+
+private fun read(file: File): Files =
+    if (file.isDirectory) {
         Files.readFromDirectory(file.absolutePath)
     } else {
         Files.loadFromJsonFile(file.absolutePath)
     }
-}

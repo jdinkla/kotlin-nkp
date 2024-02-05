@@ -1,14 +1,10 @@
 package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.logger
 
-object Inheritance : Command {
-    override val description: String = "shows inheritance"
-
-    override fun execute(
-        args: Array<String>,
+object Inheritance  {
+    fun execute(
         files: Files,
     ) {
         reportInheritance(files)

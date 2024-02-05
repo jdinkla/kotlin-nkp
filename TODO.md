@@ -21,7 +21,7 @@
 - infix
 - lambda with receiver, fun with receiver
 
-## Ideas for analysis
+## Ideas
 
 
 

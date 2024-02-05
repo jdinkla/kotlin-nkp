@@ -1,7 +1,5 @@
 package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.command.Command
-import net.dinkla.kpnk.command.CommandManager
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
@@ -12,21 +10,14 @@ import net.dinkla.kpnk.domain.prettyPrint
 import net.dinkla.kpnk.utilities.addSpaceAfter
 import java.io.File
 
-object MermaidClassDiagram : Command {
-    override val description: String =
-        "Generate a mermaid class diagram to stdout or to a file if specified (.mermaid and .html are supported)"
-
-    override fun execute(
-        args: Array<String>,
+object MermaidClassDiagram {
+    fun execute(
         files: Files,
+        file: File,
     ) {
         val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
         val content = generateDiagram(classes)
-        if (args.isEmpty()) {
-            println(content)
-        } else {
-            writeFile(args[0], content)
-        }
+        writeFile(file, content)
     }
 
     private fun generateDiagram(classes: List<ClassSignature>) =
@@ -95,24 +86,22 @@ private fun ClassParameter.mermaid(): String {
 }
 
 private fun writeFile(
-    filename: String,
+    file: File,
     content: String,
 ) {
-    if (filename.endsWith(".mermaid")) {
-        File(filename).writeText(content)
-    } else if (filename.endsWith(".html")) {
-        saveAsHtml(filename, content)
+    val fileName = file.name
+    val isMermaid = fileName.endsWith(".mermaid")
+    val isHtml = fileName.endsWith(".html")
+    require(isMermaid || isHtml)
+    if (isMermaid) {
+        file.writeText(content)
     } else {
-        println("Unknown file extension: $filename")
-        CommandManager.synopsis()
+        file.saveAsHtml(content)
     }
 }
 
-private fun saveAsHtml(
-    filename: String,
-    content: String,
-) {
-    File(filename).writeText(
+private fun File.saveAsHtml(content: String) {
+    writeText(
         """
         <html>
         <head>

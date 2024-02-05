@@ -1,16 +1,12 @@
 package net.dinkla.kpnk.analysis
 
-import net.dinkla.kpnk.command.Command
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.logger
 
-object Outliers : Command {
-    override val description: String = "reports outliers"
-
-    override fun execute(
-        args: Array<String>,
+object Outliers {
+    fun execute(
         files: Files,
     ) {
         reportLargeClasses(files)
