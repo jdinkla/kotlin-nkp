@@ -5,6 +5,7 @@ import net.dinkla.kpnk.domain.ClassModifier
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.FileName
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.FunctionParameter
 import net.dinkla.kpnk.domain.FunctionSignature
 import net.dinkla.kpnk.domain.Import
@@ -195,3 +196,5 @@ internal val analysedFile2 =
     )
 
 val examplePackage = Package(PackageName("net.dinkla.kpnk"), listOf(analysedFile1, analysedFile2))
+
+val exampleFiles = Files(listOf(analysedFile, analysedFile1, analysedFile2))

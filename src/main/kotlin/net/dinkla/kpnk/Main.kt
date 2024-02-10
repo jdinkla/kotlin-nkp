@@ -6,7 +6,6 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.kpnk.analysis.debug
-import net.dinkla.kpnk.analysis.dependencies
 import net.dinkla.kpnk.analysis.details
 import net.dinkla.kpnk.analysis.importStatistics
 import net.dinkla.kpnk.analysis.inheritance
@@ -26,7 +25,6 @@ internal val logger: Logger = LoggerFactory.getLogger("Main")
 class Nkp : CliktCommand() {
     private val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
     private val save by option(help = "save parsed source code as json").file(canBeDir = false)
-    private val dependencies by option(help = "save as json").file(canBeDir = false)
     private val inheritance by option().file(canBeDir = false)
     private val outliers by option().file(canBeDir = false)
     private val search by option()
@@ -46,9 +44,6 @@ class Nkp : CliktCommand() {
         val files: Files = Files.read(source)
         if (save != null) {
             files.saveToJsonFile(save!!.absolutePath)
-        }
-        if (dependencies != null) {
-            dependencies(files, dependencies!!)
         }
         if (inheritance != null) {
             inheritance(files)
