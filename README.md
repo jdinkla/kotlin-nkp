@@ -2,51 +2,46 @@
 
 Analyse Kotlin source code.
 
-## Run
+## Usage
 
-The command line syntax would be as follows if this would be a unix tool!
+The command line syntax are as following:
 
 ```sh
-$ kpnk (directory|jsonfile) <command> [args of command]
+$ bin/nkp.sh (directory|jsonfile) <command> [args of command]
 ```
 
-But the arguments have to be separated by command and passed to gradle like the following example for Windows.
+Help is available with `-h` or `--help`.
 
 ```sh
-./gradlew run -Pargs="C:\directory\project\src\commonMain\kotlin,dependencies"
-./gradlew run -Pargs="generated/infos.json,dependencies,--output,deps.json" 
+$ bin/nkp.sh -h
 ```
 
-Example for *nix.
+It is advisable to first parse the source code into a json file.
 
 ```sh
-./gradlew run -Pargs="../directory/project/src/"
+$ bin/nkp.sh /repositories/ray-tracer-challenge/src/main/kotlin --save=generated/rtc.json
+```
+
+Use this JSON file in the following commands as input.
+
+```sh
+$ bin/nkp.sh generated/rtc.json --mermaid-class-diagram=generated/rtc.mermaid
 ```
 
 ## Build 
 
-To build this application the following other dependencies are needed.
-### Dependencies
-
-```sh
 This project is using the following libraries to parse Kotlin source code:
 
-https://github.com/Kotlin/grammar-tools
-https://github.com/Kotlin/kotlin-spec
+- https://github.com/Kotlin/grammar-tools
+- https://github.com/Kotlin/kotlin-spec
+
+You have to build these libraries first locally. 
 
 ```sh
-$ git clone https://github.com/Kotlin/kotlin-spec.git
-$ cd kotlin-spec
-$ ./gradlew :grammar:publishToMavenLocal
-$ cd ..
-
-$ git clone https://github.com/Kotlin/grammar-tools
-$ cd grammar-tools
-$ ./gradlew publishToMavenLocal
-$ cd ..
+$ bin/install-libs.sh
 ```
 
-### Upgrade dependencies
+## Dependencies
 
 The project uses [refreshVersions](https://splitties.github.io/refreshVersions/)
 

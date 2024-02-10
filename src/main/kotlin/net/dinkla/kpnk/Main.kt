@@ -21,21 +21,21 @@ import java.io.File
 internal val logger: Logger = LoggerFactory.getLogger("Main")
 
 class Nkp : CliktCommand() {
-    val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
-    val save by option(help = "save parsed source code as json").file(canBeDir = false)
-    val dependencies by option(help = "save as json").file(canBeDir = false)
-    val inheritance by option().file(canBeDir = false)
-    val outliers by option().file(canBeDir = false)
-    val search by option()
-    val mermaidClassDiagram by option(
+    private val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
+    private val save by option(help = "save parsed source code as json").file(canBeDir = false)
+    private val dependencies by option(help = "save as json").file(canBeDir = false)
+    private val inheritance by option().file(canBeDir = false)
+    private val outliers by option().file(canBeDir = false)
+    private val search by option()
+    private val mermaidClassDiagram by option(
         help = "Generate a mermaid class diagram (.mermaid or .html)",
     ).file(
         canBeDir = false,
     )
-    val details by option().file(canBeDir = false)
-    val packages by option(help = "save as json").file(canBeDir = false)
-    val importStatistics by option(help = "save as json").file(canBeDir = false)
-    val overview by option(help = "save as json").file(canBeDir = false)
+    private val details by option().file(canBeDir = false)
+    private val packages by option(help = "save as json").file(canBeDir = false)
+    private val importStatistics by option(help = "save as json").file(canBeDir = false)
+    private val overview by option(help = "save as json").file(canBeDir = false)
 
     override fun run() {
         logger.info("Reading from ${source.absolutePath}")

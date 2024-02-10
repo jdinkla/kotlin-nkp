@@ -23,5 +23,7 @@
 
 ## Ideas
 
+The following json contains the analysis of Kotlin code. For every package it contains the number of elements in it. First step: analyse the statistics. Second step: what about this software?
+
 
 
