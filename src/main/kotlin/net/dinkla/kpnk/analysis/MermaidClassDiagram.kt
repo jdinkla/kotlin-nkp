@@ -4,6 +4,7 @@ import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.FunctionSignature
+import net.dinkla.kpnk.domain.MemberModifier
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.VisibilityModifier
 import net.dinkla.kpnk.domain.prettyPrint
@@ -29,16 +30,13 @@ private fun generateDiagram(classes: List<ClassSignature>) =
             if (!isEmpty) {
                 append(" {\n")
                 clazz.parameters.forEach { parameter ->
-                    val modSign = modSign(parameter.visibilityModifier)
-                    append("  $modSign ${parameter.mermaid()}\n")
+                    appendLine(formatLine(parameter.mermaid()))
                 }
                 clazz.properties.forEach { property ->
-                    val modSign = modSign(property.visibilityModifier)
-                    append("  $modSign ${property.mermaid()}\n")
+                    appendLine(formatLine(property.mermaid()))
                 }
                 clazz.functions.forEach { function ->
-                    val modSign = modSign(function.visibilityModifier)
-                    append("  $modSign ${function.mermaid()}\n")
+                    appendLine(formatLine(function.mermaid()))
                 }
                 append("}")
             }
@@ -49,6 +47,8 @@ private fun generateDiagram(classes: List<ClassSignature>) =
         }
     }
 
+private fun formatLine(pair: Pair<String, String>) = "  ${pair.first} ${pair.second}"
+
 private fun modSign(visibilityModifier: VisibilityModifier?) =
     when (visibilityModifier) {
         VisibilityModifier.PUBLIC -> "+"
@@ -58,29 +58,27 @@ private fun modSign(visibilityModifier: VisibilityModifier?) =
         null -> "+" // Kotlin has public as default
     }
 
-val re = Regex("[<>]")
-
-fun String.fix(): String = replace(re, "~").replace("-~", "->")
-
-private fun FunctionSignature.mermaid(): String {
-    val prettyReturnType = if (returnType == null) "" else ": $returnType".fix()
-    val prettyParameters: String =
-        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint().fix() }
+internal fun FunctionSignature.mermaid(): Pair<String, String> {
     val ext = if (extensionOf == null) "" else "$extensionOf."
-    val memberMod = addSpaceAfter(memberModifier.prettyPrint())
-    return "${memberMod}fun $ext$name($prettyParameters)$prettyReturnType"
+    val prettyParameters: String =
+        if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint().fixMermaidBug() }
+    val prettyReturnType = if (returnType == null) "" else ": ${returnType.toString().fixMermaidBug()}"
+    val memberMod = if (memberModifier == MemberModifier.OVERRIDE) " «override»" else ""
+    return Pair(modSign(visibilityModifier), "$ext$name($prettyParameters)$prettyReturnType$memberMod")
 }
 
-private fun Property.mermaid(): String {
+private fun String.fixMermaidBug(): String = replace("<", "‹").replace(">", "›")
+
+internal fun Property.mermaid(): Pair<String, String> {
     val mMod = addSpaceAfter(memberModifier.map { it.prettyPrint() }.sortedDescending().joinToString(" "))
     val mod = modifier.text
-    val type = if (dataType != null) " : $dataType" else ""
-    return "$mMod$mod $name$type"
+    val type = if (dataType != null) ": $dataType" else ""
+    return Pair(modSign(visibilityModifier), "$mMod$name$type «$mod»")
 }
 
-private fun ClassParameter.mermaid(): String {
-    val property = addSpaceAfter(propertyModifier.prettyPrint())
-    return "$property$name: $type"
+internal fun ClassParameter.mermaid(): Pair<String, String> {
+    val mod = if (propertyModifier == null) "" else " «${propertyModifier.prettyPrint()}»"
+    return Pair(modSign(visibilityModifier), "$name: ${type.toString().fixMermaidBug()}$mod")
 }
 
 private fun writeFile(
