@@ -16,9 +16,10 @@ import net.dinkla.kpnk.analysis.overview
 import net.dinkla.kpnk.analysis.packages
 import net.dinkla.kpnk.analysis.search
 import net.dinkla.kpnk.domain.Files
+import net.dinkla.kpnk.utilities.read
+import net.dinkla.kpnk.utilities.saveToJsonFile
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.File
 
 internal val logger: Logger = LoggerFactory.getLogger("Main")
 
@@ -42,7 +43,7 @@ class Nkp : CliktCommand() {
 
     override fun run() {
         logger.info("Reading from ${source.absolutePath}")
-        val files: Files = read(source)
+        val files: Files = Files.read(source)
         if (save != null) {
             files.saveToJsonFile(save!!.absolutePath)
         }
@@ -82,10 +83,3 @@ class Nkp : CliktCommand() {
 fun main(args: Array<String>) {
     Nkp().main(args)
 }
-
-private fun read(file: File): Files =
-    if (file.isDirectory) {
-        Files.readFromDirectory(file.absolutePath)
-    } else {
-        Files.loadFromJsonFile(file.absolutePath)
-    }

@@ -2,9 +2,14 @@ package net.dinkla.kpnk.utilities
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.FileName
+import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.extract.extract
 import net.dinkla.kpnk.logger
 import java.io.File
@@ -59,3 +64,34 @@ private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<
             }
         }
     }
+
+fun Files.saveToJsonFile(fileName: String) {
+    val string = Json.encodeToString(this)
+    File(fileName).writeText(string)
+}
+
+fun Files.Companion.read(file: File): Files =
+    if (file.isDirectory) {
+        Files.readFromDirectory(file.absolutePath)
+    } else {
+        Files.loadFromJsonFile(file.absolutePath)
+    }
+
+internal fun Files.Companion.loadFromJsonFile(fileName: String): Files {
+    val string = File(fileName).readText()
+    return Json.decodeFromString<Files>(string)
+}
+
+internal fun Files.Companion.readFromDirectory(directory: String): Files =
+    runBlocking(Dispatchers.Default) {
+        logger.info("Reading and saving from directory '$directory'")
+        val allInfos = parseFilesFromDirectory(directory).map { it.await() }
+        reportErrors(allInfos)
+        Files(allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
+    }
+
+private fun reportErrors(infos: List<Result<AnalysedFile>>) {
+    infos.groupBy { it.isSuccess }.forEach {
+        logger.info("${if (it.key) "Successful" else "With error"}: ${it.value.size}")
+    }
+}
