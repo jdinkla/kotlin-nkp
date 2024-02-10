@@ -5,7 +5,6 @@ import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Defined
 import net.dinkla.kpnk.domain.PropertyModifier
 import net.dinkla.kpnk.domain.Type
-import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {

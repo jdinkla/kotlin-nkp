@@ -10,8 +10,8 @@ class PackageTest : StringSpec({
         examplePackage.declarations.size shouldBe numberOfDeclarations
     }
 
-    "should aggregate imports" {
-        val numberOfImports = examplePackage.files.map { it.imports.size }.sum()
+    "should aggregate distinct imports" {
+        val numberOfImports = examplePackage.files.map { it.imports }.toSet().sumOf { it.size }
         examplePackage.imports().size shouldBe numberOfImports
     }
 })

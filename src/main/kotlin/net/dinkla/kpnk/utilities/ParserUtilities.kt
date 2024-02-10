@@ -8,16 +8,3 @@ import java.io.File
 internal fun fromText(text: String): KotlinParseTree = parseKotlinCode(tokenizeKotlinCode(text))
 
 internal fun fromFile(file: String): KotlinParseTree = fromText(File(file).readText())
-
-fun KotlinParseTree.findName(name: String): KotlinParseTree? {
-    var node: KotlinParseTree? = this
-    while (node != null && node.name != name) {
-        node =
-            if (node.children.isEmpty()) {
-                null
-            } else {
-                node.children[0]
-            }
-    }
-    return node
-}

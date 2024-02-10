@@ -1,7 +1,6 @@
 package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.domain.Type
-import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractType(tree: KotlinParseTree): Type? {

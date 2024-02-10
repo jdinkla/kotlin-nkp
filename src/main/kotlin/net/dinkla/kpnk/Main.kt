@@ -2,8 +2,10 @@ package net.dinkla.kpnk
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
+import net.dinkla.kpnk.analysis.debug
 import net.dinkla.kpnk.analysis.dependencies
 import net.dinkla.kpnk.analysis.details
 import net.dinkla.kpnk.analysis.importStatistics
@@ -36,6 +38,7 @@ class Nkp : CliktCommand() {
     private val packages by option(help = "save as json").file(canBeDir = false)
     private val importStatistics by option(help = "save as json").file(canBeDir = false)
     private val overview by option(help = "save as json").file(canBeDir = false)
+    private val debug by option(help = "debug").flag()
 
     override fun run() {
         logger.info("Reading from ${source.absolutePath}")
@@ -69,6 +72,9 @@ class Nkp : CliktCommand() {
         }
         if (overview != null) {
             overview(files, overview!!)
+        }
+        if (debug) {
+            debug(files)
         }
     }
 }

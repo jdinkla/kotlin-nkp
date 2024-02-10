@@ -19,7 +19,7 @@ fun importStatistics(
 
 @Serializable
 private data class ImportStats(
-    val name: String,
+    val packageName: String,
     val total: Int,
     val fromSubPackage: Int,
     val fromSuperPackage: Int,
@@ -27,14 +27,14 @@ private data class ImportStats(
     val fromOtherPackage: Int,
 ) {
     override fun toString(): String
-        = "$name, $total, $fromSubPackage, $fromSuperPackage, $fromSidePackage, $fromOtherPackage"
+        = "$packageName, $total, $fromSubPackage, $fromSuperPackage, $fromSidePackage, $fromOtherPackage"
 
     companion object {
         fun from(p: Package): ImportStats {
-            val packages = p.imports().map { it.name.packageName }.distinct()
+            val packages = p.imports().map { it.name.packageName }.toSet()
             return ImportStats(
                 p.packageName.name,
-                p.imports().size,
+                packages.size,
                 packages.count { it.isSubPackageOf(p.packageName) },
                 packages.count { it.isSuperPackage(p.packageName) },
                 packages.count { it.isSidePackage(p.packageName) },

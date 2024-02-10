@@ -11,7 +11,7 @@ import java.io.File
 
 fun dependencies(
     files: Files,
-    file: File
+    file: File,
 ) {
     val dependencies = Dependencies.from(files)
     logger.info("Writing dependencies to ${file.absolutePath}")
@@ -20,8 +20,8 @@ fun dependencies(
 }
 
 @Serializable
-data class Dependency(val name: PackageName, val dependencies: Set<ImportedElement>) {
-    override fun toString(): String = "${name.name}: ${dependencies.joinToString(", ")}"
+data class Dependency(val packageName: PackageName, val importedElements: Set<ImportedElement>) {
+    override fun toString(): String = "${packageName.name}: ${importedElements.joinToString(", ")}"
 }
 
 @Serializable
@@ -36,7 +36,7 @@ private typealias InternalMap = Map<PackageName, Set<ImportedElement>>
 private fun from(dependencies: InternalMap): Dependencies =
     Dependencies(
         dependencies.map { (key, value) ->
-            Dependency(key, value)
+            Dependency(key, value.sortedBy { it.packageName.name }.toSet())
         },
     )
 

@@ -2,7 +2,6 @@ package net.dinkla.kpnk.extract
 
 import net.dinkla.kpnk.domain.Property
 import net.dinkla.kpnk.domain.PropertyModifier
-import net.dinkla.kpnk.utilities.findName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun extractProperty(tree: KotlinParseTree): Property {
