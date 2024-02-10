@@ -36,12 +36,16 @@ private fun addFileIfItMatches(
     }
 }
 
+fun String.isTestDir() =
+    this.contains("/test/") ||
+        this.contains("/commonTest/") || this.contains("/jvmTest/")
+
 internal fun shouldFileBeAdded(it: File) =
     if (it.absolutePath.contains("/.idea/")) {
         logger.trace("skipping file ${it.absolutePath}")
         false
-    } else if (it.absolutePath.contains("/test/") && it.name.endsWith("Test.kt")) {
-        logger.trace("skipping test  ${it.absolutePath}")
+    } else if (it.absolutePath.isTestDir()) {
+        logger.trace("skipping test ${it.absolutePath}")
         false
     } else {
         logger.trace("adding file ${it.absolutePath}")
