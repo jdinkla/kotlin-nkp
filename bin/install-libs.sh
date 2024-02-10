@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir dependencies
+mkdir -p dependencies
 cd dependencies
 
 git clone https://github.com/Kotlin/kotlin-spec.git
