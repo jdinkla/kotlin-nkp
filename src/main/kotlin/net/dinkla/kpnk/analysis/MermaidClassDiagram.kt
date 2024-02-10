@@ -106,10 +106,18 @@ private fun File.saveAsHtml(content: String) {
         </head>
         <body>
         <div class="mermaid">
-        $content
+        ${content.escapeForHtml()}
         </div>
         </body>
         </html>
         """.trimIndent(),
     )
 }
+
+private fun String.escapeForHtml() =
+    replace("‹", "&lsaquo;")
+        .replace("›", "&rsaquo;")
+        .replace("«", "&laquo;")
+        .replace("»", "&raquo;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
