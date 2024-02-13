@@ -11,10 +11,10 @@ fun inheritance(infos: Files) {
 }
 
 internal fun Files.inheritance(): List<Triple<String, Int, Int>> {
-    return flatMap { file -> file.classes }.map {
-        val h = this.searchHierarchy(it.name)
-        val l = this.searchImplementers(it.name)
-        Triple(it.name, h.size - 1, l.size)
+    return flatMap { file -> file.classes }.map {classSignature ->
+        val h = this.searchHierarchy(classSignature.name)
+        val l = this.searchImplementers(classSignature.name)
+        Triple(classSignature.name, h.size - 1, l.size)
     }
 }
 

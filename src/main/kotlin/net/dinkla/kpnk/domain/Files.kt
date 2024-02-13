@@ -12,6 +12,6 @@ class Files(private val files: List<AnalysedFile>) : List<AnalysedFile> by files
             list.add(file)
             map[packageName] = list
         }
-        return map.map { Package(it.key, it.value) }
+        return map.map { Package(it.key, it.value) }.sortedBy { it.packageName.name }
     }
 }

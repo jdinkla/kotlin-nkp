@@ -10,7 +10,7 @@ fun search(
     clazz: String,
 ) {
     logger.info { "*** searchClass ***" }
-    val found = infos.searchClass(clazz)
+    val found = infos.searchClassByName(clazz)
     found.forEach { println(it.prettyPrint()) }
 
     logger.info { "*** searchHierarchy ***" }
@@ -22,12 +22,12 @@ fun search(
     impls.forEach { println(it.prettyPrint()) }
 }
 
-fun Files.searchClass(className: String): List<ClassSignature> =
+fun Files.searchClassByName(className: String): List<ClassSignature> =
     flatMap { file -> file.classes }
         .filter { clazz -> clazz.name == className }
 
 fun Files.searchHierarchy(className: String): List<ClassSignature> {
-    val cls = searchClass(className)
+    val cls = searchClassByName(className)
     return cls +
         cls.flatMap { clazz -> clazz.inheritedFrom }
             .flatMap { this.searchHierarchy(it) }

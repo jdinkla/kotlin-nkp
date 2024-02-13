@@ -11,7 +11,7 @@ import net.dinkla.kpnk.domain.PackageName
 import java.io.File
 
 
-fun importStatistics(
+fun packageStatistics(
     files: Files,
     file: File,
 ) {
@@ -23,6 +23,7 @@ internal data class AnalyzedPackage(
     val packageName: PackageName,
     val importedElements: Set<ImportedElement>,
     val importStatistics: ImportStatistics,
+    val declarationStatistics: DeclarationStatistics
 ) {
     companion object {
         fun from(files: Files): List<AnalyzedPackage> =
@@ -31,8 +32,9 @@ internal data class AnalyzedPackage(
         fun from(p: Package): AnalyzedPackage {
             val name = p.packageName
             val elements = p.imports().map { it.name }.sortedBy { it.name }
-            val stats = ImportStatistics.from(p)
-            return AnalyzedPackage(name, elements.toSet(), stats)
+            val importStatistics = ImportStatistics.from(p)
+            val declarationStatistics = DeclarationStatistics.from(p)
+            return AnalyzedPackage(name, elements.toSet(), importStatistics, declarationStatistics)
         }
     }
 }
@@ -58,6 +60,26 @@ internal data class ImportStatistics(
                 packages.count { it.isSidePackage(p.packageName) },
                 packages.count { it.isOtherPackage(p.packageName) },
             )
+        }
+    }
+}
+
+@Serializable
+internal data class DeclarationStatistics(
+    val files: Int,
+    val functions: Int,
+    val properties: Int,
+    val classes: Int,
+    val typeAliases: Int,
+) {
+    companion object {
+        fun from(p: Package): DeclarationStatistics {
+            val files = p.files.size
+            val functions = p.functions.size
+            val properties = p.properties.size
+            val classes = p.classes.size
+            val typeAliases = p.typeAliases.size
+            return DeclarationStatistics(files, functions, properties, classes, typeAliases)
         }
     }
 }

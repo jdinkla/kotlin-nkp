@@ -7,11 +7,10 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.kpnk.analysis.debug
 import net.dinkla.kpnk.analysis.details
-import net.dinkla.kpnk.analysis.importStatistics
+import net.dinkla.kpnk.analysis.packageStatistics
 import net.dinkla.kpnk.analysis.inheritance
 import net.dinkla.kpnk.analysis.mermaidClassDiagram
 import net.dinkla.kpnk.analysis.outliers
-import net.dinkla.kpnk.analysis.overview
 import net.dinkla.kpnk.analysis.packages
 import net.dinkla.kpnk.analysis.search
 import net.dinkla.kpnk.domain.Files
@@ -21,18 +20,17 @@ import net.dinkla.kpnk.utilities.saveToJsonFile
 class Main : CliktCommand() {
     private val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
     private val debug by option(help = "debug").flag()
-    private val importStatistics by file(help = "analyze imports for every package")
     private val mermaidClassDiagram by file(
         help = "Generate a mermaid class diagram (.mermaid or .html)",
     )
+    private val packages by file(help = "exports all information organized by packages")
+    private val packageStatistics by file(help = "analysis for all packages")
     private val save by file("save parsed source code as json")
 
     private val inheritance by file()
     private val outliers by file()
     private val search by option()
     private val details by file()
-    private val packages by file(help = "save as json")
-    private val overview by file(help = "overview")
 
     private fun file(help: String = "") = option(help = help).file(canBeDir = false)
 
@@ -59,11 +57,8 @@ class Main : CliktCommand() {
         if (packages != null) {
             packages(files, packages!!)
         }
-        if (importStatistics != null) {
-            importStatistics(files, importStatistics!!)
-        }
-        if (overview != null) {
-            overview(files, overview!!)
+        if (packageStatistics != null) {
+            packageStatistics(files, packageStatistics!!)
         }
         if (debug) {
             debug(files)
