@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.kpnk.analysis.debug
-import net.dinkla.kpnk.analysis.details
+import net.dinkla.kpnk.analysis.fileStatistics
 import net.dinkla.kpnk.analysis.packageStatistics
 import net.dinkla.kpnk.analysis.inheritance
 import net.dinkla.kpnk.analysis.mermaidClassDiagram
@@ -20,6 +20,7 @@ import net.dinkla.kpnk.utilities.saveToJsonFile
 class Main : CliktCommand() {
     private val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
     private val debug by option(help = "debug").flag()
+    private val fileStatistics by file(help = "statistics for all files")
     private val mermaidClassDiagram by file(
         help = "Generate a mermaid class diagram (.mermaid or .html)",
     )
@@ -30,7 +31,6 @@ class Main : CliktCommand() {
     private val inheritance by file()
     private val outliers by file()
     private val search by option()
-    private val details by file()
 
     private fun file(help: String = "") = option(help = help).file(canBeDir = false)
 
@@ -51,8 +51,8 @@ class Main : CliktCommand() {
         if (mermaidClassDiagram != null) {
             mermaidClassDiagram(files, mermaidClassDiagram!!)
         }
-        if (details != null) {
-            details(files)
+        if (fileStatistics != null) {
+            fileStatistics(files, fileStatistics!!)
         }
         if (packages != null) {
             packages(files, packages!!)

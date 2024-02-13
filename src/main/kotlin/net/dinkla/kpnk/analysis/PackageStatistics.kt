@@ -10,11 +10,11 @@ import net.dinkla.kpnk.domain.Package
 import net.dinkla.kpnk.domain.PackageName
 import java.io.File
 
-
 fun packageStatistics(
     files: Files,
     file: File,
 ) {
+    logger.info { "Writing import statistics to ${file.absolutePath}" }
     save(file, AnalyzedPackage.from(files))
 }
 
@@ -82,15 +82,6 @@ internal data class DeclarationStatistics(
             return DeclarationStatistics(files, functions, properties, classes, typeAliases)
         }
     }
-}
-
-private fun save(
-    file: File,
-    analyzedPackages: List<AnalyzedPackage>,
-) {
-    val string = Json.encodeToString(analyzedPackages)
-    logger.info { "Writing import statistics to ${file.absolutePath}" }
-    file.writeText(string)
 }
 
 private val logger = KotlinLogging.logger {}

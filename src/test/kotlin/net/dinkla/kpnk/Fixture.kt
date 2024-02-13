@@ -173,7 +173,7 @@ internal val p1 = Property("p1", Type("Int"))
 
 internal val analysedFile =
     AnalysedFile(
-        FileName("ExampleFile.kt"),
+        FileName("/base/ExampleFile.kt"),
         PackageName("net.dinkla.kpnk"),
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),
@@ -181,7 +181,7 @@ internal val analysedFile =
 
 internal val analysedFile1 =
     AnalysedFile(
-        FileName("ExampleFile1.kt"),
+        FileName("/base/ExampleFile1.kt"),
         PackageName("net.dinkla.kpnk"),
         imports = expectedImports,
         declarations = listOf(f1, c1, ta1),
@@ -189,7 +189,7 @@ internal val analysedFile1 =
 
 internal val analysedFile2 =
     AnalysedFile(
-        FileName("ExampleFile2.kt"),
+        FileName("/base/ExampleFile2.kt"),
         PackageName("net.dinkla.kpnk"),
         imports = expectedImports,
         declarations = listOf(f2, p1),
@@ -197,4 +197,4 @@ internal val analysedFile2 =
 
 val examplePackage = Package(PackageName("net.dinkla.kpnk"), listOf(analysedFile1, analysedFile2))
 
-val exampleFiles = Files(listOf(analysedFile, analysedFile1, analysedFile2))
+val exampleFiles = Files("/base", listOf(analysedFile, analysedFile1, analysedFile2))

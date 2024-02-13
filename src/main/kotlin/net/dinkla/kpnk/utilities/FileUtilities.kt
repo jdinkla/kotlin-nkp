@@ -93,7 +93,7 @@ internal fun Files.Companion.readFromDirectory(directory: String): Files =
         logger.info { "Reading from directory '$directory'" }
         val allInfos = parseFilesFromDirectory(directory).map { it.await() }
         reportErrors(allInfos)
-        Files(allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
+        Files(directory, allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
     }
 
 private fun reportErrors(infos: List<Result<AnalysedFile>>) {

@@ -1,5 +1,6 @@
 package net.dinkla.kpnk.analysis
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
@@ -17,7 +18,7 @@ fun mermaidClassDiagram(
 ) {
     val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
     val content = generateDiagram(classes)
-    writeFile(file, content)
+    save(file, content)
 }
 
 private fun generateDiagram(classes: List<ClassSignature>) =
@@ -67,8 +68,6 @@ internal fun FunctionSignature.mermaid(): Pair<String, String> {
     return Pair(modSign(visibilityModifier), "$ext$name($prettyParameters)$prettyReturnType$memberMod")
 }
 
-private fun String.fixMermaidBug(): String = replace("<", "‹").replace(">", "›")
-
 internal fun Property.mermaid(): Pair<String, String> {
     val mMod = addSpaceAfter(memberModifier.map { it.prettyPrint() }.sortedDescending().joinToString(" "))
     val mod = modifier.text
@@ -81,18 +80,19 @@ internal fun ClassParameter.mermaid(): Pair<String, String> {
     return Pair(modSign(visibilityModifier), "$name: ${type.toString().fixMermaidBug()}$mod")
 }
 
-private fun writeFile(
+private fun String.fixMermaidBug(): String = replace("<", "‹").replace(">", "›")
+
+private fun save(
     file: File,
     content: String,
 ) {
-    val fileName = file.name
-    val isMermaid = fileName.endsWith(".mermaid")
-    val isHtml = fileName.endsWith(".html")
+    val isMermaid = file.name.endsWith(".mermaid")
+    val isHtml = file.name.endsWith(".html")
     require(isMermaid || isHtml)
-    if (isMermaid) {
-        file.writeText(content)
-    } else {
-        file.saveAsHtml(content)
+    logger.info { "Writing mermaid class diagram to ${file.absolutePath}" }
+    when {
+        isMermaid -> file.writeText(content)
+        else -> file.saveAsHtml(content)
     }
 }
 
@@ -121,3 +121,5 @@ private fun String.escapeForHtml() =
         .replace("»", "&raquo;")
         .replace("<", "&lt;")
         .replace(">", "&gt;")
+
+private val logger = KotlinLogging.logger {}

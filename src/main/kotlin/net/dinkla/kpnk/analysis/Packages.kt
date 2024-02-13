@@ -10,6 +10,5 @@ fun packages(
     file: File
 ) {
     val packages = files.packages()
-    val string = Json.encodeToString(packages)
-    file.writeText(string)
+    save(file, packages)
 }
