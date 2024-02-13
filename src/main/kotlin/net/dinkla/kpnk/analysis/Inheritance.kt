@@ -1,10 +1,10 @@
 package net.dinkla.kpnk.analysis
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.Files
-import net.dinkla.kpnk.logger
 
 fun inheritance(infos: Files) {
-    logger.info("*** Inheritance ***")
+    logger.info { "*** Inheritance ***" }
     infos.inheritance().sortedByDescending { it.second + it.third }.forEach {
         println(it)
     }
@@ -17,3 +17,5 @@ internal fun Files.inheritance(): List<Triple<String, Int, Int>> {
         Triple(it.name, h.size - 1, l.size)
     }
 }
+
+private val logger = KotlinLogging.logger {}

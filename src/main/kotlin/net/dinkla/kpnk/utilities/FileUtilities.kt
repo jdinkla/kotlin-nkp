@@ -1,5 +1,6 @@
 package net.dinkla.kpnk.utilities
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,6 @@ import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.FileName
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.extract.extract
-import net.dinkla.kpnk.logger
 import java.io.File
 
 fun getAllKotlinFilesInDirectory(root: String): List<String> {
@@ -42,13 +42,13 @@ fun String.isTestDir() =
 
 internal fun shouldFileBeAdded(it: File) =
     if (it.absolutePath.contains("/.idea/")) {
-        logger.trace("skipping file ${it.absolutePath}")
+        logger.trace { "skipping file ${it.absolutePath}" }
         false
     } else if (it.absolutePath.isTestDir()) {
-        logger.trace("skipping test ${it.absolutePath}")
+        logger.trace { "skipping test ${it.absolutePath}" }
         false
     } else {
-        logger.trace("adding file ${it.absolutePath}")
+        logger.trace { "adding file ${it.absolutePath}" }
         true
     }
 
@@ -59,17 +59,18 @@ private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<
     files.map {
         async {
             try {
-                logger.trace("handling file $it")
+                logger.trace { "handling file $it" }
                 val file = extract(FileName(it), fromFile(it))
                 Result.success(file)
             } catch (e: Exception) {
-                logger.error("parsing '$it' yields ${e.message}")
+                logger.error { "parsing '$it' yields ${e.message}" }
                 Result.failure(e)
             }
         }
     }
 
 fun Files.saveToJsonFile(fileName: String) {
+    logger.info { "Saving JSON to file '$fileName'" }
     val string = Json.encodeToString(this)
     File(fileName).writeText(string)
 }
@@ -82,13 +83,14 @@ fun Files.Companion.read(file: File): Files =
     }
 
 internal fun Files.Companion.loadFromJsonFile(fileName: String): Files {
+    logger.info { "Reading from file '$fileName'" }
     val string = File(fileName).readText()
     return Json.decodeFromString<Files>(string)
 }
 
 internal fun Files.Companion.readFromDirectory(directory: String): Files =
     runBlocking(Dispatchers.Default) {
-        logger.info("Reading and saving from directory '$directory'")
+        logger.info { "Reading from directory '$directory'" }
         val allInfos = parseFilesFromDirectory(directory).map { it.await() }
         reportErrors(allInfos)
         Files(allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
@@ -96,6 +98,8 @@ internal fun Files.Companion.readFromDirectory(directory: String): Files =
 
 private fun reportErrors(infos: List<Result<AnalysedFile>>) {
     infos.groupBy { it.isSuccess }.forEach {
-        logger.info("${if (it.key) "Successful" else "With error"}: ${it.value.size}")
+        logger.info { "${if (it.key) "Successful" else "With error"}: ${it.value.size}" }
     }
 }
+
+private val logger = KotlinLogging.logger {}

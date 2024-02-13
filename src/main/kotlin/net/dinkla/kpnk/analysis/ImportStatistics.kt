@@ -1,5 +1,6 @@
 package net.dinkla.kpnk.analysis
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -7,8 +8,8 @@ import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.ImportedElement
 import net.dinkla.kpnk.domain.Package
 import net.dinkla.kpnk.domain.PackageName
-import net.dinkla.kpnk.logger
 import java.io.File
+
 
 fun importStatistics(
     files: Files,
@@ -66,6 +67,8 @@ private fun save(
     analyzedPackages: List<AnalyzedPackage>,
 ) {
     val string = Json.encodeToString(analyzedPackages)
-    logger.info("Writing import statistics to ${file.absolutePath}")
+    logger.info { "Writing import statistics to ${file.absolutePath}" }
     file.writeText(string)
 }
+
+private val logger = KotlinLogging.logger {}

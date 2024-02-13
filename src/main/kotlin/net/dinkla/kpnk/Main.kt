@@ -17,30 +17,26 @@ import net.dinkla.kpnk.analysis.search
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.utilities.read
 import net.dinkla.kpnk.utilities.saveToJsonFile
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
-internal val logger: Logger = LoggerFactory.getLogger("Main")
-
-class Nkp : CliktCommand() {
+class Main : CliktCommand() {
     private val source by argument().file(mustExist = true, canBeDir = true, canBeFile = true)
-    private val save by option(help = "save parsed source code as json").file(canBeDir = false)
-    private val inheritance by option().file(canBeDir = false)
-    private val outliers by option().file(canBeDir = false)
-    private val search by option()
-    private val mermaidClassDiagram by option(
-        help = "Generate a mermaid class diagram (.mermaid or .html)",
-    ).file(
-        canBeDir = false,
-    )
-    private val details by option().file(canBeDir = false)
-    private val packages by option(help = "save as json").file(canBeDir = false)
-    private val importStatistics by option(help = "save as json").file(canBeDir = false)
-    private val overview by option(help = "save as json").file(canBeDir = false)
     private val debug by option(help = "debug").flag()
+    private val importStatistics by file(help = "analyze imports for every package")
+    private val mermaidClassDiagram by file(
+        help = "Generate a mermaid class diagram (.mermaid or .html)",
+    )
+    private val save by file("save parsed source code as json")
+
+    private val inheritance by file()
+    private val outliers by file()
+    private val search by option()
+    private val details by file()
+    private val packages by file(help = "save as json")
+    private val overview by file(help = "overview")
+
+    private fun file(help: String = "") = option(help = help).file(canBeDir = false)
 
     override fun run() {
-        logger.info("Reading from ${source.absolutePath}")
         val files: Files = Files.read(source)
         if (save != null) {
             files.saveToJsonFile(save!!.absolutePath)
@@ -76,5 +72,5 @@ class Nkp : CliktCommand() {
 }
 
 fun main(args: Array<String>) {
-    Nkp().main(args)
+    Main().main(args)
 }

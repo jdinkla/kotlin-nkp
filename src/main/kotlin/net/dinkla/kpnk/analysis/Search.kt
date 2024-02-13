@@ -1,23 +1,23 @@
 package net.dinkla.kpnk.analysis
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.prettyPrint
-import net.dinkla.kpnk.logger
 
 fun search(
     infos: Files,
     clazz: String,
 ) {
-    logger.info("*** searchClass ***")
+    logger.info { "*** searchClass ***" }
     val found = infos.searchClass(clazz)
     found.forEach { println(it.prettyPrint()) }
 
-    logger.info("*** searchHierarchy ***")
+    logger.info { "*** searchHierarchy ***" }
     val hier = infos.searchHierarchy(clazz)
     hier.forEach { println(it.prettyPrint()) }
 
-    logger.info("*** searchImplementers ***")
+    logger.info { "*** searchImplementers ***" }
     val impls = infos.searchImplementers(clazz)
     impls.forEach { println(it.prettyPrint()) }
 }
@@ -37,3 +37,5 @@ fun Files.searchImplementers(className: String): List<ClassSignature> {
     return flatMap { file -> file.classes }
         .filter { clazz -> clazz.inheritedFrom.contains(className) }
 }
+
+private val logger = KotlinLogging.logger {}

@@ -1,15 +1,14 @@
 package net.dinkla.kpnk.analysis
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.AnalysedFile
 import net.dinkla.kpnk.domain.ClassSignature
-import net.dinkla.kpnk.domain.Files
-import net.dinkla.kpnk.logger
 
 fun outliers(
     infos: List<AnalysedFile>,
     topN: Int = 10,
 ) {
-    logger.info("*** Large Classes ***")
+    logger.info { "*** Large Classes ***" }
     largeClasses(infos, topN).forEach { c ->
         println(
             """
@@ -26,3 +25,5 @@ internal fun largeClasses(
     val allClasses = infos.flatMap { it.classes }
     return allClasses.sortedByDescending { it.declarations.size }.take(topN)
 }
+
+private val logger = KotlinLogging.logger {}

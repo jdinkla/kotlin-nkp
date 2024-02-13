@@ -20,6 +20,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:_")
     implementation("ch.qos.logback:logback-classic:_")
     implementation("com.github.ajalt.clikt:clikt:_")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 
     testImplementation(Testing.kotest.runner.junit5)
     testImplementation(Testing.kotest.assertions.core)
