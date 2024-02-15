@@ -16,7 +16,7 @@ fun fileStatistics(
 }
 
 @Serializable
-data class FileStatistics(
+private data class FileStatistics(
     val file: String,
     val imports: Int,
     val classes: Int,

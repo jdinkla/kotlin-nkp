@@ -4,6 +4,17 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
 class ClassSignatureTest : StringSpec({
+    "aliases should return the type aliases" {
+        val typeAlias = TypeAlias("T", Type("Int"))
+        val classSignature = ClassSignature(
+            "C",
+            listOf(ClassParameter("p", Type("Int"))),
+            declarations = listOf(typeAlias),
+            elementType = ClassSignature.Type.CLASS,
+        )
+        classSignature.aliases shouldBe listOf(typeAlias)
+    }
+
     "prettyPrint should return a string representation of default class" {
         ClassSignature(
             "C",

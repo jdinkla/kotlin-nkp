@@ -23,6 +23,9 @@ data class ClassSignature(
     val classes: List<ClassSignature>
         get() = declarations.filterIsInstance<ClassSignature>()
 
+    val aliases: List<TypeAlias>
+        get() = declarations.filterIsInstance<TypeAlias>()
+
     @Serializable
     enum class Type(val text: String) {
         CLASS("class"),
