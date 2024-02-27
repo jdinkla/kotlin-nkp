@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "Does work with Java 17"
+java -version
+
 mkdir -p dependencies
 cd dependencies
 
