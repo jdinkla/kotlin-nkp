@@ -8,11 +8,11 @@ import java.io.File
 
 fun fileStatistics(
     files: Files,
-    file: File?,
+    outputFile: File,
 ) {
     val stats = files.map { FileStatistics.from(files, it) }
-    logger.info { "Writing file statistics to ${file?.absolutePath}" }
-    save(file!!, stats)
+    logger.info { "Writing file statistics to ${outputFile.absolutePath}" }
+    save(outputFile, stats)
 }
 
 @Serializable

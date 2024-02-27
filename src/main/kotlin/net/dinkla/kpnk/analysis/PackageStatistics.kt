@@ -2,8 +2,6 @@ package net.dinkla.kpnk.analysis
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.ImportedElement
 import net.dinkla.kpnk.domain.Package
@@ -12,10 +10,10 @@ import java.io.File
 
 fun packageStatistics(
     files: Files,
-    file: File,
+    outputFile: File,
 ) {
-    logger.info { "Writing import statistics to ${file.absolutePath}" }
-    save(file, AnalyzedPackage.from(files))
+    logger.info { "Writing import statistics to ${outputFile.absolutePath}" }
+    save(outputFile, AnalyzedPackage.from(files))
 }
 
 @Serializable

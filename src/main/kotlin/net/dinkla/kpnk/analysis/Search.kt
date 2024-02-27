@@ -6,19 +6,19 @@ import net.dinkla.kpnk.domain.Files
 import net.dinkla.kpnk.domain.prettyPrint
 
 fun search(
-    infos: Files,
+    files: Files,
     clazz: String,
 ) {
     logger.info { "*** searchClass ***" }
-    val found = infos.searchClassByName(clazz)
+    val found = files.searchClassByName(clazz)
     found.forEach { println(it.prettyPrint()) }
 
     logger.info { "*** searchHierarchy ***" }
-    val hier = infos.searchHierarchy(clazz)
+    val hier = files.searchHierarchy(clazz)
     hier.forEach { println(it.prettyPrint()) }
 
     logger.info { "*** searchImplementers ***" }
-    val impls = infos.searchImplementers(clazz)
+    val impls = files.searchImplementers(clazz)
     impls.forEach { println(it.prettyPrint()) }
 }
 

@@ -3,9 +3,9 @@ package net.dinkla.kpnk.analysis
 import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.Files
 
-fun inheritance(infos: Files) {
+fun inheritance(files: Files) {
     logger.info { "*** Inheritance ***" }
-    infos.inheritance().sortedByDescending { it.second + it.third }.forEach {
+    files.inheritance().sortedByDescending { it.second + it.third }.forEach {
         println(it)
     }
 }

@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-echo "Does work with Java 17"
+echo "This does work with Java 17 and did not work with Java 21. Make sure you have Java 17 installed."
 java -version
 
 mkdir -p dependencies

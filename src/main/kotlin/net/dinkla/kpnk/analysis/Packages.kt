@@ -1,14 +1,15 @@
 package net.dinkla.kpnk.analysis
 
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.Files
 import java.io.File
 
 fun packages(
     files: Files,
-    file: File
+    outputFile: File
 ) {
-    val packages = files.packages()
-    save(file, packages)
+    logger.info { "Writing package information to ${outputFile.absolutePath}" }
+    save(outputFile, files.packages())
 }
+
+private val logger = KotlinLogging.logger {}

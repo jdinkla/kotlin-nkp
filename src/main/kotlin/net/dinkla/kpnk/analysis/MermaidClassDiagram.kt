@@ -14,11 +14,11 @@ import java.io.File
 
 fun mermaidClassDiagram(
     files: Files,
-    file: File,
+    outputFile: File,
 ) {
     val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
     val content = generateDiagram(classes)
-    save(file, content)
+    save(outputFile, content)
 }
 
 private fun generateDiagram(classes: List<ClassSignature>) =

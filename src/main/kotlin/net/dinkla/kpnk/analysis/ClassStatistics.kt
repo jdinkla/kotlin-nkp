@@ -12,7 +12,7 @@ import java.io.File
 
 fun classStatistics(
     files: Files,
-    file: File?,
+    outputFile: File,
 ) {
     val classes: List<Pair<PackageName, ClassSignature>> =
         files.map { file ->
@@ -25,8 +25,8 @@ fun classStatistics(
             }
         }.flatten()
     val stats = classes.map { ClassStatistics.from(it.first, it.second) }
-    logger.info { "Writing class statistics to ${file?.absolutePath}" }
-    save(file!!, stats)
+    logger.info { "Writing class statistics to ${outputFile.absolutePath}" }
+    save(outputFile, stats)
 }
 
 @Serializable
