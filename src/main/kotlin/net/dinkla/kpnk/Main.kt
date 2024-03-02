@@ -11,6 +11,7 @@ import net.dinkla.kpnk.analysis.fileStatistics
 import net.dinkla.kpnk.analysis.packageStatistics
 import net.dinkla.kpnk.analysis.inheritance
 import net.dinkla.kpnk.analysis.mermaidClassDiagram
+import net.dinkla.kpnk.analysis.mermaidImportsFlowDiagram
 import net.dinkla.kpnk.analysis.outliers
 import net.dinkla.kpnk.analysis.packages
 import net.dinkla.kpnk.analysis.search
@@ -25,6 +26,9 @@ class Main : CliktCommand() {
     private val fileStatistics by file(help = "statistics for all files")
     private val mermaidClassDiagram by file(
         help = "Generate a mermaid class diagram (.mermaid or .html)",
+    )
+    private val mermaidImportsFlowDiagram by file(
+        help = "Generate mermaid flow diagram for imports (.mermaid or .html)",
     )
     private val packages by file(help = "exports all information organized by packages")
     private val packageStatistics by file(help = "analysis for all packages")
@@ -52,6 +56,9 @@ class Main : CliktCommand() {
         }
         if (mermaidClassDiagram != null) {
             mermaidClassDiagram(files, mermaidClassDiagram!!)
+        }
+        if (mermaidImportsFlowDiagram != null) {
+            mermaidImportsFlowDiagram(files, mermaidImportsFlowDiagram!!)
         }
         if (fileStatistics != null) {
             fileStatistics(files, fileStatistics!!)

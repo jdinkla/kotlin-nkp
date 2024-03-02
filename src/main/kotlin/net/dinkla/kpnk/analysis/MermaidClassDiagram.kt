@@ -1,6 +1,5 @@
 package net.dinkla.kpnk.analysis
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dinkla.kpnk.domain.ClassParameter
 import net.dinkla.kpnk.domain.ClassSignature
 import net.dinkla.kpnk.domain.Files
@@ -81,45 +80,3 @@ internal fun ClassParameter.mermaid(): Pair<String, String> {
 }
 
 private fun String.fixMermaidBug(): String = replace("<", "‹").replace(">", "›")
-
-private fun save(
-    file: File,
-    content: String,
-) {
-    val isMermaid = file.name.endsWith(".mermaid")
-    val isHtml = file.name.endsWith(".html")
-    require(isMermaid || isHtml)
-    logger.info { "Writing mermaid class diagram to ${file.absolutePath}" }
-    when {
-        isMermaid -> file.writeText(content)
-        else -> file.saveAsHtml(content)
-    }
-}
-
-private fun File.saveAsHtml(content: String) {
-    writeText(
-        """
-        <html>
-        <head>
-          <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-          <script>mermaid.initialize({startOnLoad:true});</script>
-        </head>
-        <body>
-        <div class="mermaid">
-        ${content.escapeForHtml()}
-        </div>
-        </body>
-        </html>
-        """.trimIndent(),
-    )
-}
-
-private fun String.escapeForHtml() =
-    replace("‹", "&lsaquo;")
-        .replace("›", "&rsaquo;")
-        .replace("«", "&laquo;")
-        .replace("»", "&raquo;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-
-private val logger = KotlinLogging.logger {}
