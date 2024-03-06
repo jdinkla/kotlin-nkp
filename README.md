@@ -1,6 +1,36 @@
 # kotlin-nkp
 
-Analyse Kotlin source code.
+Kotlin-NKP is a project for static analysis of Kotlin programs (nkp is for aNalysis of Kotlin Programs). 
+
+It can generate some metrics and create diagrams.
+
+**WIP: This project is work in progress. It is at the start of it's life cycle**
+
+## Features
+
+```shell
+$ bin/nkp.sh -h
+...
+Usage: main [<options>] <source>
+
+Options:
+  --class-statistics=<path>    statistics on class level
+  --debug                      debug
+  --file-statistics=<path>     statistics for all files
+  --mermaid-class-diagram=<path>
+                               Generate a mermaid class diagram (.mermaid or
+                               .html)
+  --mermaid-imports-flow-diagram=<path>
+                               Generate mermaid flow diagram for imports
+                               (.mermaid or .html)
+  --packages=<path>            exports all information organized by packages
+  --package-statistics=<path>  analysis for all packages
+  --save=<path>                save parsed source code as json
+  --inheritance=<path>
+  --outliers=<path>
+  --search=<text>
+  -h, --help                   Show this message and exit
+```
 
 ## Usage
 
@@ -15,6 +45,8 @@ Help is available with `-h` or `--help`.
 ```sh
 $ bin/nkp.sh -h
 ```
+
+## Typical workflow
 
 It is advisable to first parse the source code into a json file.
 
