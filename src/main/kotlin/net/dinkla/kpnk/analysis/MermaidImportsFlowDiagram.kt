@@ -11,7 +11,7 @@ fun mermaidImportsFlowDiagram(
 ) {
     val packagesList = files.packages()
     val packagesTree =  toTree(packagesList)
-    val content = generateDiagram(packagesTree)
+    val content = generateDiagram(packagesTree, packagesList)
     save(outputFile, content)
 }
 
@@ -45,10 +45,19 @@ fun toTree(packages: List<Package>): TreeNode<Package> {
     return root
 }
 
-private fun generateDiagram(tree: TreeNode<Package>) =
+private fun generateDiagram(tree: TreeNode<Package>, packages: List<Package>) =
     buildString {
         appendLine("flowchart LR")
         generateDiagramRecursive(tree, this)
+        val imports = packages.flatMap { pkg ->
+            pkg.files.flatMap { file ->
+                file.imports.map { imp ->
+                    "  ${file.packageName.name} --> ${imp.name.packageName.name}"
+                }
+            }
+        }
+        val distinctImports = imports.sortedBy { it }.distinct()
+        distinctImports.forEach { appendLine(it) }
     }
 
 fun generateDiagramRecursive(
@@ -66,9 +75,13 @@ fun generateDiagramRecursive(
     stringBuilder.appendLine("${spaces}subgraph ${tree.value.packageName.name}")
     tree.children.forEach { child ->
         if (child.children.isEmpty()) {
-            child.value.files.forEach { file ->
-                stringBuilder.appendLine("$spaces  ${file.fileName.basename}")
-            }
+            val id = child.value.packageName.name
+            stringBuilder.appendLine("$spaces  $id")
+//            child.value.files.forEach { file ->
+//                val id = "${child.value.packageName.name}.${file.fileName.basename.replace(".kt", "")}"
+//                val id = child.value.packageName.name
+//                stringBuilder.appendLine("$spaces  $id[\"${file.fileName.basename}\"]")
+//            }
         } else {
             generateDiagramRecursive(child, stringBuilder, indent + 1)
         }
