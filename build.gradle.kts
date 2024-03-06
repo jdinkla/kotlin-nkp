@@ -36,5 +36,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("net.dinkla.kpnk.MainKt")
+    mainClass.set("net.dinkla.nkp.MainKt")
 }

@@ -32,6 +32,10 @@ Options:
   -h, --help                   Show this message and exit
 ```
 
+One example is the import flow diagram:
+
+![import diagram](docs/import-diagram.webp)
+
 ## Usage
 
 The command line syntax are as following:
