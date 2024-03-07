@@ -14,6 +14,7 @@ import net.dinkla.nkp.analysis.mermaidImportsFlowDiagram
 import net.dinkla.nkp.analysis.outliers
 import net.dinkla.nkp.analysis.packageStatistics
 import net.dinkla.nkp.analysis.packages
+import net.dinkla.nkp.analysis.save
 import net.dinkla.nkp.analysis.search
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.read
@@ -57,14 +58,10 @@ class Main : CliktCommand() {
             search(files, search!!)
         }
         if (mermaidClassDiagram != null) {
-            mermaidClassDiagram(files, mermaidClassDiagram!!)
+            mermaidClassDiagram(files).save(mermaidClassDiagram!!)
         }
         if (mermaidImportsFlowDiagram != null) {
-            mermaidImportsFlowDiagram(
-                files,
-                mermaidImportsFlowDiagram!!,
-                excludeOtherLibraries,
-            )
+            mermaidImportsFlowDiagram(files, excludeOtherLibraries).save(mermaidImportsFlowDiagram!!)
         }
         if (fileStatistics != null) {
             fileStatistics(files, fileStatistics!!)

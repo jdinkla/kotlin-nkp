@@ -9,15 +9,12 @@ import net.dinkla.nkp.domain.Property
 import net.dinkla.nkp.domain.VisibilityModifier
 import net.dinkla.nkp.domain.prettyPrint
 import net.dinkla.nkp.utilities.addSpaceAfter
-import java.io.File
 
 fun mermaidClassDiagram(
     files: Files,
-    outputFile: File,
-) {
+): String {
     val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
-    val content = generateDiagram(classes)
-    save(outputFile, content)
+    return generateDiagram(classes)
 }
 
 private fun generateDiagram(classes: List<ClassSignature>) =

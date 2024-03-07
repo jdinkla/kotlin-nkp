@@ -11,17 +11,16 @@ inline fun <reified T> save(file: File, items: List<T>) {
 }
 
 
-internal fun save(
+internal fun String.save(
     file: File,
-    content: String,
 ) {
     val isMermaid = file.name.endsWith(".mermaid")
     val isHtml = file.name.endsWith(".html")
     require(isMermaid || isHtml)
     logger.info { "Writing mermaid class diagram to ${file.absolutePath}" }
     when {
-        isMermaid -> file.writeText(content)
-        else -> file.saveAsHtml(content)
+        isMermaid -> file.writeText(this)
+        else -> file.saveAsHtml(this)
     }
 }
 

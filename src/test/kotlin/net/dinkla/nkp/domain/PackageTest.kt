@@ -11,7 +11,6 @@ class PackageTest : StringSpec({
     }
 
     "should aggregate distinct imports" {
-        val numberOfImports = examplePackage.files.map { it.imports }.toSet().sumOf { it.size }
-        examplePackage.imports().size shouldBe numberOfImports
+        examplePackage.imports().size shouldBe 3
     }
 })

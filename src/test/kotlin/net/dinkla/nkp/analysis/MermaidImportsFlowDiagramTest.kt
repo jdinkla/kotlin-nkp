@@ -3,14 +3,29 @@ package net.dinkla.nkp.analysis
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.exampleFiles
 
 class MermaidImportsFlowDiagramTest : StringSpec({
 
     val p1 = Package(PackageName("a.b"), emptyList())
     val p2 = Package(PackageName("a.b.c"), emptyList())
     val p3 = Package(PackageName("a.d"), emptyList())
+
+    "mermaidImportsFlowDiagram should create diagram" {
+        val content = mermaidImportsFlowDiagram(exampleFiles, false)
+        content shouldContain "net.dinkla.nkp"
+        content shouldContain "net.dinkla.nkp --> java.lang.Boolean"
+        content shouldContain "net.dinkla.nkp --> net.dinkla.nkp"
+    }
+
+    "mermaidImportsFlowDiagram should exclude libraries" {
+        val content = mermaidImportsFlowDiagram(exampleFiles, true)
+        content shouldContain "net.dinkla.nkp"
+        content shouldContain "net.dinkla.nkp --> net.dinkla.nkp"
+    }
 
     "toTree should create a tree for one package" {
         // Given

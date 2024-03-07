@@ -27,6 +27,6 @@ class AnalyzedFileTest : StringSpec({
     }
 
     "packageName should return the package and the filename" {
-        analysedFile.packageName() shouldBe "net.dinkla.kpnk.ExampleFile"
+        analysedFile.packageName() shouldBe "net.dinkla.nkp.ExampleFile"
     }
 })

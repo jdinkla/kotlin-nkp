@@ -3,17 +3,14 @@ package net.dinkla.nkp.analysis
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
-import java.io.File
 
 fun mermaidImportsFlowDiagram(
     files: Files,
-    outputFile: File,
     excludeOtherLibraries: Boolean,
-) {
+): String {
     val packagesList = files.packages()
     val packagesTree = toTree(packagesList)
-    val content = generateDiagram(packagesTree, packagesList, excludeOtherLibraries)
-    save(outputFile, content)
+    return generateDiagram(packagesTree, packagesList, excludeOtherLibraries)
 }
 
 internal class TreeNode<T>(val value: T, val children: MutableList<TreeNode<T>> = mutableListOf()) {
