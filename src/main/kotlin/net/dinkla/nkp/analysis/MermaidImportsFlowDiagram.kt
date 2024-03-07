@@ -8,14 +8,15 @@ import java.io.File
 fun mermaidImportsFlowDiagram(
     files: Files,
     outputFile: File,
+    excludeOtherLibraries: Boolean,
 ) {
     val packagesList = files.packages()
-    val packagesTree =  toTree(packagesList)
-    val content = generateDiagram(packagesTree, packagesList)
+    val packagesTree = toTree(packagesList)
+    val content = generateDiagram(packagesTree, packagesList, excludeOtherLibraries)
     save(outputFile, content)
 }
 
-class TreeNode<T>(val value: T, val children: MutableList<TreeNode<T>> = mutableListOf()) {
+internal class TreeNode<T>(val value: T, val children: MutableList<TreeNode<T>> = mutableListOf()) {
     fun addChild(node: TreeNode<T>) {
         children.add(node)
     }
@@ -25,7 +26,7 @@ class TreeNode<T>(val value: T, val children: MutableList<TreeNode<T>> = mutable
     }
 }
 
-fun toTree(packages: List<Package>): TreeNode<Package> {
+internal fun toTree(packages: List<Package>): TreeNode<Package> {
     val root = TreeNode(Package(PackageName(""), emptyList()))
     packages.forEach { pkg ->
         val parts = pkg.packageName.name.split(".")
@@ -45,22 +46,44 @@ fun toTree(packages: List<Package>): TreeNode<Package> {
     return root
 }
 
-private fun generateDiagram(tree: TreeNode<Package>, packages: List<Package>) =
-    buildString {
-        appendLine("flowchart LR")
-        generateDiagramRecursive(tree, this)
-        val imports = packages.flatMap { pkg ->
-            pkg.files.flatMap { file ->
-                file.imports.map { imp ->
-                    "  ${file.packageName.name} --> ${imp.name.packageName.name}"
-                }
-            }
-        }
-        val distinctImports = imports.sortedBy { it }.distinct()
-        distinctImports.forEach { appendLine(it) }
-    }
+private fun generateDiagram(
+    tree: TreeNode<Package>,
+    packages: List<Package>,
+    excludeOtherLibraries: Boolean,
+) = buildString {
+    appendLine("flowchart LR")
+    generateDiagramRecursive(tree, this)
+    val imports = importDependencies(packages, excludeOtherLibraries)
+    val distinctImports =
+        imports.map {
+            "  ${it.first} --> ${it.second}"
+        }.sorted().distinct()
+    distinctImports.forEach { appendLine(it) }
+}
 
-fun generateDiagramRecursive(
+private fun importDependencies(
+    packages: List<Package>,
+    excludeOtherLibraries: Boolean,
+): List<Pair<String, String>> {
+    val packageNames = packages.map { it.packageName.name }.sorted().distinct()
+    return packages.flatMap { pkg ->
+        pkg.files.flatMap { file ->
+            file.imports
+                .filter {
+                    if (excludeOtherLibraries) {
+                        packageNames.contains(it.name.packageName.name)
+                    } else {
+                        true
+                    }
+                }
+                .map { imp ->
+                    Pair(file.packageName.name, imp.name.packageName.name)
+                }
+        }
+    }
+}
+
+private fun generateDiagramRecursive(
     tree: TreeNode<Package>,
     stringBuilder: StringBuilder,
     indent: Int = 0,
@@ -77,11 +100,6 @@ fun generateDiagramRecursive(
         if (child.children.isEmpty()) {
             val id = child.value.packageName.name
             stringBuilder.appendLine("$spaces  $id")
-//            child.value.files.forEach { file ->
-//                val id = "${child.value.packageName.name}.${file.fileName.basename.replace(".kt", "")}"
-//                val id = child.value.packageName.name
-//                stringBuilder.appendLine("$spaces  $id[\"${file.fileName.basename}\"]")
-//            }
         } else {
             generateDiagramRecursive(child, stringBuilder, indent + 1)
         }

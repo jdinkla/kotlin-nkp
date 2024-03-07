@@ -8,11 +8,11 @@ import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.nkp.analysis.classStatistics
 import net.dinkla.nkp.analysis.debug
 import net.dinkla.nkp.analysis.fileStatistics
-import net.dinkla.nkp.analysis.packageStatistics
 import net.dinkla.nkp.analysis.inheritance
 import net.dinkla.nkp.analysis.mermaidClassDiagram
 import net.dinkla.nkp.analysis.mermaidImportsFlowDiagram
 import net.dinkla.nkp.analysis.outliers
+import net.dinkla.nkp.analysis.packageStatistics
 import net.dinkla.nkp.analysis.packages
 import net.dinkla.nkp.analysis.search
 import net.dinkla.nkp.domain.Files
@@ -38,6 +38,8 @@ class Main : CliktCommand() {
     private val outliers by file()
     private val search by option()
 
+    private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
+
     private fun file(help: String = "") = option(help = help).file(canBeDir = false)
 
     override fun run() {
@@ -58,7 +60,11 @@ class Main : CliktCommand() {
             mermaidClassDiagram(files, mermaidClassDiagram!!)
         }
         if (mermaidImportsFlowDiagram != null) {
-            mermaidImportsFlowDiagram(files, mermaidImportsFlowDiagram!!)
+            mermaidImportsFlowDiagram(
+                files,
+                mermaidImportsFlowDiagram!!,
+                excludeOtherLibraries,
+            )
         }
         if (fileStatistics != null) {
             fileStatistics(files, fileStatistics!!)
