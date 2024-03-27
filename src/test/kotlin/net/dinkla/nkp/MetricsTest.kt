@@ -13,8 +13,9 @@ import com.tngtech.archunit.library.metrics.MetricsComponents
 
 @AnalyzeClasses(
     packagesOf = [MetricsTest::class],
-    importOptions = [DoNotIncludeTests::class]
+    importOptions = [DoNotIncludeTests::class],
 )
+@Suppress("ktlint:standard:function-naming")
 class MetricsTest {
     private val base = "net.dinkla.nkp"
 
@@ -24,10 +25,10 @@ class MetricsTest {
         val components: MetricsComponents<JavaClass> = MetricsComponents.fromPackages(packages)
         val metrics = ArchitectureMetrics.lakosMetrics(components)
         println("Cumulative Dependency Metrics by John Lakos")
-        println("CCD: " + metrics.getCumulativeComponentDependency());
-        println("ACD: " + metrics.getAverageComponentDependency());
-        println("RACD: " + metrics.getRelativeAverageComponentDependency());
-        println("NCCD: " + metrics.getNormalizedCumulativeComponentDependency());
+        println("CCD: " + metrics.getCumulativeComponentDependency())
+        println("ACD: " + metrics.getAverageComponentDependency())
+        println("RACD: " + metrics.getRelativeAverageComponentDependency())
+        println("NCCD: " + metrics.getNormalizedCumulativeComponentDependency())
     }
 
     @ArchTest
@@ -39,11 +40,11 @@ class MetricsTest {
         for (component in packages.map { it.relativeName }) {
             val fqComponent = "$base.$component"
             println("Component: $component")
-            println("Ce: " + metrics.getEfferentCoupling(fqComponent));
-            println("Ca: " + metrics.getAfferentCoupling(fqComponent));
-            println("I: " + metrics.getInstability(fqComponent));
-            println("A: " + metrics.getAbstractness(fqComponent));
-            println("D: " + metrics.getNormalizedDistanceFromMainSequence(fqComponent));
+            println("Ce: " + metrics.getEfferentCoupling(fqComponent))
+            println("Ca: " + metrics.getAfferentCoupling(fqComponent))
+            println("I: " + metrics.getInstability(fqComponent))
+            println("A: " + metrics.getAbstractness(fqComponent))
+            println("D: " + metrics.getNormalizedDistanceFromMainSequence(fqComponent))
         }
     }
 
@@ -56,9 +57,9 @@ class MetricsTest {
         for (component in packages.map { it.relativeName }) {
             val fqComponent = "$base.$component"
             println("Component: $component")
-            println("RV : " + metrics.getRelativeVisibility(fqComponent));
+            println("RV : " + metrics.getRelativeVisibility(fqComponent))
         }
-        println("ARV: " + metrics.getAverageRelativeVisibility());
-        println("GRV: " + metrics.getGlobalRelativeVisibility());
+        println("ARV: " + metrics.getAverageRelativeVisibility())
+        println("GRV: " + metrics.getGlobalRelativeVisibility())
     }
 }
