@@ -17,7 +17,6 @@ import com.tngtech.archunit.library.metrics.MetricsComponents
 )
 class MetricsTest {
     private val base = "net.dinkla.nkp"
-    private val subdomains = listOf("analysis", "domain", "extract", "utilities")
 
     @ArchTest
     fun `Cumulative Dependency Metrics by John Lakos`(importedClasses: JavaClasses) {
@@ -37,7 +36,7 @@ class MetricsTest {
         val components: MetricsComponents<JavaClass> = MetricsComponents.fromPackages(packages)
         val metrics = ArchitectureMetrics.componentDependencyMetrics(components)
         println("Component Dependency Metrics by Robert C Martin")
-        for (component in subdomains) {
+        for (component in packages.map { it.relativeName }) {
             val fqComponent = "$base.$component"
             println("Component: $component")
             println("Ce: " + metrics.getEfferentCoupling(fqComponent));
@@ -54,7 +53,7 @@ class MetricsTest {
         val components: MetricsComponents<JavaClass> = MetricsComponents.fromPackages(packages)
         val metrics = ArchitectureMetrics.visibilityMetrics(components)
         println("Visibility Metrics by Herbert Dowalil")
-        for (component in subdomains) {
+        for (component in packages.map { it.relativeName }) {
             val fqComponent = "$base.$component"
             println("Component: $component")
             println("RV : " + metrics.getRelativeVisibility(fqComponent));
