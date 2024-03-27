@@ -25,6 +25,8 @@ dependencies {
     testImplementation(Testing.kotest.runner.junit5)
     testImplementation(Testing.kotest.assertions.core)
     testImplementation(Testing.kotest.framework.datatest)
+    testImplementation("com.tngtech.archunit:archunit:_")
+    testImplementation("com.tngtech.archunit:archunit-junit5:_")
 }
 
 tasks.test {
