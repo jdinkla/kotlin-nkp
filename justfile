@@ -12,4 +12,4 @@ coverage-report:
 
 # run the application
 run *args:
-    @gradle run --args="{{args}}"
+    @gradle run --quiet --args="{{args}}"
