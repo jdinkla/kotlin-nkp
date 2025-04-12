@@ -7,14 +7,12 @@ import net.dinkla.nkp.domain.ClassSignature
 fun outliers(
     files: List<AnalysedFile>,
     topN: Int = 10,
-) {
+): List<String> {
     logger.info { "*** Large Classes ***" }
-    largeClasses(files, topN).forEach { c ->
-        println(
-            """
-            ${c.name} has ${c.classes.size} classes, ${c.functions.size} functions and ${c.properties.size} properties (total ${c.declarations.size})
-            """.trimIndent(),
-        )
+    return largeClasses(files, topN).map { c ->
+        """
+        ${c.name} has ${c.classes.size} classes, ${c.functions.size} functions and ${c.properties.size} properties (total ${c.declarations.size})
+        """.trimIndent()
     }
 }
 

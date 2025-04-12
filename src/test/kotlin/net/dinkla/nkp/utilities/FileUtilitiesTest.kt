@@ -4,19 +4,20 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
+import net.dinkla.nkp.domain.FileName
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
 import java.io.File
 import kotlin.io.path.name
 
-private const val SOURCE_FOLDER = "src/main/kotlin/net/dinkla/nkp/analysis"
+private const val SOURCE_FOLDER = "src/examples/kotlin/"
 
 class FileUtilitiesTest :
     StringSpec({
         "getAllKotlinFilesInDirectory" {
-            val files = getAllKotlinFilesInDirectory("src/test/resources/example")
-            files.size shouldBe 0
+            val files = getAllKotlinFilesInDirectory(SOURCE_FOLDER)
+            files.size shouldBe 2
         }
 
         "shouldFileBeAdded should ignore files in .idea" {
@@ -32,15 +33,23 @@ class FileUtilitiesTest :
         }
 
         "parseFilesFromDirectory should read directory" {
-            val files = parseFilesFromDirectory(SOURCE_FOLDER)
-            files.size shouldBeGreaterThan 0
+            val files =
+                parseFilesFromDirectory(File(SOURCE_FOLDER).absolutePath)
+                    .map { it.await() }
+                    .map { it.getOrThrow() }
+            files.size shouldBe 2
+            files.map { it.fileName } shouldContainExactly
+                listOf(
+                    FileName("/examples/HelloWorld.kt"),
+                    FileName("/examples/HelloWorld2.kt"),
+                )
         }
 
         "packages should return packages" {
             val files = Files.readFromDirectory(SOURCE_FOLDER)
             val packages = files.packages()
             packages.size shouldBe 1
-            packages shouldContainExactly listOf(Package(PackageName("net.dinkla.nkp.analysis"), files))
+            packages shouldContainExactly listOf(Package(PackageName("example"), files))
         }
 
         "readFromDirectory should read directory" {

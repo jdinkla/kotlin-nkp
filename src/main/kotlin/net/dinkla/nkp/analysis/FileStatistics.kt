@@ -6,17 +6,19 @@ import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.Files
 import java.io.File
 
+fun fileStatistics(files: Files): List<FileStatistics> = files.map { FileStatistics.from(files, it) }
+
 fun fileStatistics(
     files: Files,
     outputFile: File,
 ) {
-    val stats = files.map { FileStatistics.from(files, it) }
+    val stats = fileStatistics(files)
     logger.info { "Writing file statistics to ${outputFile.absolutePath}" }
     save(outputFile, stats)
 }
 
 @Serializable
-private data class FileStatistics(
+data class FileStatistics(
     val file: String,
     val imports: Int,
     val classes: Int,

@@ -21,7 +21,7 @@ import net.dinkla.nkp.domain.TypeAlias
 import net.dinkla.nkp.domain.VisibilityModifier
 import net.dinkla.nkp.utilities.fromFile
 
-private const val KOTLIN_EXAMPLE_FILE = "src/test/resources/example/HelloWorld.kt"
+private const val KOTLIN_EXAMPLE_FILE = "src/examples/kotlin/examples/HelloWorld.kt"
 
 internal val tree = fromFile(KOTLIN_EXAMPLE_FILE)
 

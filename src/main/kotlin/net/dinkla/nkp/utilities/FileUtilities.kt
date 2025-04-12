@@ -54,14 +54,18 @@ internal fun shouldFileBeAdded(it: File) =
     }
 
 internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<AnalysedFile>>> =
-    fileInfos(getAllKotlinFilesInDirectory(directory))
+    fileInfos(getAllKotlinFilesInDirectory(directory), directory)
 
-private fun CoroutineScope.fileInfos(files: List<String>): List<Deferred<Result<AnalysedFile>>> =
+private fun CoroutineScope.fileInfos(
+    files: List<String>,
+    directory: String,
+): List<Deferred<Result<AnalysedFile>>> =
     files.map {
         async {
             try {
                 logger.trace { "handling file $it" }
-                val file = extract(FileName(it), fromFile(it))
+                val withoutPrefix = it.removePrefix(directory)
+                val file = extract(FileName(withoutPrefix), fromFile(it))
                 Result.success(file)
             } catch (e: Exception) {
                 logger.error { "parsing '$it' yields ${e.message}" }
@@ -83,13 +87,13 @@ fun Files.Companion.read(file: File): Files =
         Files.loadFromJsonFile(file.absolutePath)
     }
 
-internal fun Files.Companion.loadFromJsonFile(fileName: String): Files {
+fun Files.Companion.loadFromJsonFile(fileName: String): Files {
     logger.info { "Reading from file '$fileName'" }
     val string = File(fileName).readText()
     return Json.decodeFromString<Files>(string)
 }
 
-internal fun Files.Companion.readFromDirectory(directory: String): Files =
+fun Files.Companion.readFromDirectory(directory: String): Files =
     runBlocking(Dispatchers.Default) {
         logger.info { "Reading from directory '$directory'" }
         val allInfos = parseFilesFromDirectory(directory).map { it.await() }

@@ -5,20 +5,18 @@ import net.dinkla.nkp.domain.ClassSignature
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.prettyPrint
 
-fun search(
-    files: Files,
-    clazz: String,
+fun Files.search(clazz: String,
 ) {
     logger.info { "*** searchClass ***" }
-    val found = files.searchClassByName(clazz)
+    val found = searchClassByName(clazz)
     found.forEach { println(it.prettyPrint()) }
 
     logger.info { "*** searchHierarchy ***" }
-    val hier = files.searchHierarchy(clazz)
+    val hier = searchHierarchy(clazz)
     hier.forEach { println(it.prettyPrint()) }
 
     logger.info { "*** searchImplementers ***" }
-    val impls = files.searchImplementers(clazz)
+    val impls = searchImplementers(clazz)
     impls.forEach { println(it.prettyPrint()) }
 }
 

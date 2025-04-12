@@ -8,16 +8,18 @@ import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
 import java.io.File
 
+fun packageStatistics(files: Files): List<AnalyzedPackage> = AnalyzedPackage.from(files)
+
 fun packageStatistics(
     files: Files,
     outputFile: File,
 ) {
     logger.info { "Writing import statistics to ${outputFile.absolutePath}" }
-    save(outputFile, AnalyzedPackage.from(files))
+    save(outputFile, packageStatistics(files))
 }
 
 @Serializable
-internal data class AnalyzedPackage(
+data class AnalyzedPackage(
     val packageName: PackageName,
     val importedElements: Set<ImportedElement>,
     val importStatistics: ImportStatistics,
@@ -38,7 +40,7 @@ internal data class AnalyzedPackage(
 }
 
 @Serializable
-internal data class ImportStatistics(
+data class ImportStatistics(
     val total: Int,
     val distinct: Int,
     val fromSubPackage: Int,
@@ -63,7 +65,7 @@ internal data class ImportStatistics(
 }
 
 @Serializable
-internal data class DeclarationStatistics(
+data class DeclarationStatistics(
     val files: Int,
     val functions: Int,
     val properties: Int,

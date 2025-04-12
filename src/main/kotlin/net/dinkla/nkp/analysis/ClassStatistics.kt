@@ -10,10 +10,7 @@ import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.VisibilityModifier
 import java.io.File
 
-fun classStatistics(
-    files: Files,
-    outputFile: File,
-) {
+fun classStatistics(files: Files): List<ClassStatistics> {
     val classes: List<Pair<PackageName, ClassSignature>> =
         files
             .map { file ->
@@ -25,13 +22,20 @@ fun classStatistics(
                     )
                 }
             }.flatten()
-    val stats = classes.map { ClassStatistics.from(it.first, it.second) }
+    return classes.map { ClassStatistics.from(it.first, it.second) }
+}
+
+fun classStatistics(
+    files: Files,
+    outputFile: File,
+) {
+    val stats = classStatistics(files)
     logger.info { "Writing class statistics to ${outputFile.absolutePath}" }
     save(outputFile, stats)
 }
 
 @Serializable
-internal data class ClassStatistics(
+data class ClassStatistics(
     val name: String,
     val packageName: PackageName,
     val parameters: Int = 0,
