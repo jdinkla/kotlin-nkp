@@ -6,7 +6,7 @@ import java.io.File
 
 fun packages(
     files: Files,
-    outputFile: File
+    outputFile: File,
 ) {
     logger.info { "Writing package information to ${outputFile.absolutePath}" }
     save(outputFile, files.packages())

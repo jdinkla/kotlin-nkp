@@ -1,6 +1,8 @@
 package example
 
-class HelloWorld2(val hw: HelloWorld)
+class HelloWorld2(
+    val hw: HelloWorld,
+)
 
 fun main() {
     val h = HelloWorld2(HelloWorld(3))

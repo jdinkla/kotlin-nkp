@@ -38,7 +38,8 @@ private fun addFileIfItMatches(
 
 fun String.isTestDir() =
     this.contains("/test/") ||
-        this.contains("/commonTest/") || this.contains("/jvmTest/")
+        this.contains("/commonTest/") ||
+        this.contains("/jvmTest/")
 
 internal fun shouldFileBeAdded(it: File) =
     if (it.absolutePath.contains("/.idea/")) {

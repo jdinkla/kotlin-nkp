@@ -3,7 +3,9 @@ package example
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 
-internal data class HelloWorld(val many: Int) {
+internal data class HelloWorld(
+    val many: Int,
+) {
     override fun toString(): String = "many hello worlds $many"
 }
 
@@ -11,7 +13,9 @@ private interface Gen {
     fun gen(n: Int): String?
 }
 
-class GenImpl(val many: Int) : Gen {
+class GenImpl(
+    val many: Int,
+) : Gen {
     override fun gen(n: Int): String = "many hello worlds ${many * n}"
 }
 
@@ -23,21 +27,27 @@ object MathUtils {
 
 enum class AB { A, B }
 
-enum class ABC(internal val i: Int) { A(1), B(2), C(3) }
+enum class ABC(
+    internal val i: Int,
+) {
+    A(1),
+    B(2),
+    C(3),
+}
 
 internal fun topLevelFunction(
     n: Int,
     hw: HelloWorld,
-): String {
-    return FALSE.toString() + TRUE.toString() + hw.toString().repeat(n)
-}
+): String = FALSE.toString() + TRUE.toString() + hw.toString().repeat(n)
 
 private fun HelloWorld.extensionFun(): String = this.many.toString()
 
 open class O1 {
     protected fun f(x: Int): String = x.toString()
 
-    class I(val name: String)
+    class I(
+        val name: String,
+    )
 }
 
 fun higherOrderFunction(

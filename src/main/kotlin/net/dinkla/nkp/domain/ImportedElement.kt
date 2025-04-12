@@ -4,7 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class ImportedElement(val name: String) {
+value class ImportedElement(
+    val name: String,
+) {
     override fun toString(): String = name
 
     val packageName: PackageName

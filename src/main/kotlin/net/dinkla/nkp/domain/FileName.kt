@@ -5,7 +5,9 @@ import kotlin.math.max
 
 @Serializable
 @JvmInline
-value class FileName(val name: String) {
+value class FileName(
+    val name: String,
+) {
     val basename: String
         get() {
             val index = max(name.lastIndexOf("/"), name.lastIndexOf("\\"))
@@ -16,7 +18,5 @@ value class FileName(val name: String) {
             }
         }
 
-    fun withoutDirectory(directory: String): String {
-        return name.substring(directory.length + 1)
-    }
+    fun withoutDirectory(directory: String): String = name.substring(directory.length + 1)
 }

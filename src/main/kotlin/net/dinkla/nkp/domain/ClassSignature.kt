@@ -27,7 +27,9 @@ data class ClassSignature(
         get() = declarations.filterIsInstance<TypeAlias>()
 
     @Serializable
-    enum class Type(val text: String) {
+    enum class Type(
+        val text: String,
+    ) {
         CLASS("class"),
         OBJECT("object"),
         INTERFACE("interface"),
@@ -44,16 +46,17 @@ fun ClassSignature.prettyPrint(): String {
     val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
 
     val joined =
-        declarations.map {
-            val text =
-                when (it) {
-                    is FunctionSignature -> it.prettyPrint()
-                    is Property -> it.prettyPrint()
-                    is ClassSignature -> it.prettyPrint()
-                    else -> ""
-                }
-            "    $text"
-        }.joinToString("\n")
+        declarations
+            .map {
+                val text =
+                    when (it) {
+                        is FunctionSignature -> it.prettyPrint()
+                        is Property -> it.prettyPrint()
+                        is ClassSignature -> it.prettyPrint()
+                        else -> ""
+                    }
+                "    $text"
+            }.joinToString("\n")
     val joined2 =
         if (joined.isNotEmpty()) {
             "\n$joined\n"

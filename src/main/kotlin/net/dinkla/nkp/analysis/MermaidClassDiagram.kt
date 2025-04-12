@@ -10,9 +10,7 @@ import net.dinkla.nkp.domain.VisibilityModifier
 import net.dinkla.nkp.domain.prettyPrint
 import net.dinkla.nkp.utilities.addSpaceAfter
 
-fun mermaidClassDiagram(
-    files: Files,
-): String {
+fun mermaidClassDiagram(files: Files): String {
     val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
     return generateDiagram(classes)
 }

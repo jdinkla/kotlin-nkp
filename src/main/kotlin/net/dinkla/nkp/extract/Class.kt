@@ -38,8 +38,8 @@ private fun extractInterfaceOrClassType(tree: KotlinParseTree): ClassSignature.T
     }
 }
 
-private fun extractClassParameters(tree: KotlinParseTree): List<ClassParameter> {
-    return tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
+private fun extractClassParameters(tree: KotlinParseTree): List<ClassParameter> =
+    tree.children.find { it.name == "primaryConstructor" }?.let { primaryConstructor ->
         val it = primaryConstructor.children[0]
         it.children
             .filter { it.name == "classParameter" }
@@ -47,7 +47,6 @@ private fun extractClassParameters(tree: KotlinParseTree): List<ClassParameter> 
                 extractClassParameter(it)
             }
     } ?: listOf()
-}
 
 private fun extractClassParameter(tree: KotlinParseTree): ClassParameter {
     val visibilityModifier = extractVisibilityModifier(tree)
@@ -72,11 +71,13 @@ private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
         }
     } ?: listOf()
 
-internal fun extractBody(tree: KotlinParseTree): List<Defined> {
-    return tree.children.find { it.name == "classBody" }?.let {
-        it.children.filter { it.name == "classMemberDeclarations" }
+internal fun extractBody(tree: KotlinParseTree): List<Defined> =
+    tree.children.find { it.name == "classBody" }?.let {
+        it.children
+            .filter { it.name == "classMemberDeclarations" }
             .flatMap {
-                it.children.filter { it.name == "classMemberDeclaration" }
+                it.children
+                    .filter { it.name == "classMemberDeclaration" }
                     .map { classMemberDeclaration ->
                         val declaration = classMemberDeclaration.children[0].children[0]
                         when (declaration.name) {
@@ -89,4 +90,3 @@ internal fun extractBody(tree: KotlinParseTree): List<Defined> {
                     }
             }.filterNotNull()
     } ?: listOf()
-}

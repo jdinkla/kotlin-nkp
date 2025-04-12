@@ -15,15 +15,16 @@ fun classStatistics(
     outputFile: File,
 ) {
     val classes: List<Pair<PackageName, ClassSignature>> =
-        files.map { file ->
-            file.classes.map { clazz ->
-                Pair(
-                    file
-                        .packageName,
-                    clazz,
-                )
-            }
-        }.flatten()
+        files
+            .map { file ->
+                file.classes.map { clazz ->
+                    Pair(
+                        file
+                            .packageName,
+                        clazz,
+                    )
+                }
+            }.flatten()
     val stats = classes.map { ClassStatistics.from(it.first, it.second) }
     logger.info { "Writing class statistics to ${outputFile.absolutePath}" }
     save(outputFile, stats)
@@ -46,8 +47,11 @@ internal data class ClassStatistics(
     val aliases: Int = 0,
 ) {
     companion object {
-        fun from(packageName: PackageName, clazz: ClassSignature): ClassStatistics {
-            return ClassStatistics(
+        fun from(
+            packageName: PackageName,
+            clazz: ClassSignature,
+        ): ClassStatistics =
+            ClassStatistics(
                 name = clazz.name,
                 packageName = packageName,
                 parameters = clazz.parameters.size,
@@ -62,7 +66,6 @@ internal data class ClassStatistics(
                 properties = clazz.properties.size,
                 aliases = clazz.aliases.size,
             )
-        }
     }
 }
 

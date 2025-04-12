@@ -8,23 +8,24 @@ import net.dinkla.nkp.f2
 import net.dinkla.nkp.p1
 import net.dinkla.nkp.ta1
 
-class HasDeclarationsTest : StringSpec({
-    "should return functions" {
-        example.functions shouldBe listOf(f1, f2)
-    }
+class HasDeclarationsTest :
+    StringSpec({
+        "should return functions" {
+            example.functions shouldBe listOf(f1, f2)
+        }
 
-    "should return properties" {
-        example.properties shouldBe listOf(p1)
-    }
+        "should return properties" {
+            example.properties shouldBe listOf(p1)
+        }
 
-    "should return classes" {
-        example.classes shouldBe listOf(c1)
-    }
+        "should return classes" {
+            example.classes shouldBe listOf(c1)
+        }
 
-    "should return type aliases" {
-        example.typeAliases shouldBe listOf(ta1)
-    }
-})
+        "should return type aliases" {
+            example.typeAliases shouldBe listOf(ta1)
+        }
+    })
 
 private val example =
     object : HasDeclarations {

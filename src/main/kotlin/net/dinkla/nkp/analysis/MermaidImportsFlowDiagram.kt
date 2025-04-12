@@ -13,14 +13,15 @@ fun mermaidImportsFlowDiagram(
     return generateDiagram(packagesTree, packagesList, excludeOtherLibraries)
 }
 
-internal class TreeNode<T>(val value: T, val children: MutableList<TreeNode<T>> = mutableListOf()) {
+internal class TreeNode<T>(
+    val value: T,
+    val children: MutableList<TreeNode<T>> = mutableListOf(),
+) {
     fun addChild(node: TreeNode<T>) {
         children.add(node)
     }
 
-    override fun toString(): String {
-        return "TreeNode(value=$value, children=$children)"
-    }
+    override fun toString(): String = "TreeNode(value=$value, children=$children)"
 }
 
 internal fun toTree(packages: List<Package>): TreeNode<Package> {
@@ -52,9 +53,11 @@ private fun generateDiagram(
     generateDiagramRecursive(tree, this)
     val imports = importDependencies(packages, excludeOtherLibraries)
     val distinctImports =
-        imports.map {
-            "  ${it.first} --> ${it.second}"
-        }.sorted().distinct()
+        imports
+            .map {
+                "  ${it.first} --> ${it.second}"
+            }.sorted()
+            .distinct()
     distinctImports.forEach { appendLine(it) }
 }
 
@@ -72,8 +75,7 @@ private fun importDependencies(
                     } else {
                         true
                     }
-                }
-                .map { imp ->
+                }.map { imp ->
                     Pair(file.packageName.name, imp.name.packageName.name)
                 }
         }
@@ -85,7 +87,9 @@ private fun generateDiagramRecursive(
     stringBuilder: StringBuilder,
     indent: Int = 0,
 ) {
-    if (tree.value.packageName.name.isEmpty()) {
+    if (tree.value.packageName.name
+            .isEmpty()
+    ) {
         tree.children.forEach {
             generateDiagramRecursive(it, stringBuilder, indent)
         }

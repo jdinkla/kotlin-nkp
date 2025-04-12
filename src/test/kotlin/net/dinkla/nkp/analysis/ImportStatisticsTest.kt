@@ -6,20 +6,21 @@ import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.exampleFiles
 import net.dinkla.nkp.examplePackage
 
-class ImportStatisticsTest : StringSpec({
-    "importStatistics should return statistics for one package" {
-        val ls: AnalyzedPackage = AnalyzedPackage.from(examplePackage)
-        ls.packageName shouldBe PackageName("net.dinkla.nkp")
-        ls.importedElements.size shouldBe 3
-        ls.importStatistics.total shouldBe 3
-        ls.importStatistics.distinct shouldBe 2
-    }
+class ImportStatisticsTest :
+    StringSpec({
+        "importStatistics should return statistics for one package" {
+            val ls: AnalyzedPackage = AnalyzedPackage.from(examplePackage)
+            ls.packageName shouldBe PackageName("net.dinkla.nkp")
+            ls.importedElements.size shouldBe 3
+            ls.importStatistics.total shouldBe 3
+            ls.importStatistics.distinct shouldBe 2
+        }
 
-    "importStatistics should return statistics from Files" {
-        val ls: List<AnalyzedPackage> = AnalyzedPackage.from(exampleFiles)
-        ls.size shouldBe 1
-        ls[0].importedElements.size shouldBe 3
-        ls[0].importStatistics.total shouldBe 3
-        ls[0].importStatistics.distinct shouldBe 2
-    }
-})
+        "importStatistics should return statistics from Files" {
+            val ls: List<AnalyzedPackage> = AnalyzedPackage.from(exampleFiles)
+            ls.size shouldBe 1
+            ls[0].importedElements.size shouldBe 3
+            ls[0].importStatistics.total shouldBe 3
+            ls[0].importStatistics.distinct shouldBe 2
+        }
+    })

@@ -81,7 +81,8 @@ internal fun extractMemberModifier(tree: KotlinParseTree): List<MemberModifier> 
             .flatMap { it.children }
             .filter { it.name == "modifier" }
             .flatMap { it.children }
-    return modifier.filter { it.name == "memberModifier" }
+    return modifier
+        .filter { it.name == "memberModifier" }
         .map {
             when (it.children[0].name) {
                 "OVERRIDE" -> MemberModifier.OVERRIDE

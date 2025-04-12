@@ -14,7 +14,8 @@ internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature 
             .find { it.name == "functionValueParameters" }
             ?.children
             ?.filter { it.name == "functionValueParameter" }
-            ?.map { it.children[0] }?.map(::extractFunctionParameter)
+            ?.map { it.children[0] }
+            ?.map(::extractFunctionParameter)
             ?: listOf()
     val returnType =
         tree.children.find { it.name == "type" }?.let {
@@ -22,7 +23,12 @@ internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature 
         }
     val receiverType =
         tree.children.find { it.name == "receiverType" }?.let {
-            extractIdentifier(it.children[0].children[0].children[0].children[0])
+            extractIdentifier(
+                it.children[0]
+                    .children[0]
+                    .children[0]
+                    .children[0],
+            )
         }
     return FunctionSignature(name, returnType, parameters, receiverType, visibility, memberModifier.firstOrNull())
 }

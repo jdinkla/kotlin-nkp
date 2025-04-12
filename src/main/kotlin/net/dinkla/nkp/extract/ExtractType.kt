@@ -3,8 +3,8 @@ package net.dinkla.nkp.extract
 import net.dinkla.nkp.domain.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-internal fun extractType(tree: KotlinParseTree): Type? {
-    return when (val subtype = tree.children[0].name) {
+internal fun extractType(tree: KotlinParseTree): Type? =
+    when (val subtype = tree.children[0].name) {
         "nullableType" -> {
             tree.children[0].findName("Identifier")?.let {
                 Type("${it.text}?")
@@ -38,10 +38,13 @@ internal fun extractType(tree: KotlinParseTree): Type? {
                     .filter { it.name == "type" }
                     .map { extractType(it) }
                     .joinToString(",")
-            val returnType = tree.children[0].children[2].findName("Identifier")?.text!!
+            val returnType =
+                tree.children[0]
+                    .children[2]
+                    .findName("Identifier")
+                    ?.text!!
             Type("($params) -> $returnType")
         }
 
         else -> throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")
     }
-}

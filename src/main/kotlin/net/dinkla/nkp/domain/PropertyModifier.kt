@@ -3,7 +3,9 @@ package net.dinkla.nkp.domain
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class PropertyModifier(val text: String) {
+enum class PropertyModifier(
+    val text: String,
+) {
     VAR("var"),
     VAL("val"),
     CONST_VAL("const val"),

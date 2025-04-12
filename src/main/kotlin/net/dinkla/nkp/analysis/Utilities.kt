@@ -5,15 +5,15 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
-inline fun <reified T> save(file: File, items: List<T>) {
+inline fun <reified T> save(
+    file: File,
+    items: List<T>,
+) {
     val string = Json.encodeToString(items)
     file.writeText(string)
 }
 
-
-internal fun String.save(
-    file: File,
-) {
+internal fun String.save(file: File) {
     val isMermaid = file.name.endsWith(".mermaid")
     val isHtml = file.name.endsWith(".html")
     require(isMermaid || isHtml)

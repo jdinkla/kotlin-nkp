@@ -29,13 +29,13 @@ fun Files.searchClassByName(className: String): List<ClassSignature> =
 fun Files.searchHierarchy(className: String): List<ClassSignature> {
     val cls = searchClassByName(className)
     return cls +
-        cls.flatMap { clazz -> clazz.inheritedFrom }
+        cls
+            .flatMap { clazz -> clazz.inheritedFrom }
             .flatMap { this.searchHierarchy(it) }
 }
 
-fun Files.searchImplementers(className: String): List<ClassSignature> {
-    return flatMap { file -> file.classes }
+fun Files.searchImplementers(className: String): List<ClassSignature> =
+    flatMap { file -> file.classes }
         .filter { clazz -> clazz.inheritedFrom.contains(className) }
-}
 
 private val logger = KotlinLogging.logger {}

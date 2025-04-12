@@ -12,7 +12,5 @@ data class Package(
 
     fun imports(): Set<Import> = files.flatMap { it.imports }.toSet()
 
-    override fun toString(): String {
-        return "${packageName.name}: ${files.joinToString(", ") { it.packageName() }}"
-    }
+    override fun toString(): String = "${packageName.name}: ${files.joinToString(", ") { it.packageName() }}"
 }
