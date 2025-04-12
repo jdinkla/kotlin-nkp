@@ -24,7 +24,8 @@ internal data class AnalyzedPackage(
     val declarationStatistics: DeclarationStatistics,
 ) {
     companion object {
-        fun from(files: Files): List<AnalyzedPackage> = files.packages().map { from(it) }.sortedBy { it.packageName.name }
+        fun from(files: Files): List<AnalyzedPackage> =
+            files.packages().map { from(it) }.sortedBy { it.packageName.name }
 
         fun from(p: Package): AnalyzedPackage {
             val name = p.packageName

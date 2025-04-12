@@ -54,7 +54,8 @@ class ClassTest :
         }
 
         "extractClasses should handle a data class with one constructor argument with one method f(x) = x+1" {
-            val classes = extractClassesAndObjects(fromText("data class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
+            val classes =
+                extractClassesAndObjects(fromText("data class HelloWorld(val many: Int) { fun f(x: Int) = x+1 }"))
             classes shouldBe
                 listOf(
                     ClassSignature(
@@ -491,7 +492,8 @@ class ClassTest :
         }
 
         "extractClass should handle a sealed interface" {
-            val classes = extractClassesAndObjects(fromText("sealed interface SI { data class DC(val name: String) : SI }"))
+            val classes =
+                extractClassesAndObjects(fromText("sealed interface SI { data class DC(val name: String) : SI }"))
             classes shouldBe
                 listOf(
                     ClassSignature(
@@ -502,7 +504,9 @@ class ClassTest :
                             listOf(
                                 ClassSignature(
                                     "DC",
-                                    listOf(ClassParameter("name", Type("String"), propertyModifier = PropertyModifier.VAL)),
+                                    listOf(
+                                        ClassParameter("name", Type("String"), propertyModifier = PropertyModifier.VAL),
+                                    ),
                                     elementType = ClassSignature.Type.CLASS,
                                     classModifier = ClassModifier.DATA,
                                     inheritedFrom = listOf("SI"),
@@ -513,7 +517,8 @@ class ClassTest :
         }
 
         "extractClass should handle a sealed class" {
-            val classes = extractClassesAndObjects(fromText("sealed class V { object O : V() { const val name = \"x\" }}"))
+            val classes =
+                extractClassesAndObjects(fromText("sealed class V { object O : V() { const val name = \"x\" }}"))
             classes shouldBe
                 listOf(
                     ClassSignature(

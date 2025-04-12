@@ -99,7 +99,8 @@ class FunctionTest :
 
         "extractFunctions should handle nullable parameters" {
             val functions = extractFunctions(fromText("fun f(x: Int?): Int? = x"))
-            functions shouldBe listOf(FunctionSignature("f", Type("Int?"), listOf(FunctionParameter("x", Type("Int?")))))
+            functions shouldBe
+                listOf(FunctionSignature("f", Type("Int?"), listOf(FunctionParameter("x", Type("Int?")))))
         }
 
         "extractFunctions should handle higher order functions as arguments" {
