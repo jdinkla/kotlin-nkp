@@ -4,7 +4,7 @@
 
 1. class parameters / constructor
     - val's are also propertys
-    - vals have visibility modifie
+    - vals have visibility modifier
     - Parameter -> ClassParameter?
 2. secondary constructor see MeshTriangle
 3. open fun f()
