@@ -10,18 +10,13 @@ import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.VisibilityModifier
 
 fun classStatistics(files: Files): ClassStatistics {
-    val classes: List<Pair<PackageName, ClassSignature>> =
-        files
-            .map { file ->
-                file.classes.map { clazz ->
-                    Pair(
-                        file
-                            .packageName,
-                        clazz,
-                    )
-                }
-            }.flatten()
-    return ClassStatistics(classes.map { ClassStatistic.from(it.first, it.second) })
+    return ClassStatistics(
+        files.flatMap { file ->
+            file.classes.map {
+                ClassStatistic.from(file.packageName, it)
+            }
+        }.sortedBy { "${it.packageName}-${it.className}" }
+    )
 }
 
 @Serializable
