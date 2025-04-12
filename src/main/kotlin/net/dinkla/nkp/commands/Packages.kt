@@ -9,7 +9,7 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class Packages : CliktCommand() {
-    override fun help(context: Context) = "Inheritance report"
+    override fun help(context: Context) = "Packages report"
 
     private val model by argument(
         help = "Path to the model file",

@@ -15,7 +15,7 @@ import net.dinkla.nkp.utilities.loadFromJsonFile
 private const val DEFAULT_NUMBER_OF_OUTLIERS = 10
 
 class Outliers : CliktCommand() {
-    override fun help(context: Context) = "Inheritance report"
+    override fun help(context: Context) = "Outliers report"
 
     private val model by argument(
         help = "Path to the model file",

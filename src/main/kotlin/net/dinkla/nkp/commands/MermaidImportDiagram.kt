@@ -14,7 +14,7 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidImportDiagram : CliktCommand() {
-    override fun help(context: Context) = "Inheritance report"
+    override fun help(context: Context) = "Mermaid import diagram (.mermaid or .html)"
 
     private val model by argument(
         help = "Path to the model file",

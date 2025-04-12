@@ -10,7 +10,7 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class PackageStatistics : CliktCommand() {
-    override fun help(context: Context) = "File statistics"
+    override fun help(context: Context) = "Package statistics"
 
     private val model by argument(
         help = "Path to the model file",

@@ -10,7 +10,7 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class Search : CliktCommand() {
-    override fun help(context: Context) = "Inheritance report"
+    override fun help(context: Context) = "Search class"
 
     private val model by argument(
         help = "Path to the model file",

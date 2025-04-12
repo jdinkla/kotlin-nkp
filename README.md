@@ -39,13 +39,19 @@ One example is the import flow diagram:
 The first step is to parse the files in a directory to a json file.
 
 ```sh
-$ bin/nkp.sh parse /repositories/ray-tracer-challenge/src/main/kotlin generated/rtc.json
+$ bin/nkp.sh parse /repositories/ray-tracer-challenge/src/main/kotlin generated/model.json
 ```
 
 Use this JSON file in the analysis steps as input.
 
 ```sh
-$ bin/nkp.sh mermaid-class-diagram generated/rtc.json generated/diagram.html
+$ bin/nkp.sh mermaid-class-diagram generated/model.json generated/diagram.html
+```
+
+or any one of the following
+
+```sh
+$ bin/nkp.sh inheritance generated/model.json
 ```
 
 ## Building and Developing
