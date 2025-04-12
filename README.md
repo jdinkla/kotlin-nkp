@@ -8,28 +8,26 @@ It can generate some metrics and create diagrams.
 
 ## Features
 
+You can run the program with `bin/nkp.sh` or with `just run`.
+
 ```shell
-$ bin/nkp.sh -h
-...
-Usage: main [<options>] <source>
+$ bin/nkp.sh -h 
+Usage: nkp [<options>] <command> [<args>]...
 
 Options:
-  --class-statistics=<path>    statistics on class level
-  --debug                      debug
-  --file-statistics=<path>     statistics for all files
-  --mermaid-class-diagram=<path>
-                               Generate a mermaid class diagram (.mermaid or
-                               .html)
-  --mermaid-imports-flow-diagram=<path>
-                               Generate mermaid flow diagram for imports
-                               (.mermaid or .html)
-  --packages=<path>            exports all information organized by packages
-  --package-statistics=<path>  analysis for all packages
-  --save=<path>                save parsed source code as json
-  --inheritance=<path>
-  --outliers=<path>
-  --search=<text>
-  -h, --help                   Show this message and exit
+  -h, --help  Show this message and exit
+
+Commands:
+  parse                   Parse a source directory and generate a model file.
+  inheritance             Inheritance report
+  outliers                Inheritance report
+  class-statistics        Class statistics
+  file-statistics         File statistics
+  package-statistics      File statistics
+  mermaid-class-diagram   Inheritance report
+  mermaid-import-diagram  Inheritance report
+  search                  Inheritance report
+  packages                Inheritance report
 ```
 
 One example is the import flow diagram:
@@ -38,35 +36,21 @@ One example is the import flow diagram:
 
 ## Usage
 
-The command line syntax are as following:
+The first step is to parse the files in a directory to a json file.
 
 ```sh
-$ bin/nkp.sh (directory|jsonfile) <command> [args of command]
+$ bin/nkp.sh parse /repositories/ray-tracer-challenge/src/main/kotlin generated/rtc.json
 ```
 
-Help is available with `-h` or `--help`.
+Use this JSON file in the analysis steps as input.
 
 ```sh
-$ bin/nkp.sh -h
+$ bin/nkp.sh mermaid-class-diagram generated/rtc.json generated/diagram.html
 ```
 
-## Typical workflow
+## Building and Developing
 
-It is advisable to first parse the source code into a json file.
-
-```sh
-$ bin/nkp.sh /repositories/ray-tracer-challenge/src/main/kotlin --save=generated/rtc.json
-```
-
-Use this JSON file in the following commands as input.
-
-```sh
-$ bin/nkp.sh generated/rtc.json --mermaid-class-diagram=generated/rtc.mermaid
-```
-
-## Build 
-
-This project is using the following libraries to parse Kotlin source code:
+This project uses the following libraries to parse Kotlin source code:
 
 - https://github.com/Kotlin/grammar-tools
 - https://github.com/Kotlin/kotlin-spec
@@ -77,7 +61,7 @@ You have to build these libraries first locally.
 $ bin/install-libs.sh
 ```
 
-## Dependencies
+### Dependencies
 
 The project uses [refreshVersions](https://splitties.github.io/refreshVersions/)
 

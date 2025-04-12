@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-gradle run --args="$*"
+gradle run --quiet --args="$*"
