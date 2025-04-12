@@ -1,7 +1,8 @@
 plugins {
-    kotlin("jvm") version "_"
-    kotlin("plugin.serialization") version "_"
-    id("io.gitlab.arturbosch.detekt")
+    val kotlinVersion = libs.versions.kotlinVersion.get()
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
+    alias(libs.plugins.detekt)
     application
 }
 
@@ -14,19 +15,18 @@ repositories {
 }
 
 dependencies {
-    implementation(KotlinX.coroutines.core)
-    implementation(KotlinX.serialization.json)
-    implementation("org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools:_")
-    implementation("org.slf4j:slf4j-api:_")
-    implementation("ch.qos.logback:logback-classic:_")
-    implementation("com.github.ajalt.clikt:clikt:_")
-    implementation("io.github.oshai:kotlin-logging-jvm:_")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.coroutines)
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.clikt)
+    implementation(libs.kotlin.grammar.tools)
+    implementation(libs.kotlin.logging.jvm)
 
-    testImplementation(Testing.kotest.runner.junit5)
-    testImplementation(Testing.kotest.assertions.core)
-    testImplementation(Testing.kotest.framework.datatest)
-    testImplementation("com.tngtech.archunit:archunit:_")
-    testImplementation("com.tngtech.archunit:archunit-junit5:_")
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.framework.datatest)
+    testImplementation(libs.archunit)
+    testImplementation(libs.archunit.junit5)
 }
 
 tasks.test {
