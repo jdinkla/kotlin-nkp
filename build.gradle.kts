@@ -22,6 +22,8 @@ dependencies {
     implementation(libs.clikt)
     implementation(libs.kotlin.grammar.tools)
     implementation(libs.kotlin.logging.jvm)
+    implementation(libs.slf4j.api)
+    implementation(libs.logback.classic)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
@@ -46,5 +48,5 @@ tasks.jacocoTestReport {
 }
 
 application {
-    mainClass.set("net.dinkla.nkp.MainKt")
+    mainClass.set("net.dinkla.nkp.NkpKt")
 }
