@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
+import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.outliers
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.loadFromJsonFile
@@ -26,6 +27,6 @@ class Outliers : CliktCommand() {
 
     override fun run() {
         val files: Files = Files.loadFromJsonFile(model.absolutePath)
-        echo(outliers(files, n))
+        echo(Json.encodeToString(outliers(files).take(n)))
     }
 }

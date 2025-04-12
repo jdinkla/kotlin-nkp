@@ -34,9 +34,9 @@ class ClassStatisticsTest :
                     elementType = ClassSignature.Type.CLASS,
                 )
             val packageName = PackageName("P")
-            val stats = ClassStatistics.from(packageName, classSignature)
+            val stats = ClassStatistic.from(packageName, classSignature)
             stats shouldBe
-                ClassStatistics(
+                ClassStatistic(
                     "C",
                     packageName,
                     2,

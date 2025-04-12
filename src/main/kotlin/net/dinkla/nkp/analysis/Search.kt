@@ -1,23 +1,22 @@
 package net.dinkla.nkp.analysis
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.ClassSignature
 import net.dinkla.nkp.domain.Files
-import net.dinkla.nkp.domain.prettyPrint
 
-fun Files.search(clazz: String,
-) {
-    logger.info { "*** searchClass ***" }
+@Serializable
+data class Search(
+    val classes: List<ClassSignature>,
+    val hierarchy: List<ClassSignature>,
+    val implementers: List<ClassSignature>,
+)
+
+fun Files.search(clazz: String): Search {
     val found = searchClassByName(clazz)
-    found.forEach { println(it.prettyPrint()) }
-
-    logger.info { "*** searchHierarchy ***" }
     val hier = searchHierarchy(clazz)
-    hier.forEach { println(it.prettyPrint()) }
-
-    logger.info { "*** searchImplementers ***" }
     val impls = searchImplementers(clazz)
-    impls.forEach { println(it.prettyPrint()) }
+    return Search(found, hier, impls)
 }
 
 fun Files.searchClassByName(className: String): List<ClassSignature> =

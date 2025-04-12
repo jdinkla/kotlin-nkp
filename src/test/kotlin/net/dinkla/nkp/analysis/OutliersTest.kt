@@ -15,7 +15,7 @@ class OutliersTest :
         "largeClasses should return the top 2 classes with most functions and properties" {
             val info1 = info(listOf(cls(1), cls(3), cls(5)))
             val info2 = info(listOf(cls(4), cls(2)))
-            val largeClasses = largeClasses(listOf(info1, info2), 2)
+            val largeClasses = largeClasses(listOf(info1, info2)).take(2)
             largeClasses.size shouldBe 2
             largeClasses[0] shouldBe cls(5)
             largeClasses[1] shouldBe cls(4)

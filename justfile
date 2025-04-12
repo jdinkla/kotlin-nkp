@@ -6,6 +6,10 @@ help:
 build:
     gradle clean check
 
+# ktlint
+lint:
+    @ktlint -F
+
 # opens the coverage report in the default browser
 coverage-report:
     open build/reports/jacoco/test/html/index.html
@@ -13,3 +17,4 @@ coverage-report:
 # run the application
 run *args:
     @gradle run --quiet --args="{{args}}"
+

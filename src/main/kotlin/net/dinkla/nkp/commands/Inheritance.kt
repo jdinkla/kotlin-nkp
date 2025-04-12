@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
+import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.inheritance
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.utilities.loadFromJsonFile
@@ -17,6 +18,6 @@ class Inheritance : CliktCommand() {
 
     override fun run() {
         val files: Files = Files.loadFromJsonFile(model.absolutePath)
-        echo(files.inheritance())
+        echo(Json.encodeToString(files.inheritance()))
     }
 }

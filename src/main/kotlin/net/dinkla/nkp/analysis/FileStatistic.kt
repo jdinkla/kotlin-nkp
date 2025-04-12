@@ -4,21 +4,16 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.Files
-import java.io.File
 
-fun fileStatistics(files: Files): List<FileStatistics> = files.map { FileStatistics.from(files, it) }
-
-fun fileStatistics(
-    files: Files,
-    outputFile: File,
-) {
-    val stats = fileStatistics(files)
-    logger.info { "Writing file statistics to ${outputFile.absolutePath}" }
-    save(outputFile, stats)
-}
+fun fileStatistics(files: Files): FileStatistics = FileStatistics(files.map { FileStatistic.from(files, it) })
 
 @Serializable
 data class FileStatistics(
+    val fileStatistics: List<FileStatistic>,
+)
+
+@Serializable
+data class FileStatistic(
     val file: String,
     val imports: Int,
     val classes: Int,
@@ -29,7 +24,7 @@ data class FileStatistics(
         fun from(
             files: Files,
             file: AnalysedFile,
-        ) = FileStatistics(
+        ) = FileStatistic(
             file = files.relativePath(file.fileName.name),
             imports = file.imports.size,
             classes = file.classes.size,

@@ -6,7 +6,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.FileName
@@ -79,13 +78,6 @@ fun Files.saveToJsonFile(fileName: String) {
     val string = Json.encodeToString(this)
     File(fileName).writeText(string)
 }
-
-fun Files.Companion.read(file: File): Files =
-    if (file.isDirectory) {
-        Files.readFromDirectory(file.absolutePath)
-    } else {
-        Files.loadFromJsonFile(file.absolutePath)
-    }
 
 fun Files.Companion.loadFromJsonFile(fileName: String): Files {
     logger.info { "Reading from file '$fileName'" }
