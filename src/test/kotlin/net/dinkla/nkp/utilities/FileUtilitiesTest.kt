@@ -1,18 +1,9 @@
 package net.dinkla.nkp.utilities
 
-import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
-import net.dinkla.nkp.domain.FileName
-import net.dinkla.nkp.domain.Files
-import net.dinkla.nkp.domain.Package
-import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.SOURCE_DIRECTORY
 import java.io.File
-import kotlin.io.path.name
-
-private val SOURCE_DIRECTORY = File("src/examples/kotlin/")
 
 class FileUtilitiesTest :
     StringSpec({
@@ -31,32 +22,5 @@ class FileUtilitiesTest :
 
         "shouldFileBeAdded should add other files" {
             isRelevant(File("/src/main/HelloWorld.kt")) shouldBe true
-        }
-
-        "packages should return packages" {
-            val files = Files.readFromDirectory(SOURCE_DIRECTORY)
-            val packages = files.packages()
-            packages.size shouldBe 1
-            packages shouldContainExactly listOf(Package(PackageName("example"), files))
-        }
-
-        "readFromDirectory should read directory" {
-            val files = Files.readFromDirectory(SOURCE_DIRECTORY)
-            files.size shouldBeGreaterThan 0
-        }
-
-        "saveToJsonFile should save to temporary file" {
-            val fileName =
-                kotlin.io.path
-                    .createTempFile()
-                    .fileName.name
-            try {
-                val infos = Files.readFromDirectory(SOURCE_DIRECTORY)
-                infos.saveToJsonFile(fileName)
-                val infos2 = Files.loadFromJsonFile(fileName)
-                infos2.size shouldBe infos.size
-            } finally {
-                File(fileName).delete()
-            }
         }
     })

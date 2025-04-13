@@ -20,8 +20,11 @@ import net.dinkla.nkp.domain.Type
 import net.dinkla.nkp.domain.TypeAlias
 import net.dinkla.nkp.domain.VisibilityModifier
 import net.dinkla.nkp.utilities.fromFile
+import java.io.File
 
 private const val KOTLIN_EXAMPLE_FILE = "src/examples/kotlin/examples/HelloWorld.kt"
+
+val SOURCE_DIRECTORY = File("src/examples/kotlin/")
 
 internal val tree = fromFile(KOTLIN_EXAMPLE_FILE)
 

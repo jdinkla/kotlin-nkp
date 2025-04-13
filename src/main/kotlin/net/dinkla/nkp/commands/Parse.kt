@@ -6,9 +6,19 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.arguments.optional
 import com.github.ajalt.clikt.parameters.types.file
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import net.dinkla.nkp.domain.AnalysedFile
+import net.dinkla.nkp.domain.FileName
 import net.dinkla.nkp.domain.Files
-import net.dinkla.nkp.utilities.readFromDirectory
+import net.dinkla.nkp.extract.extract
+import net.dinkla.nkp.utilities.fromFile
+import net.dinkla.nkp.utilities.getAllKotlinFiles
+import net.dinkla.nkp.utilities.reportErrors
+import java.io.File
 
 class Parse : CliktCommand(name = "parse") {
     override fun help(context: Context) = "Parse a source directory and generate a model file."
@@ -23,7 +33,7 @@ class Parse : CliktCommand(name = "parse") {
         .optional()
 
     override fun run() {
-        val files: Files = Files.readFromDirectory(source)
+        val files: Files = readFromDirectory(source)
         val json = Json.encodeToString(files)
         if (target != null) {
             target!!.writeText(json)
@@ -32,3 +42,33 @@ class Parse : CliktCommand(name = "parse") {
         }
     }
 }
+
+internal fun readFromDirectory(directory: File): Files {
+    val files = getAllKotlinFiles(directory)
+    val infos = runBlocking(Dispatchers.Default) {
+        files.map {
+            async {
+                extractFileInfo(it, directory.absolutePath)
+            }
+        }.map {
+            it.await()
+        }
+    }
+    reportErrors(infos)
+    return Files(directory.absolutePath, infos.filter { it.isSuccess }.map { it.getOrThrow() })
+}
+
+private fun extractFileInfo(fileName: String, prefix: String): Result<AnalysedFile> {
+    try {
+        val withoutPrefix = fileName.removePrefix(prefix)
+        val analysedFile = extract(FileName(withoutPrefix), fromFile(fileName))
+        return Result.success(analysedFile)
+    } catch (e: Exception) {
+        logger.error { "parsing '$fileName' yields ${e.message}" }
+        return Result.failure(e)
+    }
+}
+
+private val logger = KotlinLogging.logger {}
+
+
