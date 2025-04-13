@@ -9,15 +9,15 @@ import net.dinkla.nkp.domain.InheritanceModifier
 import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.VisibilityModifier
 
-fun classStatistics(files: Files): ClassStatistics {
-    return ClassStatistics(
-        files.flatMap { file ->
-            file.classes.map {
-                ClassStatistic.from(file.packageName, it)
-            }
-        }.sortedBy { "${it.packageName}-${it.className}" }
+fun classStatistics(files: Files): ClassStatistics =
+    ClassStatistics(
+        files
+            .flatMap { file ->
+                file.classes.map {
+                    ClassStatistic.from(file.packageName, it)
+                }
+            }.sortedBy { "${it.packageName}-${it.className}" },
     )
-}
 
 @Serializable
 data class ClassStatistics(

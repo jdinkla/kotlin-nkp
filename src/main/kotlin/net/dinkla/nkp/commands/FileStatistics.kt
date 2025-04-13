@@ -17,7 +17,7 @@ class FileStatistics : CliktCommand() {
     ).file(mustExist = true, canBeDir = false, canBeFile = true)
 
     override fun run() {
-        val files: Files = Files.loadFromJsonFile(model.absolutePath)
+        val files = Files.loadFromJsonFile(model.absolutePath)
         val stats = fileStatistics(files)
         echo(Json.encodeToString(stats))
     }

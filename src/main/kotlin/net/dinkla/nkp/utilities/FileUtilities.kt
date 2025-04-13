@@ -13,11 +13,16 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.extract.extract
 import java.io.File
 
-fun getAllKotlinFilesInDirectory(directory: File): List<String> = if (directory.isDirectory) {
-    directory.walk().filter { it.isFile && isRelevant(it) }.map { it.absolutePath }.toList()
-} else {
-    listOf()
-}
+fun getAllKotlinFilesInDirectory(directory: File): List<String> =
+    if (directory.isDirectory) {
+        directory
+            .walk()
+            .filter { it.isFile && isRelevant(it) }
+            .map { it.absolutePath }
+            .toList()
+    } else {
+        listOf()
+    }
 
 internal fun isRelevant(file: File) =
     file.extension == "kt" && testDirIdentifiers.none { file.absolutePath.contains(it) }
