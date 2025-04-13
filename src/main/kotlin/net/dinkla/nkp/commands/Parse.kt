@@ -23,7 +23,7 @@ class Parse : CliktCommand(name = "parse") {
         .optional()
 
     override fun run() {
-        val files: Files = Files.readFromDirectory(source.absolutePath)
+        val files: Files = Files.readFromDirectory(source)
         val json = Json.encodeToString(files)
         if (target != null) {
             target!!.writeText(json)

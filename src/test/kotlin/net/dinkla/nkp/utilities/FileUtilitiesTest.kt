@@ -11,30 +11,30 @@ import net.dinkla.nkp.domain.PackageName
 import java.io.File
 import kotlin.io.path.name
 
-private const val SOURCE_FOLDER = "src/examples/kotlin/"
+private val SOURCE_DIRECTORY = File("src/examples/kotlin/")
 
 class FileUtilitiesTest :
     StringSpec({
         "getAllKotlinFilesInDirectory" {
-            val files = getAllKotlinFilesInDirectory(SOURCE_FOLDER)
+            val files = getAllKotlinFilesInDirectory(SOURCE_DIRECTORY)
             files.size shouldBe 2
         }
 
         "shouldFileBeAdded should ignore files in .idea" {
-            shouldFileBeAdded(File("/.idea/HelloWorld.kt")) shouldBe false
+            isRelevant(File("/.idea/HelloWorld.kt")) shouldBe false
         }
 
         "shouldFileBeAdded should ignore test files" {
-            shouldFileBeAdded(File("/test/HelloWorldTest.kt")) shouldBe false
+            isRelevant(File("/test/HelloWorldTest.kt")) shouldBe false
         }
 
         "shouldFileBeAdded should add other files" {
-            shouldFileBeAdded(File("/src/main/HelloWorld.kt")) shouldBe true
+            isRelevant(File("/src/main/HelloWorld.kt")) shouldBe true
         }
 
         "parseFilesFromDirectory should read directory" {
             val files =
-                parseFilesFromDirectory(File(SOURCE_FOLDER).absolutePath)
+                parseFilesFromDirectory(SOURCE_DIRECTORY)
                     .map { it.await() }
                     .map { it.getOrThrow() }
             files.size shouldBe 2
@@ -46,14 +46,14 @@ class FileUtilitiesTest :
         }
 
         "packages should return packages" {
-            val files = Files.readFromDirectory(SOURCE_FOLDER)
+            val files = Files.readFromDirectory(SOURCE_DIRECTORY)
             val packages = files.packages()
             packages.size shouldBe 1
             packages shouldContainExactly listOf(Package(PackageName("example"), files))
         }
 
         "readFromDirectory should read directory" {
-            val files = Files.readFromDirectory(SOURCE_FOLDER)
+            val files = Files.readFromDirectory(SOURCE_DIRECTORY)
             files.size shouldBeGreaterThan 0
         }
 
@@ -63,7 +63,7 @@ class FileUtilitiesTest :
                     .createTempFile()
                     .fileName.name
             try {
-                val infos = Files.readFromDirectory(SOURCE_FOLDER)
+                val infos = Files.readFromDirectory(SOURCE_DIRECTORY)
                 infos.saveToJsonFile(fileName)
                 val infos2 = Files.loadFromJsonFile(fileName)
                 infos2.size shouldBe infos.size

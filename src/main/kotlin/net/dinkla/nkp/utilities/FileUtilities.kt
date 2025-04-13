@@ -13,47 +13,19 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.extract.extract
 import java.io.File
 
-fun getAllKotlinFilesInDirectory(root: String): List<String> {
-    val files = mutableListOf<String>()
-    val file = File(root)
-    if (file.isDirectory) {
-        file.walk().forEach {
-            addFileIfItMatches(it, files)
-        }
-    }
-    return files.toList()
+fun getAllKotlinFilesInDirectory(directory: File): List<String> = if (directory.isDirectory) {
+    directory.walk().filter { it.isFile && isRelevant(it) }.map { it.absolutePath }.toList()
+} else {
+    listOf()
 }
 
-private fun addFileIfItMatches(
-    it: File,
-    files: MutableList<String>,
-) {
-    if (it.isFile && it.extension == "kt") {
-        if (shouldFileBeAdded(it)) {
-            files.add(it.absolutePath)
-        }
-    }
-}
+internal fun isRelevant(file: File) =
+    file.extension == "kt" && testDirIdentifiers.none { file.absolutePath.contains(it) }
 
-fun String.isTestDir() =
-    this.contains("/test/") ||
-        this.contains("/commonTest/") ||
-        this.contains("/jvmTest/")
+private val testDirIdentifiers = listOf("/.idea/", "/test/", "/commonTest/", "/jvmTest/")
 
-internal fun shouldFileBeAdded(it: File) =
-    if (it.absolutePath.contains("/.idea/")) {
-        logger.trace { "skipping file ${it.absolutePath}" }
-        false
-    } else if (it.absolutePath.isTestDir()) {
-        logger.trace { "skipping test ${it.absolutePath}" }
-        false
-    } else {
-        logger.trace { "adding file ${it.absolutePath}" }
-        true
-    }
-
-internal fun CoroutineScope.parseFilesFromDirectory(directory: String): List<Deferred<Result<AnalysedFile>>> =
-    fileInfos(getAllKotlinFilesInDirectory(directory), directory)
+internal fun CoroutineScope.parseFilesFromDirectory(directory: File): List<Deferred<Result<AnalysedFile>>> =
+    fileInfos(getAllKotlinFilesInDirectory(directory), directory.absolutePath)
 
 private fun CoroutineScope.fileInfos(
     files: List<String>,
@@ -85,12 +57,12 @@ fun Files.Companion.loadFromJsonFile(fileName: String): Files {
     return Json.decodeFromString<Files>(string)
 }
 
-fun Files.Companion.readFromDirectory(directory: String): Files =
+fun Files.Companion.readFromDirectory(directory: File): Files =
     runBlocking(Dispatchers.Default) {
         logger.info { "Reading from directory '$directory'" }
         val allInfos = parseFilesFromDirectory(directory).map { it.await() }
         reportErrors(allInfos)
-        Files(directory, allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
+        Files(directory.absolutePath, allInfos.filter { it.isSuccess }.map { it.getOrThrow() })
     }
 
 private fun reportErrors(infos: List<Result<AnalysedFile>>) {
