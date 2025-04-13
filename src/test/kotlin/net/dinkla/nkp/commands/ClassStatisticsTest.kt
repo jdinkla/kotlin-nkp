@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.ClassStatistics as ClassStatisticsData
 
-class ClassStatisticsTest:
+class ClassStatisticsTest :
     StringSpec({
 
         "should return an error if no arguments are given" {

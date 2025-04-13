@@ -4,11 +4,10 @@ import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.ClassSignature
 
-fun outliers(files: List<AnalysedFile>): List<Sizes> {
-    return largeClasses(files).map {
+fun outliers(files: List<AnalysedFile>): List<Sizes> =
+    largeClasses(files).map {
         Sizes(it.name, it.classes.size, it.functions.size, it.properties.size, it.declarations.size)
     }
-}
 
 @Serializable
 data class Sizes(

@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.domain.Package
 
-class PackagesReportTest:
+class PackagesReportTest :
     StringSpec({
 
         "should return an error if no arguments are given" {
