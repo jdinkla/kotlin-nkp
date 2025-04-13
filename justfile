@@ -1,5 +1,6 @@
-TEMP_MODEL := "generated/test-model.json"
-PREFIX := "generated/test-"
+prefix := "test"
+generated := "generated"
+model_file := generated / prefix + "-model.json"
 
 # print this help
 help:
@@ -27,34 +28,33 @@ run *args:
 
 # run all the tasks for the given REPOSITORY
 all-tasks REPOSITORY:
-    just run parse {{REPOSITORY}} {{TEMP_MODEL}}
+    just run parse {{REPOSITORY}} {{model_file}}
+    just run inheritance-report {{model_file}} > {{generated}}/{{prefix}}-inheritance-report.json
+    just run outlier-report {{model_file}} > {{generated}}/{{prefix}}-outlier-report.json
+    just run search-report {{model_file}} Defined > {{generated}}/{{prefix}}-search-report.json
+    just run packages-report {{model_file}} > {{generated}}/{{prefix}}-packages-report.json
+    just run imports-report {{model_file}} > {{generated}}/{{prefix}}-imports-report.json
+    just run imports-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-imports-excluded-report.json
 
-    just run inheritance-report {{TEMP_MODEL}} > {{PREFIX}}inheritance-report.json
+    just run class-statistics {{model_file}} > {{generated}}/{{prefix}}-class-statistics.json
+    just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
+    just run package-statistics {{model_file}} > {{generated}}/{{prefix}}-package-statistics.json
 
-    just run outlier-report {{TEMP_MODEL}} > {{PREFIX}}outlier-report.json
-    just run search-report {{TEMP_MODEL}} Defined > {{PREFIX}}search-report.json
-    just run packages-report {{TEMP_MODEL}} > {{PREFIX}}packages-report.json
-    just run imports-report {{TEMP_MODEL}} > {{PREFIX}}imports-report.json
-    just run imports-report --exclude-other-libraries {{TEMP_MODEL}} > {{PREFIX}}imports-excluded-report.json
+    just run mermaid-class-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-class-diagram.mermaid
+    just run mermaid-class-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-class-diagram.html
+    just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.mermaid
+    just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.html
+    just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.mermaid
+    just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.html
 
-    just run class-statistics {{TEMP_MODEL}} > {{PREFIX}}class-statistics.json
-    just run file-statistics {{TEMP_MODEL}} > {{PREFIX}}file-statistics.json
-    just run package-statistics {{TEMP_MODEL}} > {{PREFIX}}package-statistics.json
-
-    just run mermaid-class-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-class-diagram.mermaid
-    just run mermaid-class-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-class-diagram.html
-    just run mermaid-import-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-import-diagram.mermaid
-    just run mermaid-import-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-import-diagram.html
-    just run mermaid-import-diagram {{TEMP_MODEL}} --exclude-other-libraries {{PREFIX}}mermaid-import-excluded-diagram.mermaid
-    just run mermaid-import-diagram {{TEMP_MODEL}} --exclude-other-libraries {{PREFIX}}mermaid-import-excluded-diagram.html
-
+# check the generated json files
 all-tests:
-    jq empty {{PREFIX}}inheritance-report.json
-    jq empty {{PREFIX}}outlier-report.json
-    jq empty {{PREFIX}}search-report.json
-    jq empty {{PREFIX}}packages-report.json
-    jq empty {{PREFIX}}import-report.json
-    jq empty {{PREFIX}}import-excluded-report.json
-    jq empty {{PREFIX}}class-statistics.json
-    jq empty {{PREFIX}}file-statistics.json
-    jq empty {{PREFIX}}package-statistics.json
+    jq empty {{generated}}/{{prefix}}-inheritance-report.json
+    jq empty {{generated}}/{{prefix}}-outlier-report.json
+    jq empty {{generated}}/{{prefix}}-search-report.json
+    jq empty {{generated}}/{{prefix}}-packages-report.json
+    jq empty {{generated}}/{{prefix}}-imports-report.json
+    jq empty {{generated}}/{{prefix}}-imports-excluded-report.json
+    jq empty {{generated}}/{{prefix}}-class-statistics.json
+    jq empty {{generated}}/{{prefix}}-file-statistics.json
+    jq empty {{generated}}/{{prefix}}-package-statistics.json
