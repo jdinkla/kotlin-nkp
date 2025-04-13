@@ -62,5 +62,3 @@ data class ClassStatistic(
             )
     }
 }
-
-private val logger = KotlinLogging.logger {}

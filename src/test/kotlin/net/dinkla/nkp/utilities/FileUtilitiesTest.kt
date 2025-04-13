@@ -1,5 +1,6 @@
 package net.dinkla.nkp.utilities
 
+import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -16,7 +17,7 @@ private val SOURCE_DIRECTORY = File("src/examples/kotlin/")
 class FileUtilitiesTest :
     StringSpec({
         "getAllKotlinFilesInDirectory" {
-            val files = getAllKotlinFilesInDirectory(SOURCE_DIRECTORY)
+            val files = getAllKotlinFiles(SOURCE_DIRECTORY)
             files.size shouldBe 2
         }
 
@@ -30,19 +31,6 @@ class FileUtilitiesTest :
 
         "shouldFileBeAdded should add other files" {
             isRelevant(File("/src/main/HelloWorld.kt")) shouldBe true
-        }
-
-        "parseFilesFromDirectory should read directory" {
-            val files =
-                parseFilesFromDirectory(SOURCE_DIRECTORY)
-                    .map { it.await() }
-                    .map { it.getOrThrow() }
-            files.size shouldBe 2
-            files.map { it.fileName } shouldContainExactly
-                listOf(
-                    FileName("/examples/HelloWorld.kt"),
-                    FileName("/examples/HelloWorld2.kt"),
-                )
         }
 
         "packages should return packages" {
