@@ -1,6 +1,5 @@
 package net.dinkla.nkp.analysis
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.Files
@@ -33,5 +32,3 @@ data class FileStatistic(
         )
     }
 }
-
-private val logger = KotlinLogging.logger {}

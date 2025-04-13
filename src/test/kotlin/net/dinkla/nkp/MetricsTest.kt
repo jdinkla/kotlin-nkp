@@ -21,19 +21,19 @@ class MetricsTest {
 
     @ArchTest
     fun `Cumulative Dependency Metrics by John Lakos`(importedClasses: JavaClasses) {
-        val packages: Set<JavaPackage> = importedClasses.getPackage(base).getSubpackages()
+        val packages: Set<JavaPackage> = importedClasses.getPackage(base).subpackages
         val components: MetricsComponents<JavaClass> = MetricsComponents.fromPackages(packages)
         val metrics = ArchitectureMetrics.lakosMetrics(components)
         println("Cumulative Dependency Metrics by John Lakos")
-        println("CCD: " + metrics.getCumulativeComponentDependency())
-        println("ACD: " + metrics.getAverageComponentDependency())
-        println("RACD: " + metrics.getRelativeAverageComponentDependency())
-        println("NCCD: " + metrics.getNormalizedCumulativeComponentDependency())
+        println("CCD: " + metrics.cumulativeComponentDependency)
+        println("ACD: " + metrics.averageComponentDependency)
+        println("RACD: " + metrics.relativeAverageComponentDependency)
+        println("NCCD: " + metrics.normalizedCumulativeComponentDependency)
     }
 
     @ArchTest
     fun `Component Dependency Metrics by Robert C Martin`(importedClasses: JavaClasses) {
-        val packages: Set<JavaPackage> = importedClasses.getPackage(base).getSubpackages()
+        val packages: Set<JavaPackage> = importedClasses.getPackage(base).subpackages
         val components: MetricsComponents<JavaClass> = MetricsComponents.fromPackages(packages)
         val metrics = ArchitectureMetrics.componentDependencyMetrics(components)
         println("Component Dependency Metrics by Robert C Martin")
@@ -50,7 +50,7 @@ class MetricsTest {
 
     @ArchTest
     fun `Visibility Metrics by Herbert Dowalil`(importedClasses: JavaClasses) {
-        val packages: Set<JavaPackage> = importedClasses.getPackage(base).getSubpackages()
+        val packages: Set<JavaPackage> = importedClasses.getPackage(base).subpackages
         val components: MetricsComponents<JavaClass> = MetricsComponents.fromPackages(packages)
         val metrics = ArchitectureMetrics.visibilityMetrics(components)
         println("Visibility Metrics by Herbert Dowalil")
@@ -59,7 +59,7 @@ class MetricsTest {
             println("Component: $component")
             println("RV : " + metrics.getRelativeVisibility(fqComponent))
         }
-        println("ARV: " + metrics.getAverageRelativeVisibility())
-        println("GRV: " + metrics.getGlobalRelativeVisibility())
+        println("ARV: " + metrics.averageRelativeVisibility)
+        println("GRV: " + metrics.globalRelativeVisibility)
     }
 }

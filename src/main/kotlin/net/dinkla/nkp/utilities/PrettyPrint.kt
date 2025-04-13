@@ -85,7 +85,7 @@ fun ClassSignature.prettyPrint(): String {
 
     val joined =
         declarations
-            .map {
+            .joinToString("\n") {
                 val text =
                     when (it) {
                         is FunctionSignature -> it.prettyPrint()
@@ -94,7 +94,7 @@ fun ClassSignature.prettyPrint(): String {
                         else -> ""
                     }
                 "    $text"
-            }.joinToString("\n")
+            }
     val joined2 =
         if (joined.isNotEmpty()) {
             "\n$joined\n"

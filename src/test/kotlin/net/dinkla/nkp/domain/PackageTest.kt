@@ -7,7 +7,7 @@ import net.dinkla.nkp.examplePackage
 class PackageTest :
     StringSpec({
         "should aggregate declarations" {
-            val numberOfDeclarations = examplePackage.files.map { it.declarations.size }.sum()
+            val numberOfDeclarations = examplePackage.files.sumOf { it.declarations.size }
             examplePackage.declarations.size shouldBe numberOfDeclarations
         }
 

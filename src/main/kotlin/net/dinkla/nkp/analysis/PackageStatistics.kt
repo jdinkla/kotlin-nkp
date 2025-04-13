@@ -1,22 +1,12 @@
 package net.dinkla.nkp.analysis
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.ImportedElement
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
-import java.io.File
 
 fun packageStatistics(files: Files): List<AnalyzedPackage> = AnalyzedPackage.from(files)
-
-fun packageStatistics(
-    files: Files,
-    outputFile: File,
-) {
-    logger.info { "Writing import statistics to ${outputFile.absolutePath}" }
-    save(outputFile, packageStatistics(files))
-}
 
 @Serializable
 data class AnalyzedPackage(
@@ -83,5 +73,3 @@ data class DeclarationStatistics(
         }
     }
 }
-
-private val logger = KotlinLogging.logger {}

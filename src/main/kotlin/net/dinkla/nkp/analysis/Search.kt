@@ -1,6 +1,5 @@
 package net.dinkla.nkp.analysis
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.ClassSignature
 import net.dinkla.nkp.domain.Files
@@ -34,5 +33,3 @@ fun Files.searchHierarchy(className: String): List<ClassSignature> {
 fun Files.searchImplementers(className: String): List<ClassSignature> =
     flatMap { file -> file.classes }
         .filter { clazz -> clazz.inheritedFrom.contains(className) }
-
-private val logger = KotlinLogging.logger {}

@@ -1,7 +1,6 @@
 package net.dinkla.nkp.analysis
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 

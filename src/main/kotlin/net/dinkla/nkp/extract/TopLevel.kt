@@ -33,8 +33,7 @@ private fun extractFullyQualifiedPackageName(tree: KotlinParseTree) =
     tree.children[1]
         .children
         .filter { it.name == "simpleIdentifier" }
-        .map { extractIdentifier(it) }
-        .joinToString(".")
+        .joinToString(".") { extractIdentifier(it) }
 
 internal fun extractImports(tree: KotlinParseTree): List<Import> =
     tree.children.find { it.name == "importList" }?.let { importList ->

@@ -83,11 +83,11 @@ internal fun extractMemberModifier(tree: KotlinParseTree): List<MemberModifier> 
             .flatMap { it.children }
     return modifier
         .filter { it.name == "memberModifier" }
-        .map {
+        .mapNotNull {
             when (it.children[0].name) {
                 "OVERRIDE" -> MemberModifier.OVERRIDE
                 "LATEINIT" -> MemberModifier.LATE_INIT
                 else -> null
             }
-        }.filterNotNull()
+        }
 }
