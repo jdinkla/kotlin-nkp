@@ -22,6 +22,6 @@ class ImportsTest :
             result shouldHaveSize 1
             result[0].packageName shouldBe PackageName("net.dinkla.nkp")
             result[0].imports shouldContainExactly
-                    setOf(PackageName("net.dinkla.nkp"))
+                setOf(PackageName("net.dinkla.nkp"))
         }
     })

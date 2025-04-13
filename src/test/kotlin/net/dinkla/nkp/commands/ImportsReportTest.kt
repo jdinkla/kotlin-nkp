@@ -7,8 +7,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.Imports
-import net.dinkla.nkp.domain.Import
-import net.dinkla.nkp.domain.Package
 
 class ImportsReportTest :
     StringSpec({

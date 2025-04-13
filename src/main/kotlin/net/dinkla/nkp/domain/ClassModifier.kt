@@ -12,9 +12,3 @@ enum class ClassModifier(
     INNER("inner"),
     SEALED("sealed"),
 }
-
-fun ClassModifier?.prettyPrint() =
-    when (this) {
-        null -> ""
-        else -> text
-    }

@@ -9,9 +9,3 @@ enum class InheritanceModifier(
     OPEN("open"),
     ABSTRACT("abstract"),
 }
-
-fun InheritanceModifier?.prettyPrint() =
-    when (this) {
-        null -> ""
-        else -> text
-    }

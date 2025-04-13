@@ -5,9 +5,15 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
 
-fun imports(files: Files, excludeOtherLibraries: Boolean): List<Imports> =
-    if (excludeOtherLibraries) files.packages().map { Imports.fromFiltered(it) }
-    else files.packages().map { Imports.from(it) }
+fun imports(
+    files: Files,
+    excludeOtherLibraries: Boolean,
+): List<Imports> =
+    if (excludeOtherLibraries) {
+        files.packages().map { Imports.fromFiltered(it) }
+    } else {
+        files.packages().map { Imports.from(it) }
+    }
 
 @Serializable
 data class Imports(
@@ -24,11 +30,13 @@ data class Imports(
         fun fromFiltered(p: Package): Imports =
             Imports(
                 packageName = p.packageName,
-                imports = p.imports()
-                    .filter {
-                        !it.name.packageName.isOtherPackage(p.packageName)
-                    }.map { it.name.packageName }
-                    .toSortedSet(compareBy { it.name }),
+                imports =
+                    p
+                        .imports()
+                        .filter {
+                            !it.name.packageName.isOtherPackage(p.packageName)
+                        }.map { it.name.packageName }
+                        .toSortedSet(compareBy { it.name }),
             )
     }
 }

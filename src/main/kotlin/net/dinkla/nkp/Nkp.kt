@@ -32,6 +32,6 @@ fun main(args: Array<String>) {
             MermaidImportDiagram(),
             SearchReport(),
             PackagesReport(),
-            ImportsReport()
+            ImportsReport(),
         ).main(args)
 }

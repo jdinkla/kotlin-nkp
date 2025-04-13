@@ -7,8 +7,8 @@ import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.MemberModifier
 import net.dinkla.nkp.domain.Property
 import net.dinkla.nkp.domain.VisibilityModifier
-import net.dinkla.nkp.domain.prettyPrint
 import net.dinkla.nkp.utilities.addSpaceAfter
+import net.dinkla.nkp.utilities.prettyPrint
 
 fun mermaidClassDiagram(files: Files): String {
     val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }

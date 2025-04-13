@@ -23,9 +23,3 @@ enum class PropertyModifier(
             }
     }
 }
-
-fun PropertyModifier?.prettyPrint() =
-    when (this) {
-        null -> ""
-        else -> text
-    }

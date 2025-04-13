@@ -2,6 +2,7 @@ package net.dinkla.nkp.domain
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import net.dinkla.nkp.utilities.prettyPrint
 
 class ClassSignatureTest :
     StringSpec({

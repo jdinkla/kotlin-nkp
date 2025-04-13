@@ -9,9 +9,3 @@ enum class MemberModifier(
     OVERRIDE("override"),
     LATE_INIT("lateinit"),
 }
-
-fun MemberModifier?.prettyPrint() =
-    when (this) {
-        null -> ""
-        else -> text
-    }
