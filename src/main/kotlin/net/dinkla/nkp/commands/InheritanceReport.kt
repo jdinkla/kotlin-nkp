@@ -17,7 +17,7 @@ class InheritanceReport : CliktCommand() {
     ).file(mustExist = true, canBeDir = false, canBeFile = true)
 
     override fun run() {
-        val files: Files = Files.loadFromJsonFile(model.absolutePath)
+        val files = loadFromJsonFile<Files>(model.absolutePath)
         echo(Json.encodeToString(files.inheritance()))
     }
 }

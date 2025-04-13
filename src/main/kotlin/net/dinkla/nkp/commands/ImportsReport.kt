@@ -21,7 +21,7 @@ class ImportsReport : CliktCommand() {
     private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
 
     override fun run() {
-        val files: Files = Files.loadFromJsonFile(model.absolutePath)
+        val files = loadFromJsonFile<Files>(model.absolutePath)
         val report = imports(files, excludeOtherLibraries)
         echo(Json.encodeToString(report))
     }

@@ -69,11 +69,11 @@ class ParseTest :
         }
 
         "saveToJsonFile should save to temporary file" {
-            val fileName = kotlin.io.path.createTempFile().fileName.name
+            val fileName = createTempFile().fileName.name
             try {
                 val infos = readFromDirectory(SOURCE_DIRECTORY)
                 File(fileName).saveJson(infos)
-                val infos2 = Files.loadFromJsonFile(fileName)
+                val infos2 = loadFromJsonFile<Files>(fileName)
                 infos2.size shouldBe infos.size
             } finally {
                 File(fileName).delete()

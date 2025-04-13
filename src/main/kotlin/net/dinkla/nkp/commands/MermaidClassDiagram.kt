@@ -24,7 +24,7 @@ class MermaidClassDiagram : CliktCommand() {
         .optional()
 
     override fun run() {
-        val files: Files = Files.loadFromJsonFile(model.absolutePath)
+        val files = loadFromJsonFile<Files>(model.absolutePath)
         val diagram = mermaidClassDiagram(files)
         if (target != null) {
             diagram.save(target!!)

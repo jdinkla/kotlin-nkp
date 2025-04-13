@@ -19,7 +19,7 @@ class SearchReport : CliktCommand() {
     private val className by argument(help = "class name")
 
     override fun run() {
-        val files: Files = Files.loadFromJsonFile(model.absolutePath)
+        val files = loadFromJsonFile<Files>(model.absolutePath)
         val result = files.search(className)
         echo(Json.encodeToString(result))
     }

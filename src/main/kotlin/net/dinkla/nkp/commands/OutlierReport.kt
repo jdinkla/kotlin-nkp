@@ -26,7 +26,7 @@ class OutlierReport : CliktCommand() {
     ).int().default(DEFAULT_NUMBER_OF_OUTLIERS)
 
     override fun run() {
-        val files: Files = Files.loadFromJsonFile(model.absolutePath)
+        val files = loadFromJsonFile<Files>(model.absolutePath)
         echo(Json.encodeToString(outliers(files).take(n)))
     }
 }

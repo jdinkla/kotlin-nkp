@@ -17,7 +17,6 @@ import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.extract.extract
 import net.dinkla.nkp.utilities.fromFile
 import net.dinkla.nkp.utilities.getAllKotlinFiles
-import net.dinkla.nkp.utilities.reportErrors
 import java.io.File
 
 class Parse : CliktCommand(name = "parse") {
@@ -29,7 +28,7 @@ class Parse : CliktCommand(name = "parse") {
 
     private val target by argument(
         help = "The output file",
-    ).convert { java.io.File(it) }
+    ).convert { File(it) }
         .optional()
 
     override fun run() {
@@ -45,20 +44,25 @@ class Parse : CliktCommand(name = "parse") {
 
 internal fun readFromDirectory(directory: File): Files {
     val files = getAllKotlinFiles(directory)
-    val infos = runBlocking(Dispatchers.Default) {
-        files.map {
-            async {
-                extractFileInfo(it, directory.absolutePath)
-            }
-        }.map {
-            it.await()
+    val infos =
+        runBlocking(Dispatchers.Default) {
+            files
+                .map {
+                    async {
+                        extractFileInfo(it, directory.absolutePath)
+                    }
+                }.map {
+                    it.await()
+                }
         }
-    }
     reportErrors(infos)
     return Files(directory.absolutePath, infos.filter { it.isSuccess }.map { it.getOrThrow() })
 }
 
-private fun extractFileInfo(fileName: String, prefix: String): Result<AnalysedFile> {
+private fun extractFileInfo(
+    fileName: String,
+    prefix: String,
+): Result<AnalysedFile> {
     try {
         val withoutPrefix = fileName.removePrefix(prefix)
         val analysedFile = extract(FileName(withoutPrefix), fromFile(fileName))
@@ -69,6 +73,10 @@ private fun extractFileInfo(fileName: String, prefix: String): Result<AnalysedFi
     }
 }
 
+internal fun reportErrors(infos: List<Result<AnalysedFile>>) {
+    infos.groupBy { it.isSuccess }.forEach {
+        logger.info { "${if (it.key) "Successful" else "With error"}: ${it.value.size}" }
+    }
+}
+
 private val logger = KotlinLogging.logger {}
-
-

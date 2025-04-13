@@ -1,6 +1,5 @@
 package net.dinkla.nkp.analysis
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.ClassModifier
 import net.dinkla.nkp.domain.ClassSignature
