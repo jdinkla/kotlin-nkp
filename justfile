@@ -35,6 +35,7 @@ all-tasks REPOSITORY:
     just run packages-report {{model_file}} > {{generated}}/{{prefix}}-packages-report.json
     just run imports-report {{model_file}} > {{generated}}/{{prefix}}-imports-report.json
     just run imports-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-imports-excluded-report.json
+    just run coupling-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-coupling-report.json
 
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}-class-statistics.json
     just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
@@ -46,6 +47,7 @@ all-tasks REPOSITORY:
     just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.html
     just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.mermaid
     just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.html
+    just run mermaid-coupling-diagram {{model_file}} --exclude-other-libraries > {{generated}}/{{prefix}}-mermaid-coupling-diagram.mermaid
 
 # check the generated json files
 all-tests:
