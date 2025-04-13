@@ -34,6 +34,8 @@ all-tasks REPOSITORY:
     just run outlier-report {{TEMP_MODEL}} > {{PREFIX}}outlier-report.json
     just run search-report {{TEMP_MODEL}} Defined > {{PREFIX}}search-report.json
     just run packages-report {{TEMP_MODEL}} > {{PREFIX}}packages-report.json
+    just run imports-report {{TEMP_MODEL}} > {{PREFIX}}imports-report.json
+    just run imports-report --exclude-other-libraries {{TEMP_MODEL}} > {{PREFIX}}imports-excluded-report.json
 
     just run class-statistics {{TEMP_MODEL}} > {{PREFIX}}class-statistics.json
     just run file-statistics {{TEMP_MODEL}} > {{PREFIX}}file-statistics.json
@@ -43,12 +45,16 @@ all-tasks REPOSITORY:
     just run mermaid-class-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-class-diagram.html
     just run mermaid-import-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-import-diagram.mermaid
     just run mermaid-import-diagram {{TEMP_MODEL}} {{PREFIX}}mermaid-import-diagram.html
+    just run mermaid-import-diagram {{TEMP_MODEL}} --exclude-other-libraries {{PREFIX}}mermaid-import-excluded-diagram.mermaid
+    just run mermaid-import-diagram {{TEMP_MODEL}} --exclude-other-libraries {{PREFIX}}mermaid-import-excluded-diagram.html
 
 all-tests:
     jq empty {{PREFIX}}inheritance-report.json
     jq empty {{PREFIX}}outlier-report.json
     jq empty {{PREFIX}}search-report.json
     jq empty {{PREFIX}}packages-report.json
+    jq empty {{PREFIX}}import-report.json
+    jq empty {{PREFIX}}import-excluded-report.json
     jq empty {{PREFIX}}class-statistics.json
     jq empty {{PREFIX}}file-statistics.json
     jq empty {{PREFIX}}package-statistics.json

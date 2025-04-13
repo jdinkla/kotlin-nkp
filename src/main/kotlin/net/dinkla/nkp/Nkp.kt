@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import net.dinkla.nkp.commands.ClassStatistics
 import net.dinkla.nkp.commands.FileStatistics
+import net.dinkla.nkp.commands.ImportsReport
 import net.dinkla.nkp.commands.InheritanceReport
 import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
@@ -31,5 +32,6 @@ fun main(args: Array<String>) {
             MermaidImportDiagram(),
             SearchReport(),
             PackagesReport(),
+            ImportsReport()
         ).main(args)
 }
