@@ -1,21 +1,21 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.Defined
 import net.dinkla.nkp.domain.FileName
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.ImportedElement
+import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.PackageName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun extract(
     fileName: FileName,
     tree: KotlinParseTree,
-): AnalysedFile {
+): KotlinFile {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val declarations = extractDefinitions(tree)
-    return AnalysedFile(fileName, packageName, imports, declarations)
+    return KotlinFile(fileName, packageName, imports, declarations)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): PackageName {

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Package(
     val packageName: PackageName,
-    val files: List<AnalysedFile>,
+    val files: List<KotlinFile>,
 ) : HasDeclarations {
     override val declarations: List<Defined>
         get() = files.flatMap { it.declarations }

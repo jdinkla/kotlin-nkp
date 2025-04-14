@@ -1,6 +1,5 @@
 package net.dinkla.nkp.utilities
 
-import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.ClassModifier
 import net.dinkla.nkp.domain.ClassParameter
 import net.dinkla.nkp.domain.ClassSignature
@@ -8,13 +7,14 @@ import net.dinkla.nkp.domain.FunctionParameter
 import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.InheritanceModifier
+import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.MemberModifier
 import net.dinkla.nkp.domain.Property
 import net.dinkla.nkp.domain.PropertyModifier
 import net.dinkla.nkp.domain.TypeAlias
 import net.dinkla.nkp.domain.VisibilityModifier
 
-fun AnalysedFile.prettyPrint(): String {
+fun KotlinFile.prettyPrint(): String {
     var isLineNeeded = false
     return buildString {
         appendLine("package $packageName")

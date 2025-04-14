@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Files(
     val directory: String,
-    private val files: List<AnalysedFile>,
-) : List<AnalysedFile> by files {
+    val files: List<KotlinFile>,
+) : List<KotlinFile> by files {
     fun packages(): List<Package> {
-        val map = mutableMapOf<PackageName, MutableList<AnalysedFile>>()
+        val map = mutableMapOf<PackageName, MutableList<KotlinFile>>()
         for (file in files) {
             val packageName = file.packageName
             val list = map.getOrDefault(packageName, mutableListOf())

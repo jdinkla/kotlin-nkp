@@ -1,8 +1,8 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.KotlinFile
 
 fun fileStatistics(files: Files): FileStatistics = FileStatistics(files.map { FileStatistic.from(files, it) })
 
@@ -22,7 +22,7 @@ data class FileStatistic(
     companion object {
         fun from(
             files: Files,
-            file: AnalysedFile,
+            file: KotlinFile,
         ) = FileStatistic(
             file = files.relativePath(file.fileName.name),
             imports = file.imports.size,

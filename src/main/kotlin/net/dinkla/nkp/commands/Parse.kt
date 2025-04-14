@@ -11,9 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.FileName
 import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.extract.extract
 import net.dinkla.nkp.utilities.fromFile
 import net.dinkla.nkp.utilities.getAllKotlinFiles
@@ -62,7 +62,7 @@ internal fun readFromDirectory(directory: File): Files {
 private fun extractFileInfo(
     fileName: String,
     prefix: String,
-): Result<AnalysedFile> {
+): Result<KotlinFile> {
     try {
         val withoutPrefix = fileName.removePrefix(prefix)
         val analysedFile = extract(FileName(withoutPrefix), fromFile(fileName))
@@ -73,7 +73,7 @@ private fun extractFileInfo(
     }
 }
 
-internal fun reportErrors(infos: List<Result<AnalysedFile>>) {
+internal fun reportErrors(infos: List<Result<KotlinFile>>) {
     infos.groupBy { it.isSuccess }.forEach {
         logger.info { "${if (it.key) "Successful" else "With error"}: ${it.value.size}" }
     }

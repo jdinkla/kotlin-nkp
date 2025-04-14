@@ -1,6 +1,5 @@
 package net.dinkla.nkp
 
-import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.ClassModifier
 import net.dinkla.nkp.domain.ClassParameter
 import net.dinkla.nkp.domain.ClassSignature
@@ -11,6 +10,7 @@ import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.ImportedElement
 import net.dinkla.nkp.domain.InheritanceModifier
+import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.MemberModifier
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
@@ -174,30 +174,30 @@ internal val c1 = ClassSignature("C")
 internal val ta1 = TypeAlias("TA", Type("Int"))
 internal val p1 = Property("p1", Type("Int"))
 
-internal val analysedFile =
-    AnalysedFile(
+internal val kotlinFile =
+    KotlinFile(
         FileName("/base/ExampleFile.kt"),
         PackageName("net.dinkla.nkp"),
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),
     )
 
-internal val analysedFile1 =
-    AnalysedFile(
+internal val kotlinFile1 =
+    KotlinFile(
         FileName("/base/ExampleFile1.kt"),
         PackageName("net.dinkla.nkp"),
         imports = expectedImports,
         declarations = listOf(f1, c1, ta1),
     )
 
-internal val analysedFile2 =
-    AnalysedFile(
+internal val kotlinFile2 =
+    KotlinFile(
         FileName("/base/ExampleFile2.kt"),
         PackageName("net.dinkla.nkp"),
         imports = expectedImports + listOf(Import(ImportedElement("net.dinkla.nkp.some"))),
         declarations = listOf(f2, p1),
     )
 
-val examplePackage = Package(PackageName("net.dinkla.nkp"), listOf(analysedFile1, analysedFile2))
+val examplePackage = Package(PackageName("net.dinkla.nkp"), listOf(kotlinFile1, kotlinFile2))
 
-val exampleFiles = Files("/base", listOf(analysedFile, analysedFile1, analysedFile2))
+val exampleFiles = Files("/base", listOf(kotlinFile, kotlinFile1, kotlinFile2))

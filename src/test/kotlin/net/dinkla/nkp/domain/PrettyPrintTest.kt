@@ -3,7 +3,7 @@ package net.dinkla.nkp.domain
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import net.dinkla.nkp.analysedFile
+import net.dinkla.nkp.kotlinFile
 import net.dinkla.nkp.utilities.prettyPrint
 
 class PrettyPrintTest :
@@ -23,7 +23,7 @@ class PrettyPrintTest :
         }
 
         "prettyPrint should show the toplevel" {
-            val lines = analysedFile.prettyPrint().lines()
+            val lines = kotlinFile.prettyPrint().lines()
             lines.size shouldBe 14
             val text = lines.joinToString("\n")
             text shouldContain "import"

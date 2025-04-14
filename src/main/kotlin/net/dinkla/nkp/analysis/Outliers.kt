@@ -1,10 +1,10 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.AnalysedFile
 import net.dinkla.nkp.domain.ClassSignature
+import net.dinkla.nkp.domain.KotlinFile
 
-fun outliers(files: List<AnalysedFile>): List<Sizes> =
+fun outliers(files: List<KotlinFile>): List<Sizes> =
     largeClasses(files).map {
         Sizes(it.name, it.classes.size, it.functions.size, it.properties.size, it.declarations.size)
     }
@@ -18,5 +18,5 @@ data class Sizes(
     val declarations: Int,
 )
 
-internal fun largeClasses(files: List<AnalysedFile>): List<ClassSignature> =
+internal fun largeClasses(files: List<KotlinFile>): List<ClassSignature> =
     files.flatMap { it.classes }.sortedByDescending { it.declarations.size }
