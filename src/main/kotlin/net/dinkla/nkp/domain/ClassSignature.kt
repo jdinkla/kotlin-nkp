@@ -11,20 +11,9 @@ data class ClassSignature(
     val elementType: Type = Type.CLASS,
     val classModifier: ClassModifier? = null,
     val inheritanceModifier: InheritanceModifier? = null,
-    val declarations: List<Defined> = listOf(),
-) : Defined {
-    val functions: List<FunctionSignature>
-        get() = declarations.filterIsInstance<FunctionSignature>()
-
-    val properties: List<Property>
-        get() = declarations.filterIsInstance<Property>()
-
-    val classes: List<ClassSignature>
-        get() = declarations.filterIsInstance<ClassSignature>()
-
-    val aliases: List<TypeAlias>
-        get() = declarations.filterIsInstance<TypeAlias>()
-
+    override val declarations: List<Defined> = listOf(),
+) : Defined,
+    HasDeclarations {
     @Serializable
     enum class Type(
         val text: String,

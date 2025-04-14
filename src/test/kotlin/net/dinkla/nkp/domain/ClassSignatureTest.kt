@@ -15,7 +15,7 @@ class ClassSignatureTest :
                     declarations = listOf(typeAlias),
                     elementType = ClassSignature.Type.CLASS,
                 )
-            classSignature.aliases shouldBe listOf(typeAlias)
+            classSignature.typeAliases shouldBe listOf(typeAlias)
         }
 
         "prettyPrint should return a string representation of default class" {

@@ -57,7 +57,7 @@ data class ClassStatistic(
                 classes = clazz.classes.size,
                 functions = clazz.functions.size,
                 properties = clazz.properties.size,
-                aliases = clazz.aliases.size,
+                aliases = clazz.typeAliases.size,
             )
     }
 }
