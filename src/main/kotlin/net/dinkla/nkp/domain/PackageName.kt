@@ -17,4 +17,6 @@ value class PackageName(
             name.commonPrefixWith(other.name).isNotEmpty()
 
     infix fun isOtherPackage(other: PackageName): Boolean = name.commonPrefixWith(other.name).isEmpty()
+
+    override fun toString(): String = name
 }

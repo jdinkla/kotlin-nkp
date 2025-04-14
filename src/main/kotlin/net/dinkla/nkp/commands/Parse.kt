@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.FileName
+import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.extract.extract
@@ -65,7 +65,7 @@ private fun extractFileInfo(
 ): Result<KotlinFile> {
     try {
         val withoutPrefix = fileName.removePrefix(prefix)
-        val analysedFile = extract(FileName(withoutPrefix), fromFile(fileName))
+        val analysedFile = extract(FilePath(withoutPrefix), fromFile(fileName))
         return Result.success(analysedFile)
     } catch (e: Exception) {
         logger.error { "parsing '$fileName' yields ${e.message}" }

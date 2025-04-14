@@ -24,7 +24,7 @@ data class FileStatistic(
             project: Project,
             file: KotlinFile,
         ) = FileStatistic(
-            file = project.relativePath(file.fileName.name),
+            file = project.relativePath(file.filePath.path),
             imports = file.imports.size,
             classes = file.classes.size,
             functions = file.functions.size,

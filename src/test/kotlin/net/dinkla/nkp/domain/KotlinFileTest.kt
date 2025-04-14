@@ -27,7 +27,7 @@ class KotlinFileTest :
             kotlinFile.typeAliases shouldBe listOf(ta1)
         }
 
-        "packageName should return the package and the filename" {
-            kotlinFile.packageName() shouldBe "net.dinkla.nkp.ExampleFile"
+        "fullyQualifiedName should return the package and the filename" {
+            kotlinFile.fullyQualifiedName shouldBe "net.dinkla.nkp.ExampleFile"
         }
     })

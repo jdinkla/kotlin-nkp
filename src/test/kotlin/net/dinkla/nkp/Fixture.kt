@@ -3,7 +3,7 @@ package net.dinkla.nkp
 import net.dinkla.nkp.domain.ClassModifier
 import net.dinkla.nkp.domain.ClassParameter
 import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.FileName
+import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.FunctionParameter
 import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.Import
@@ -176,7 +176,7 @@ internal val p1 = Property("p1", Type("Int"))
 
 internal val kotlinFile =
     KotlinFile(
-        FileName("/base/ExampleFile.kt"),
+        FilePath("/base/ExampleFile.kt"),
         PackageName("net.dinkla.nkp"),
         imports = expectedImports,
         declarations = listOf(f1, f2, c1, ta1, p1),
@@ -184,7 +184,7 @@ internal val kotlinFile =
 
 internal val kotlinFile1 =
     KotlinFile(
-        FileName("/base/ExampleFile1.kt"),
+        FilePath("/base/ExampleFile1.kt"),
         PackageName("net.dinkla.nkp"),
         imports = expectedImports,
         declarations = listOf(f1, c1, ta1),
@@ -192,7 +192,7 @@ internal val kotlinFile1 =
 
 internal val kotlinFile2 =
     KotlinFile(
-        FileName("/base/ExampleFile2.kt"),
+        FilePath("/base/ExampleFile2.kt"),
         PackageName("net.dinkla.nkp"),
         imports = expectedImports + listOf(Import(ImportedElement("net.dinkla.nkp.some"))),
         declarations = listOf(f2, p1),

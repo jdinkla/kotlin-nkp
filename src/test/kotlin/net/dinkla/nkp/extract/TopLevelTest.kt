@@ -9,7 +9,7 @@ import net.dinkla.nkp.class2
 import net.dinkla.nkp.class3
 import net.dinkla.nkp.class4
 import net.dinkla.nkp.class5
-import net.dinkla.nkp.domain.FileName
+import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.ImportedElement
 import net.dinkla.nkp.domain.PackageName
@@ -33,7 +33,7 @@ import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 class TopLevelTest :
     StringSpec({
         "extract should return all information" {
-            val file = extract(FileName(""), tree)
+            val file = extract(FilePath(""), tree)
             file.packageName shouldBe PackageName("example")
             file.imports shouldContainExactly expectedImports
             file.functions shouldContainExactlyInAnyOrder listOf(function1, function2, function3, function4, function5)

@@ -4,13 +4,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class KotlinFile(
-    val fileName: FileName,
+    val filePath: FilePath,
     val packageName: PackageName,
     val imports: List<Import> = listOf(),
     override val declarations: List<Defined> = listOf(),
 ) : HasDeclarations {
-    fun packageName(): String {
-        val name = fileName.basename.replace(".kt", "")
-        return "${packageName.name}.$name"
-    }
+    val fullyQualifiedName: String
+        get() {
+            val name = filePath.fileName.replace(".kt", "")
+            return "${packageName.name}.$name"
+        }
 }

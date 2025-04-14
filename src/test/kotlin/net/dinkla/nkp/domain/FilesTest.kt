@@ -15,6 +15,6 @@ class FilesTest :
         }
 
         "relativePath() should return the relative path" {
-            exampleProject.relativePath(exampleProject[0].fileName.name) shouldBe "ExampleFile.kt"
+            exampleProject.relativePath(exampleProject[0].filePath.path) shouldBe "ExampleFile.kt"
         }
     })

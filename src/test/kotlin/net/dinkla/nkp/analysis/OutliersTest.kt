@@ -3,7 +3,7 @@ package net.dinkla.nkp.analysis
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.FileName
+import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.PackageName
@@ -24,7 +24,7 @@ class OutliersTest :
 
 private fun info(classSignatures: List<ClassSignature>) =
     KotlinFile(
-        FileName("a"),
+        FilePath("a"),
         PackageName("name"),
         declarations = classSignatures,
     )
