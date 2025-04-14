@@ -1,7 +1,7 @@
 package net.dinkla.nkp.domain
 
-interface HasDeclarations {
-    val declarations: List<Defined>
+interface DeclarationContainer {
+    val declarations: List<Declaration>
 
     val functions: List<FunctionSignature>
         get() = declarations.filterIsInstance<FunctionSignature>()

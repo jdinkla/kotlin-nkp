@@ -11,9 +11,9 @@ data class ClassSignature(
     val elementType: Type = Type.CLASS,
     val classModifier: ClassModifier? = null,
     val inheritanceModifier: InheritanceModifier? = null,
-    override val declarations: List<Defined> = listOf(),
-) : Defined,
-    HasDeclarations {
+    override val declarations: List<Declaration> = listOf(),
+) : Declaration,
+    DeclarationContainer {
     @Serializable
     enum class Type(
         val text: String,

@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
 data class TypeAlias(
     val name: String,
     val def: Type,
-) : Defined
+) : Declaration

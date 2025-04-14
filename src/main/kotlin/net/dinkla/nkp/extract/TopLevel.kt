@@ -1,6 +1,6 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.Defined
+import net.dinkla.nkp.domain.Declaration
 import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.ImportedElement
@@ -45,8 +45,8 @@ internal fun extractImports(tree: KotlinParseTree): List<Import> =
         }
     } ?: listOf()
 
-internal fun extractDefinitions(tree: KotlinParseTree): List<Defined> {
-    val result = mutableListOf<Defined>()
+internal fun extractDefinitions(tree: KotlinParseTree): List<Declaration> {
+    val result = mutableListOf<Declaration>()
     for (declaration in getDeclarations(tree)) {
         when (declaration.name) {
             "classDeclaration" -> result += extractClass(declaration)

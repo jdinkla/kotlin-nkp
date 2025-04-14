@@ -2,7 +2,7 @@ package net.dinkla.nkp.extract
 
 import net.dinkla.nkp.domain.ClassParameter
 import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.Defined
+import net.dinkla.nkp.domain.Declaration
 import net.dinkla.nkp.domain.PropertyModifier
 import net.dinkla.nkp.domain.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
@@ -71,7 +71,7 @@ private fun extractSuperClasses(tree: KotlinParseTree): List<String> =
         }
     } ?: listOf()
 
-internal fun extractBody(tree: KotlinParseTree): List<Defined> =
+internal fun extractBody(tree: KotlinParseTree): List<Declaration> =
     tree.children.find { it.name == "classBody" }?.let {
         it.children
             .filter { it.name == "classMemberDeclarations" }

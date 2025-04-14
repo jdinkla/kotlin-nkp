@@ -28,6 +28,6 @@ class HasDeclarationsTest :
     })
 
 private val example =
-    object : HasDeclarations {
-        override val declarations: List<Defined> = listOf(f1, f2, c1, ta1, p1)
+    object : DeclarationContainer {
+        override val declarations: List<Declaration> = listOf(f1, f2, c1, ta1, p1)
     }

@@ -9,4 +9,4 @@ data class Property(
     val modifier: PropertyModifier = PropertyModifier.VAL,
     val visibilityModifier: VisibilityModifier? = null,
     val memberModifier: List<MemberModifier> = listOf(),
-) : Defined
+) : Declaration

@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 data class Package(
     val packageName: PackageName,
     val files: List<KotlinFile>,
-) : HasDeclarations {
-    override val declarations: List<Defined>
+) : DeclarationContainer {
+    override val declarations: List<Declaration>
         get() = files.flatMap { it.declarations }
 
     fun imports(): Set<Import> = files.flatMap { it.imports }.toSet()
