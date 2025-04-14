@@ -1,12 +1,12 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.ImportedElement
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.Project
 
-fun packageStatistics(files: Files): List<AnalyzedPackage> = AnalyzedPackage.from(files)
+fun packageStatistics(project: Project): List<AnalyzedPackage> = AnalyzedPackage.from(project)
 
 @Serializable
 data class AnalyzedPackage(
@@ -16,8 +16,8 @@ data class AnalyzedPackage(
     val declarationStatistics: DeclarationStatistics,
 ) {
     companion object {
-        fun from(files: Files): List<AnalyzedPackage> =
-            files.packages().map { from(it) }.sortedBy { it.packageName.name }
+        fun from(project: Project): List<AnalyzedPackage> =
+            project.packages().map { from(it) }.sortedBy { it.packageName.name }
 
         fun from(p: Package): AnalyzedPackage {
             val name = p.packageName

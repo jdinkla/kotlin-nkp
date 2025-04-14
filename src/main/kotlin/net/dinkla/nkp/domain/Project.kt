@@ -3,7 +3,7 @@ package net.dinkla.nkp.domain
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Files(
+class Project(
     val directory: String,
     val files: List<KotlinFile>,
 ) : List<KotlinFile> by files {

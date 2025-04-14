@@ -8,7 +8,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.nkp.analysis.MermaidCouplingDiagram
 import net.dinkla.nkp.analysis.combinedReport
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidCouplingDiagram : CliktCommand() {
@@ -21,8 +21,8 @@ class MermaidCouplingDiagram : CliktCommand() {
     private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        val report = combinedReport(files, excludeOtherLibraries)
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val report = combinedReport(project, excludeOtherLibraries)
 
         val diagram =
             MermaidCouplingDiagram(

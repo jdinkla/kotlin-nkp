@@ -9,7 +9,7 @@ import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.outliers
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 private const val DEFAULT_NUMBER_OF_OUTLIERS = 10
@@ -26,7 +26,7 @@ class OutlierReport : CliktCommand() {
     ).int().default(DEFAULT_NUMBER_OF_OUTLIERS)
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        echo(Json.encodeToString(outliers(files).take(n)))
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        echo(Json.encodeToString(outliers(project).take(n)))
     }
 }

@@ -8,7 +8,7 @@ import com.github.ajalt.clikt.parameters.arguments.optional
 import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.nkp.analysis.mermaidClassDiagram
 import net.dinkla.nkp.analysis.save
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidClassDiagram : CliktCommand() {
@@ -24,8 +24,8 @@ class MermaidClassDiagram : CliktCommand() {
         .optional()
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        val diagram = mermaidClassDiagram(files)
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val diagram = mermaidClassDiagram(project)
         if (target != null) {
             diagram.save(target!!)
         } else {

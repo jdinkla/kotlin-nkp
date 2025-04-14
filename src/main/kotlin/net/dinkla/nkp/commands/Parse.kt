@@ -12,8 +12,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.domain.FileName
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.KotlinFile
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.extract.extract
 import net.dinkla.nkp.utilities.fromFile
 import net.dinkla.nkp.utilities.getAllKotlinFiles
@@ -32,8 +32,8 @@ class Parse : CliktCommand(name = "parse") {
         .optional()
 
     override fun run() {
-        val files: Files = readFromDirectory(source)
-        val json = Json.encodeToString(files)
+        val project: Project = readFromDirectory(source)
+        val json = Json.encodeToString(project)
         if (target != null) {
             target!!.writeText(json)
         } else {
@@ -42,7 +42,7 @@ class Parse : CliktCommand(name = "parse") {
     }
 }
 
-internal fun readFromDirectory(directory: File): Files {
+internal fun readFromDirectory(directory: File): Project {
     val files = getAllKotlinFiles(directory)
     val infos =
         runBlocking(Dispatchers.Default) {
@@ -56,7 +56,7 @@ internal fun readFromDirectory(directory: File): Files {
                 }
         }
     reportErrors(infos)
-    return Files(directory.absolutePath, infos.filter { it.isSuccess }.map { it.getOrThrow() })
+    return Project(directory.absolutePath, infos.filter { it.isSuccess }.map { it.getOrThrow() })
 }
 
 private fun extractFileInfo(

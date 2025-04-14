@@ -8,7 +8,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.imports
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class ImportsReport : CliktCommand() {
@@ -21,8 +21,8 @@ class ImportsReport : CliktCommand() {
     private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        val report = imports(files, excludeOtherLibraries)
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val report = imports(project, excludeOtherLibraries)
         echo(Json.encodeToString(report))
     }
 }

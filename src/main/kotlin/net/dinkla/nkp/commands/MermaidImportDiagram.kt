@@ -10,7 +10,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import net.dinkla.nkp.analysis.mermaidImportsFlowDiagram
 import net.dinkla.nkp.analysis.save
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidImportDiagram : CliktCommand() {
@@ -28,8 +28,8 @@ class MermaidImportDiagram : CliktCommand() {
     private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        val diagram = mermaidImportsFlowDiagram(files, excludeOtherLibraries)
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val diagram = mermaidImportsFlowDiagram(project, excludeOtherLibraries)
         if (target != null) {
             diagram.save(target!!)
         } else {

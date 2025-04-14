@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class PackagesReport : CliktCommand() {
@@ -16,7 +16,7 @@ class PackagesReport : CliktCommand() {
     ).file(mustExist = true, canBeDir = false, canBeFile = true)
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        echo(Json.encodeToString(files.packages()))
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        echo(Json.encodeToString(project.packages()))
     }
 }

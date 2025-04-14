@@ -1,18 +1,18 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.Project
 
 fun imports(
-    files: Files,
+    project: Project,
     excludeOtherLibraries: Boolean,
 ): List<Imports> =
     if (excludeOtherLibraries) {
-        files.packages().map { Imports.fromFiltered(it) }
+        project.packages().map { Imports.fromFiltered(it) }
     } else {
-        files.packages().map { Imports.from(it) }
+        project.packages().map { Imports.from(it) }
     }
 
 @Serializable

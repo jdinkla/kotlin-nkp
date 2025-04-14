@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.classStatistics
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class ClassStatistics : CliktCommand() {
@@ -17,8 +17,8 @@ class ClassStatistics : CliktCommand() {
     ).file(mustExist = true, canBeDir = false, canBeFile = true)
 
     override fun run() {
-        val files = loadFromJsonFile<Files>(model.absolutePath)
-        val stats = classStatistics(files)
+        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val stats = classStatistics(project)
         echo(Json.encodeToString(stats))
     }
 }

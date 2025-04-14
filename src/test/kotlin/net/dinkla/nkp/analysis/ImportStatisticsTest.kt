@@ -3,8 +3,8 @@ package net.dinkla.nkp.analysis
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.exampleFiles
 import net.dinkla.nkp.examplePackage
+import net.dinkla.nkp.exampleProject
 
 class ImportStatisticsTest :
     StringSpec({
@@ -17,7 +17,7 @@ class ImportStatisticsTest :
         }
 
         "importStatistics should return statistics from Files" {
-            val ls: List<AnalyzedPackage> = AnalyzedPackage.from(exampleFiles)
+            val ls: List<AnalyzedPackage> = AnalyzedPackage.from(exampleProject)
             ls.size shouldBe 1
             ls[0].importedElements.size shouldBe 3
             ls[0].importStatistics.total shouldBe 3

@@ -1,7 +1,7 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.Files
+import net.dinkla.nkp.domain.Project
 
 @Serializable
 data class Inheritance(
@@ -10,7 +10,7 @@ data class Inheritance(
     val numberOfImplementers: Int,
 )
 
-internal fun Files.inheritance(): List<Inheritance> =
+internal fun Project.inheritance(): List<Inheritance> =
     flatMap { file -> file.classes }
         .map { classSignature ->
             val h = this.searchHierarchy(classSignature.name)

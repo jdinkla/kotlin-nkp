@@ -3,14 +3,14 @@ package net.dinkla.nkp.analysis
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.ClassModifier
 import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.InheritanceModifier
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.domain.VisibilityModifier
 
-fun classStatistics(files: Files): ClassStatistics =
+fun classStatistics(project: Project): ClassStatistics =
     ClassStatistics(
-        files
+        project
             .flatMap { file ->
                 file.classes.map {
                     ClassStatistic.from(file.packageName, it)

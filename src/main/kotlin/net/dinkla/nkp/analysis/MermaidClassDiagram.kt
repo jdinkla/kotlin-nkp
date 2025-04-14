@@ -2,16 +2,16 @@ package net.dinkla.nkp.analysis
 
 import net.dinkla.nkp.domain.ClassParameter
 import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.MemberModifier
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.domain.Property
 import net.dinkla.nkp.domain.VisibilityModifier
 import net.dinkla.nkp.utilities.addSpaceAfter
 import net.dinkla.nkp.utilities.prettyPrint
 
-fun mermaidClassDiagram(files: Files): String {
-    val classes = files.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
+fun mermaidClassDiagram(project: Project): String {
+    val classes = project.flatMap { it.classes }.filter { !it.name.endsWith("Test") }
     return generateDiagram(classes)
 }
 

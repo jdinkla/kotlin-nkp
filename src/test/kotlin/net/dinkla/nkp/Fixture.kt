@@ -4,7 +4,6 @@ import net.dinkla.nkp.domain.ClassModifier
 import net.dinkla.nkp.domain.ClassParameter
 import net.dinkla.nkp.domain.ClassSignature
 import net.dinkla.nkp.domain.FileName
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.FunctionParameter
 import net.dinkla.nkp.domain.FunctionSignature
 import net.dinkla.nkp.domain.Import
@@ -14,6 +13,7 @@ import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.MemberModifier
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.domain.Property
 import net.dinkla.nkp.domain.PropertyModifier
 import net.dinkla.nkp.domain.Type
@@ -200,4 +200,4 @@ internal val kotlinFile2 =
 
 val examplePackage = Package(PackageName("net.dinkla.nkp"), listOf(kotlinFile1, kotlinFile2))
 
-val exampleFiles = Files("/base", listOf(kotlinFile, kotlinFile1, kotlinFile2))
+val exampleProject = Project("/base", listOf(kotlinFile, kotlinFile1, kotlinFile2))

@@ -1,14 +1,14 @@
 package net.dinkla.nkp.analysis
 
-import net.dinkla.nkp.domain.Files
 import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.Project
 
 fun mermaidImportsFlowDiagram(
-    files: Files,
+    project: Project,
     excludeOtherLibraries: Boolean,
 ): String {
-    val packagesList = files.packages()
+    val packagesList = project.packages()
     val packagesTree = toTree(packagesList)
     return generateDiagram(packagesTree, packagesList, excludeOtherLibraries)
 }

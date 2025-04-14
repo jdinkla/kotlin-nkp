@@ -5,12 +5,12 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.exampleFiles
+import net.dinkla.nkp.exampleProject
 
 class ImportsTest :
     StringSpec({
         "should return the imports for every package" {
-            val result = imports(exampleFiles, false)
+            val result = imports(exampleProject, false)
             result shouldHaveSize 1
             result[0].packageName shouldBe PackageName("net.dinkla.nkp")
             result[0].imports shouldContainExactly
@@ -18,7 +18,7 @@ class ImportsTest :
         }
 
         "should return the imports for every package but not external once" {
-            val result = imports(exampleFiles, true)
+            val result = imports(exampleProject, true)
             result shouldHaveSize 1
             result[0].packageName shouldBe PackageName("net.dinkla.nkp")
             result[0].imports shouldContainExactly
