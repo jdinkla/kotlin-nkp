@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TypeAlias(
-    val name: String,
+    override val name: String,
     val def: Type,
+    override val visibilityModifier: VisibilityModifier? = null,
 ) : Declaration

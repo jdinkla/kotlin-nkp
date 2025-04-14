@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ClassSignature(
-    val name: String,
+    override val name: String,
     val parameters: List<ClassParameter> = listOf(),
     val inheritedFrom: List<String> = listOf(),
-    val visibilityModifier: VisibilityModifier? = null,
+    override val visibilityModifier: VisibilityModifier? = null,
     val elementType: Type = Type.CLASS,
     val classModifier: ClassModifier? = null,
     val inheritanceModifier: InheritanceModifier? = null,
