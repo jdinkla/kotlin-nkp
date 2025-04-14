@@ -60,3 +60,7 @@ all-tests:
     jq empty {{generated}}/{{prefix}}-class-statistics.json
     jq empty {{generated}}/{{prefix}}-file-statistics.json
     jq empty {{generated}}/{{prefix}}-package-statistics.json
+
+# convert a mermaid file to svg
+mermaid-to-svg FILE:
+    @npx mmdc -i {{FILE}}
