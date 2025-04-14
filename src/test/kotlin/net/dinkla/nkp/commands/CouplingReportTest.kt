@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.string.shouldContain
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.CouplingReport
 import kotlin.math.absoluteValue
@@ -35,20 +34,20 @@ class CouplingReportTest :
             val result = CouplingReport().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
             val report = Json.decodeFromString<CouplingReport>(result.output)
-            
+
             // Verify that all packages have corresponding metrics
             report.packages.forEach { imports ->
                 val metric = report.metrics.find { it.packageName == imports.packageName }
                 metric shouldNotBe null
             }
-            
+
             // Verify that efferent coupling values match imports count
             report.metrics.forEach { metric ->
                 val imports = report.packages.find { it.packageName == metric.packageName }
                 imports shouldNotBe null
                 metric.efferentCoupling shouldBe imports!!.imports.size
             }
-            
+
             // Verify instability calculation is correct
             report.metrics.forEach { metric ->
                 val totalCoupling = metric.afferentCoupling + metric.efferentCoupling

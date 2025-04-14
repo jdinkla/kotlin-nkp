@@ -24,10 +24,11 @@ class MermaidCouplingDiagram : CliktCommand() {
         val files = loadFromJsonFile<Files>(model.absolutePath)
         val report = combinedReport(files, excludeOtherLibraries)
 
-        val diagram = MermaidCouplingDiagram(
-            packages = report.packages,
-            metrics = report.metrics,
-        )
+        val diagram =
+            MermaidCouplingDiagram(
+                packages = report.packages,
+                metrics = report.metrics,
+            )
 
         echo(diagram.generate())
     }
