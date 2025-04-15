@@ -34,6 +34,11 @@ One example is the import flow diagram:
 
 ![import diagram](docs/import-diagram.webp)
 
+## Installation
+
+- [just](https://github.com/casey/just)
+- [ktlint](https://github.com/pinterest/ktlint)
+
 ## Usage
 
 The first step is to parse the files in a directory to a json file.

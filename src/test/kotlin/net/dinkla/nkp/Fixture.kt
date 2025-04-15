@@ -109,7 +109,7 @@ internal val class3 =
                     memberModifier = MemberModifier.OVERRIDE,
                 ),
             ),
-        inheritedFrom = listOf("Gen"),
+        superTypes = listOf("Gen"),
         elementType = ClassSignature.Type.CLASS,
     )
 

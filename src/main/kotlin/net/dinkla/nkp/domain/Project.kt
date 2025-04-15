@@ -19,4 +19,20 @@ class Project(
     }
 
     fun relativePath(fileName: String): String = fileName.removePrefix(directory).removePrefix("/")
+
+    fun getClass(className: String): List<ClassSignature> =
+        flatMap { it.classes }
+            .filter { it.name == className }
+
+    fun getInheritanceHierarchy(className: String): List<ClassSignature> {
+        val clazz = getClass(className)
+        return clazz +
+            clazz
+                .flatMap { it.superTypes }
+                .flatMap { getInheritanceHierarchy(it) }
+    }
+
+    fun getImplementationsOf(className: String): List<ClassSignature> =
+        flatMap { it.classes }
+            .filter { it.superTypes.contains(className) }
 }

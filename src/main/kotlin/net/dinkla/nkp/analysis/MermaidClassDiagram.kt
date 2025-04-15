@@ -36,7 +36,7 @@ private fun generateDiagram(classes: List<ClassSignature>) =
                 append("}")
             }
             append("\n")
-            clazz.inheritedFrom.forEach { inheritedFrom ->
+            clazz.superTypes.forEach { inheritedFrom ->
                 append("$inheritedFrom <|-- ${clazz.name}\n")
             }
         }

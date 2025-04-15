@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class ClassSignature(
     override val name: String,
     val parameters: List<ClassParameter> = listOf(),
-    val inheritedFrom: List<String> = listOf(),
+    val superTypes: List<String> = listOf(),
     override val visibilityModifier: VisibilityModifier? = null,
     val elementType: Type = Type.CLASS,
     val classModifier: ClassModifier? = null,

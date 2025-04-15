@@ -509,7 +509,7 @@ class ClassTest :
                                     ),
                                     elementType = ClassSignature.Type.CLASS,
                                     classModifier = ClassModifier.DATA,
-                                    inheritedFrom = listOf("SI"),
+                                    superTypes = listOf("SI"),
                                 ),
                             ),
                     ),
@@ -530,7 +530,7 @@ class ClassTest :
                                 ClassSignature(
                                     "O",
                                     elementType = ClassSignature.Type.OBJECT,
-                                    inheritedFrom = listOf("V"),
+                                    superTypes = listOf("V"),
                                     declarations = listOf(Property("name", null, PropertyModifier.CONST_VAL)),
                                 ),
                             ),

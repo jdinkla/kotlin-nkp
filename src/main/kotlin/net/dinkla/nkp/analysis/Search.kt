@@ -11,25 +11,9 @@ data class Search(
     val implementers: List<ClassSignature>,
 )
 
-fun Project.search(clazz: String): Search {
-    val found = searchClassByName(clazz)
-    val hier = searchHierarchy(clazz)
-    val impls = searchImplementers(clazz)
-    return Search(found, hier, impls)
+fun Project.search(className: String): Search {
+    val clazz = getClass(className)
+    val hier = getInheritanceHierarchy(className)
+    val implementations = getImplementationsOf(className)
+    return Search(clazz, hier, implementations)
 }
-
-fun Project.searchClassByName(className: String): List<ClassSignature> =
-    flatMap { file -> file.classes }
-        .filter { clazz -> clazz.name == className }
-
-fun Project.searchHierarchy(className: String): List<ClassSignature> {
-    val cls = searchClassByName(className)
-    return cls +
-        cls
-            .flatMap { clazz -> clazz.inheritedFrom }
-            .flatMap { this.searchHierarchy(it) }
-}
-
-fun Project.searchImplementers(className: String): List<ClassSignature> =
-    flatMap { file -> file.classes }
-        .filter { clazz -> clazz.inheritedFrom.contains(className) }

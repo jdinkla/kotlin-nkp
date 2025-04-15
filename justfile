@@ -2,17 +2,19 @@ prefix := "test"
 generated := "generated"
 model_file := generated / prefix + "-model.json"
 
+gradle := "./gradlew"
+
 # print this help
 help:
   @just --list
 
 # build the application, run all the tests
 build:
-    gradle clean check
+    @{{gradle}} clean check
 
 # ktlint
 lint:
-    @ktlint -F
+    @ktlint -F src/
 
 # opens the coverage report in the default browser
 coverage-report:
@@ -20,11 +22,11 @@ coverage-report:
 
 # create example model from this project
 example-model:
-    @gradle run --quiet --args="parse . src/test/resources/model.json"
+    @{{gradle}} run --quiet --args="parse . src/test/resources/model.json"
 
 # run the application
 run *args:
-    @gradle run --quiet --args="{{args}}"
+    @{{gradle}} run --quiet --args="{{args}}"
 
 # run all the tasks for the given REPOSITORY
 all-tasks REPOSITORY:

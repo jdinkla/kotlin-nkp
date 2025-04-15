@@ -6,14 +6,14 @@ import net.dinkla.nkp.domain.Project
 @Serializable
 data class Inheritance(
     val className: String,
-    val occurencesInHierarchy: Int,
+    val occurrencesInHierarchy: Int,
     val numberOfImplementers: Int,
 )
 
 internal fun Project.inheritance(): List<Inheritance> =
-    flatMap { file -> file.classes }
-        .map { classSignature ->
-            val h = this.searchHierarchy(classSignature.name)
-            val l = this.searchImplementers(classSignature.name)
-            Inheritance(classSignature.name, h.size - 1, l.size)
-        }.sortedByDescending { it.occurencesInHierarchy + it.numberOfImplementers }
+    flatMap { it.classes }
+        .map {
+            val h = getInheritanceHierarchy(it.name)
+            val l = getImplementationsOf(it.name)
+            Inheritance(it.name, h.size - 1, l.size)
+        }.sortedByDescending { it.occurrencesInHierarchy + it.numberOfImplementers }

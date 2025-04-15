@@ -81,7 +81,7 @@ fun ClassSignature.prettyPrint(): String {
     val type = elementType.text
     val prettyParameters: String =
         if (parameters.isEmpty()) "" else parameters.joinToString(", ") { it.prettyPrint() }
-    val inherited = if (inheritedFrom.isEmpty()) "" else " : " + inheritedFrom.joinToString(", ")
+    val inherited = if (superTypes.isEmpty()) "" else " : " + superTypes.joinToString(", ")
 
     val joined =
         declarations
