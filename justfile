@@ -36,6 +36,8 @@ all-tasks REPOSITORY:
     just run imports-report {{model_file}} > {{generated}}/{{prefix}}-imports-report.json
     just run imports-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-imports-excluded-report.json
     just run coupling-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-coupling-report.json
+    just run file-imports-report {{model_file}} > {{generated}}/{{prefix}}-file-imports-report.json
+    just run file-imports-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-file-imports-excluded-report.json
 
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}-class-statistics.json
     just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
@@ -50,13 +52,17 @@ all-tasks REPOSITORY:
     just run mermaid-coupling-diagram {{model_file}} --exclude-other-libraries > {{generated}}/{{prefix}}-mermaid-coupling-diagram.mermaid
 
 # check the generated json files
-all-tests:
+check-jsons:
     jq empty {{generated}}/{{prefix}}-inheritance-report.json
     jq empty {{generated}}/{{prefix}}-outlier-report.json
     jq empty {{generated}}/{{prefix}}-search-report.json
     jq empty {{generated}}/{{prefix}}-packages-report.json
     jq empty {{generated}}/{{prefix}}-imports-report.json
     jq empty {{generated}}/{{prefix}}-imports-excluded-report.json
+    jq empty {{generated}}/{{prefix}}-coupling-report.json
+    jq empty {{generated}}/{{prefix}}-file-imports-report.json
+    jq empty {{generated}}/{{prefix}}-file-imports-excluded-report.json
+
     jq empty {{generated}}/{{prefix}}-class-statistics.json
     jq empty {{generated}}/{{prefix}}-file-statistics.json
     jq empty {{generated}}/{{prefix}}-package-statistics.json
