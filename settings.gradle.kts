@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.StabilityLevel
+
 pluginManagement {
     repositories {
         mavenCentral()
@@ -12,3 +14,9 @@ plugins {
 }
 
 rootProject.name = "kotlin-nkp"
+
+refreshVersions {
+    rejectVersionIf {
+        candidate.stabilityLevel != StabilityLevel.Stable
+    }
+}
