@@ -5,15 +5,9 @@ import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.Project
 
-fun imports(
-    project: Project,
-    excludeOtherLibraries: Boolean,
-): List<Imports> =
-    if (excludeOtherLibraries) {
-        project.packages().map { Imports.fromFiltered(it) }
-    } else {
-        project.packages().map { Imports.from(it) }
-    }
+fun filteredImports(project: Project): List<Imports> = project.packages().map { Imports.fromFiltered(it) }
+
+fun allImports(project: Project): List<Imports> = project.packages().map { Imports.from(it) }
 
 @Serializable
 data class Imports(

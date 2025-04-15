@@ -169,7 +169,7 @@ internal val property2 = Property("THE_ANSWER", Type("Int"), PropertyModifier.CO
 internal val property3 = Property("twentyOne", null, PropertyModifier.VAL, VisibilityModifier.PRIVATE)
 
 internal val f1 = FunctionSignature("f1")
-internal val f2 = FunctionSignature("f2")
+internal val f2 = FunctionSignature("f2", visibilityModifier = VisibilityModifier.PRIVATE)
 internal val c1 = ClassSignature("C")
 internal val ta1 = TypeAlias("TA", Type("Int"))
 internal val p1 = Property("p1", Type("Int"))

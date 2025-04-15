@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import net.dinkla.nkp.commands.ClassStatistics
 import net.dinkla.nkp.commands.CouplingReport
+import net.dinkla.nkp.commands.FileImportsReport
 import net.dinkla.nkp.commands.FileStatistics
 import net.dinkla.nkp.commands.ImportsReport
 import net.dinkla.nkp.commands.InheritanceReport
@@ -37,5 +38,6 @@ fun main(args: Array<String>) {
             ImportsReport(),
             CouplingReport(),
             MermaidCouplingDiagram(),
+            FileImportsReport(),
         ).main(args)
 }

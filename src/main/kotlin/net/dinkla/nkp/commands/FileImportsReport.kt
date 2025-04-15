@@ -7,14 +7,13 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.analysis.allImports
-import net.dinkla.nkp.analysis.combinedReport
-import net.dinkla.nkp.analysis.filteredImports
+import net.dinkla.nkp.analysis.allFileImports
+import net.dinkla.nkp.analysis.filteredFileImports
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class CouplingReport : CliktCommand() {
-    override fun help(context: Context) = "Generate package coupling metrics"
+class FileImportsReport : CliktCommand() {
+    override fun help(context: Context) = "Imports report"
 
     private val model by argument(
         help = "Path to the model file",
@@ -26,11 +25,10 @@ class CouplingReport : CliktCommand() {
         val project = loadFromJsonFile<Project>(model.absolutePath)
         val imports =
             if (excludeOtherLibraries) {
-                filteredImports(project)
+                filteredFileImports(project)
             } else {
-                allImports(project)
+                allFileImports(project)
             }
-        val report = combinedReport(imports)
-        echo(Json.encodeToString(report))
+        echo(Json.encodeToString(imports))
     }
 }

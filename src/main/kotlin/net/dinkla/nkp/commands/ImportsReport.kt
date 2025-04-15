@@ -7,7 +7,8 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.analysis.imports
+import net.dinkla.nkp.analysis.allImports
+import net.dinkla.nkp.analysis.filteredImports
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
@@ -22,7 +23,12 @@ class ImportsReport : CliktCommand() {
 
     override fun run() {
         val project = loadFromJsonFile<Project>(model.absolutePath)
-        val report = imports(project, excludeOtherLibraries)
+        val report =
+            if (excludeOtherLibraries) {
+                filteredImports(project)
+            } else {
+                allImports(project)
+            }
         echo(Json.encodeToString(report))
     }
 }

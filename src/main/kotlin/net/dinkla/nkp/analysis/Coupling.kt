@@ -2,7 +2,6 @@ package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Project
 
 fun coupling(importsList: List<Imports>): List<PackageCoupling> =
     importsList.map { imports ->
@@ -24,18 +23,11 @@ fun coupling(importsList: List<Imports>): List<PackageCoupling> =
         )
     }
 
-fun combinedReport(
-    project: Project,
-    excludeOtherLibraries: Boolean,
-): CouplingReport {
-    val importsList = imports(project, excludeOtherLibraries)
-    val couplingMetrics = coupling(importsList)
-
-    return CouplingReport(
-        packages = importsList,
-        metrics = couplingMetrics,
+fun combinedReport(imports: List<Imports>): CouplingReport =
+    CouplingReport(
+        packages = imports,
+        metrics = coupling(imports),
     )
-}
 
 @Serializable
 data class PackageCoupling(

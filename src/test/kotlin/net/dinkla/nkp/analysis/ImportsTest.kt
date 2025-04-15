@@ -10,7 +10,7 @@ import net.dinkla.nkp.exampleProject
 class ImportsTest :
     StringSpec({
         "should return the imports for every package" {
-            val result = imports(exampleProject, false)
+            val result = allImports(exampleProject)
             result shouldHaveSize 1
             result[0].packageName shouldBe PackageName("net.dinkla.nkp")
             result[0].imports shouldContainExactly
@@ -18,7 +18,7 @@ class ImportsTest :
         }
 
         "should return the imports for every package but not external once" {
-            val result = imports(exampleProject, true)
+            val result = filteredImports(exampleProject)
             result shouldHaveSize 1
             result[0].packageName shouldBe PackageName("net.dinkla.nkp")
             result[0].imports shouldContainExactly
