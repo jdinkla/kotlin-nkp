@@ -22,7 +22,8 @@ import net.dinkla.nkp.utilities.getAllKotlinFiles
 import java.io.File
 
 class Parse : CliktCommand(name = "parse") {
-    override fun help(context: Context) = "Parse a source directory and generate a model file."
+    override fun help(context: Context) = "Parse a source directory and generate a model file. This is the necessary " +
+            "first step before running any analysis."
 
     private val source by argument(
         help = "Path to the source directory to analyze",

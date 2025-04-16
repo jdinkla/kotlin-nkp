@@ -13,7 +13,7 @@ import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidCouplingDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
 import net.dinkla.nkp.commands.OutlierReport
-import net.dinkla.nkp.commands.PackageStatistics
+import net.dinkla.nkp.commands.PackagesStatistics
 import net.dinkla.nkp.commands.PackagesReport
 import net.dinkla.nkp.commands.Parse
 import net.dinkla.nkp.commands.SearchReport
@@ -26,18 +26,18 @@ fun main(args: Array<String>) {
     Nkp()
         .subcommands(
             Parse(),
+            ClassStatistics(),
+            CouplingReport(),
+            FileImportsReport(),
+            FileStatistics(),
+            ImportsReport(),
             InheritanceReport(),
             OutlierReport(),
-            ClassStatistics(),
-            FileStatistics(),
-            PackageStatistics(),
-            MermaidClassDiagram(),
-            MermaidImportDiagram(),
-            SearchReport(),
             PackagesReport(),
-            ImportsReport(),
-            CouplingReport(),
+            PackagesStatistics(),
+            SearchReport(),
+            MermaidClassDiagram(),
             MermaidCouplingDiagram(),
-            FileImportsReport(),
+            MermaidImportDiagram(),
         ).main(args)
 }

@@ -7,10 +7,10 @@ import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.AnalyzedPackage
 
-class PackageStatisticsTest :
+class PackagesStatisticsTest :
     StringSpec({
         "should return a result for a valid model file" {
-            val result = PackageStatistics().test("src/test/resources/model.json")
+            val result = PackagesStatistics().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
             val stats = Json.decodeFromString<List<AnalyzedPackage>>(result.output)
             stats shouldHaveAtLeastSize 1

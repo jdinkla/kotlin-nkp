@@ -44,7 +44,7 @@ all-tasks REPOSITORY:
 
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}-class-statistics.json
     just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
-    just run package-statistics {{model_file}} > {{generated}}/{{prefix}}-package-statistics.json
+    just run packages-statistics {{model_file}} > {{generated}}/{{prefix}}-packages-statistics.json
 
     just run mermaid-class-diagram {{model_file}} > {{generated}}/{{prefix}}-mermaid-class-diagram.mermaid
     just run mermaid-import-diagram {{model_file}} >  {{generated}}/{{prefix}}-mermaid-import-diagram.mermaid

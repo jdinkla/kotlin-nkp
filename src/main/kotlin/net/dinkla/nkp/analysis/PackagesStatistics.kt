@@ -6,7 +6,7 @@ import net.dinkla.nkp.domain.Package
 import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.Project
 
-fun packageStatistics(project: Project): List<AnalyzedPackage> = AnalyzedPackage.from(project)
+fun packagesStatistics(project: Project): List<AnalyzedPackage> = AnalyzedPackage.from(project)
 
 @Serializable
 data class AnalyzedPackage(
