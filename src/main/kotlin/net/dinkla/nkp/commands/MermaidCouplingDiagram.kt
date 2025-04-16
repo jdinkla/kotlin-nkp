@@ -10,12 +10,12 @@ import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidCouplingDiagram : AbstractCommand("Generate a Mermaid coupling diagram from code analysis") {
-    private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
+    private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
 
     override fun run() {
         val project = loadFromJsonFile<Project>(model)
         val imports =
-            if (excludeOtherLibraries) {
+            if (!includeAllLibraries) {
                 filteredImports(project)
             } else {
                 allImports(project)

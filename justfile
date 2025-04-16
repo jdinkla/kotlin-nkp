@@ -36,10 +36,11 @@ all-tasks REPOSITORY:
     just run search-report {{model_file}} Defined > {{generated}}/{{prefix}}-search-report.json
     just run packages-report {{model_file}} > {{generated}}/{{prefix}}-packages-report.json
     just run imports-report {{model_file}} > {{generated}}/{{prefix}}-imports-report.json
-    just run imports-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-imports-excluded-report.json
-    just run coupling-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-coupling-report.json
+    just run imports-report --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}-imports-all-report.json
+    just run coupling-report {{model_file}} > {{generated}}/{{prefix}}-coupling-report.json
+    just run coupling-report --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}-coupling-all-report.json
     just run file-imports-report {{model_file}} > {{generated}}/{{prefix}}-file-imports-report.json
-    just run file-imports-report --exclude-other-libraries {{model_file}} > {{generated}}/{{prefix}}-file-imports-excluded-report.json
+    just run file-imports-report --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}-file-imports-all-report.json
 
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}-class-statistics.json
     just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
@@ -49,9 +50,9 @@ all-tasks REPOSITORY:
     just run mermaid-class-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-class-diagram.html
     just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.mermaid
     just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.html
-    just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.mermaid
-    just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.html
-    just run mermaid-coupling-diagram {{model_file}} --exclude-other-libraries > {{generated}}/{{prefix}}-mermaid-coupling-diagram.mermaid
+    just run mermaid-import-diagram {{model_file}} --include-all-libraries {{generated}}/{{prefix}}-mermaid-import-all-diagram.mermaid
+    just run mermaid-import-diagram {{model_file}} --include-all-libraries {{generated}}/{{prefix}}-mermaid-import-all-diagram.html
+    just run mermaid-coupling-diagram {{model_file}} --include-all-libraries > {{generated}}/{{prefix}}-mermaid-coupling-diagram.mermaid
 
 # run all-task for this repository
 all-tasks-self:
@@ -64,10 +65,11 @@ check-jsons:
     jq empty {{generated}}/{{prefix}}-search-report.json
     jq empty {{generated}}/{{prefix}}-packages-report.json
     jq empty {{generated}}/{{prefix}}-imports-report.json
-    jq empty {{generated}}/{{prefix}}-imports-excluded-report.json
+    jq empty {{generated}}/{{prefix}}-imports-all-report.json
     jq empty {{generated}}/{{prefix}}-coupling-report.json
+    jq empty {{generated}}/{{prefix}}-coupling-all-report.json
     jq empty {{generated}}/{{prefix}}-file-imports-report.json
-    jq empty {{generated}}/{{prefix}}-file-imports-excluded-report.json
+    jq empty {{generated}}/{{prefix}}-file-imports-all-report.json
 
     jq empty {{generated}}/{{prefix}}-class-statistics.json
     jq empty {{generated}}/{{prefix}}-file-statistics.json

@@ -1,46 +1,58 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
+import net.dinkla.nkp.domain.Declaration
 import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.domain.VisibilityModifier
 
-fun allFileImports(project: Project): List<FileImports> =
-    project.files.map { file ->
-        fileImports(file)
-    }
+enum class DeclarationFilter(
+    val filter: (Declaration) -> Boolean,
+) {
+    EXCLUDE_PRIVATE_DECLARATIONS({ it.visibilityModifier != VisibilityModifier.PRIVATE }),
+    INCLUDE_ALL({ true }),
+    ;
 
-private fun fileImports(file: KotlinFile): FileImports {
-    val pname = file.packageName.toString()
-    val declarations =
-        file.declarations.map {
-            GeneralDeclaration("$pname.${it.name}", it.visibilityModifier)
-        }
-    return FileImports(
-        file.filePath,
-        file.imports,
-        declarations,
-        Coupling(declarations.size, file.imports.size),
-    )
+    companion object {
+        fun select(flag: Boolean) = if (flag) INCLUDE_ALL else EXCLUDE_PRIVATE_DECLARATIONS
+    }
 }
 
-fun filteredFileImports(project: Project): List<FileImports> =
+enum class ImportFilter(
+    val filter: (KotlinFile, Import) -> Boolean,
+) {
+    EXCLUDE_IMPORTS_FROM_OTHER_PACKAGES({ file, import -> !import.name.packageName.isOtherPackage(file.packageName) }),
+    INCLUDE_ALL({ _, _ -> true }),
+    ;
+
+    companion object {
+        fun select(flag: Boolean) = if (flag) INCLUDE_ALL else EXCLUDE_IMPORTS_FROM_OTHER_PACKAGES
+    }
+}
+
+fun fileImports(
+    project: Project,
+    declarationFilter: DeclarationFilter = DeclarationFilter.INCLUDE_ALL,
+    importFilter: ImportFilter = ImportFilter.INCLUDE_ALL,
+): List<FileImports> =
     project.files.map { file ->
-        filteredFileImports(file)
+        fileImports(file, declarationFilter, importFilter)
     }
 
-private fun filteredFileImports(file: KotlinFile): FileImports {
+private fun fileImports(
+    file: KotlinFile,
+    declarationFilter: DeclarationFilter,
+    importFilter: ImportFilter,
+): FileImports {
     val pname = file.packageName.toString()
     val declarations =
         file.declarations
-            .filter { it.visibilityModifier != VisibilityModifier.PRIVATE }
+            .filter { declarationFilter.filter(it) }
             .map { GeneralDeclaration("$pname.${it.name}", it.visibilityModifier) }
     val imports =
-        file.imports.filter {
-            !it.name.packageName.isOtherPackage(file.packageName)
-        }
+        file.imports.filter { importFilter.filter(file, it) }
     return FileImports(
         file.filePath,
         imports,

@@ -16,11 +16,11 @@ class MermaidImportDiagram : AbstractCommand("Mermaid import diagram (.mermaid o
     ).convert { java.io.File(it) }
         .optional()
 
-    private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
+    private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
 
     override fun run() {
         val project = loadFromJsonFile<Project>(model)
-        val diagram = mermaidImportsFlowDiagram(project, excludeOtherLibraries)
+        val diagram = mermaidImportsFlowDiagram(project, !includeAllLibraries)
         if (target != null) {
             diagram.save(target!!)
         } else {

@@ -8,7 +8,7 @@ import io.kotest.matchers.string.shouldContain
 class MermaidImportDiagramTest :
     StringSpec({
         "should return a result for a valid model file" {
-            val result = MermaidImportDiagram().test("src/test/resources/model.json --exclude-other-libraries")
+            val result = MermaidImportDiagram().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
             result.output shouldContain "net.dinkla.nkp.analysis --> net.dinkla.nkp.domain"
         }
