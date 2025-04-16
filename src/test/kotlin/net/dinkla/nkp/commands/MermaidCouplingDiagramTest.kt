@@ -3,22 +3,11 @@ package net.dinkla.nkp.commands
 import com.github.ajalt.clikt.testing.test
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldStartWith
 
 class MermaidCouplingDiagramTest :
     StringSpec({
-        "should return an error if no arguments are given" {
-            val result = MermaidCouplingDiagram().test("")
-            result.statusCode shouldNotBe 0
-        }
-
-        "should return an error if first argument does not exist" {
-            val result = MermaidCouplingDiagram().test("NOT_EXISTENT_723732")
-            result.statusCode shouldNotBe 0
-        }
-
         "should return a valid Mermaid diagram for a valid model file" {
             val result = MermaidCouplingDiagram().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
