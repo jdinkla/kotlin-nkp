@@ -8,7 +8,6 @@ import io.kotest.matchers.string.shouldContain
 
 class MermaidClassDiagramTest :
     StringSpec({
-
         "should return an error if no arguments are given" {
             val result = MermaidClassDiagram().test("")
             result.statusCode shouldNotBe 0

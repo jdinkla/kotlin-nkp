@@ -9,7 +9,6 @@ import io.kotest.matchers.string.shouldStartWith
 
 class MermaidCouplingDiagramTest :
     StringSpec({
-
         "should return an error if no arguments are given" {
             val result = MermaidCouplingDiagram().test("")
             result.statusCode shouldNotBe 0

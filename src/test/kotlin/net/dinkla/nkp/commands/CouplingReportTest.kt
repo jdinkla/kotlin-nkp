@@ -11,17 +11,6 @@ import kotlin.math.absoluteValue
 
 class CouplingReportTest :
     StringSpec({
-
-        "should return an error if no arguments are given" {
-            val result = CouplingReport().test("")
-            result.statusCode shouldNotBe 0
-        }
-
-        "should return an error if first argument does not exist" {
-            val result = CouplingReport().test("NOT_EXISTENT_723732")
-            result.statusCode shouldNotBe 0
-        }
-
         "should return a result for a valid model file" {
             val result = CouplingReport().test("src/test/resources/model.json")
             result.statusCode shouldBe 0

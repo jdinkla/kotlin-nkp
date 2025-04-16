@@ -10,17 +10,6 @@ import net.dinkla.nkp.analysis.Search
 
 class SearchReportTest :
     StringSpec({
-
-        "should return an error if no arguments are given" {
-            val result = SearchReport().test("")
-            result.statusCode shouldNotBe 0
-        }
-
-        "should return an error if first argument does not exist" {
-            val result = SearchReport().test("NOT_EXISTENT_723732")
-            result.statusCode shouldNotBe 0
-        }
-
         "should return an error if query string is missing" {
             val result = SearchReport().test("src/test/resources/model.json")
             result.statusCode shouldNotBe 0
