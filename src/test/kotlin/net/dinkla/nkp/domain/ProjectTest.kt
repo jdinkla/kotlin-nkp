@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import net.dinkla.nkp.exampleProject
 
-class FilesTest :
+class ProjectTest :
     StringSpec({
         "should contain the directory" {
             exampleProject.directory shouldBe "/base"

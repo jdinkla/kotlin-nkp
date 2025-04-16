@@ -2,8 +2,10 @@ package net.dinkla.nkp.utilities
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.Serializable
 import net.dinkla.nkp.SOURCE_DIRECTORY
 import java.io.File
+import kotlin.io.path.createTempFile
 
 class FileUtilitiesTest :
     StringSpec({
@@ -22,5 +24,21 @@ class FileUtilitiesTest :
 
         "shouldFileBeAdded should add other files" {
             isRelevant(File("/src/main/HelloWorld.kt")) shouldBe true
+        }
+
+        @Serializable
+        data class Test(
+            val text: String,
+        )
+
+        "saveToJsonFile should save to temporary file" {
+            val file = createTempFile().toFile()
+            try {
+                val testObject = Test("Some")
+                file.saveJson(testObject)
+                loadFromJsonFile<Test>(file) shouldBe testObject
+            } finally {
+                file.delete()
+            }
         }
     })

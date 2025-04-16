@@ -5,6 +5,8 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.arguments.optional
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
@@ -31,8 +33,14 @@ class Parse : CliktCommand(name = "parse") {
     ).convert { File(it) }
         .optional()
 
+    private val silent by option(help = "no output").flag(default = false)
+
     override fun run() {
-        val project: Project = readFromDirectory(source)
+        val files = readFiles(source)
+        if (!silent) {
+            reportErrors(files)
+        }
+        val project: Project = toProject(source, files)
         val json = Json.encodeToString(project)
         if (target != null) {
             target!!.writeText(json)
@@ -42,22 +50,24 @@ class Parse : CliktCommand(name = "parse") {
     }
 }
 
-internal fun readFromDirectory(directory: File): Project {
+private fun readFiles(directory: File): List<Result<KotlinFile>> {
     val files = getAllKotlinFiles(directory)
-    val infos =
-        runBlocking(Dispatchers.Default) {
-            files
-                .map {
-                    async {
-                        extractFileInfo(it, directory.absolutePath)
-                    }
-                }.map {
-                    it.await()
+    return runBlocking(Dispatchers.Default) {
+        files
+            .map {
+                async {
+                    extractFileInfo(it, directory.absolutePath)
                 }
-        }
-    reportErrors(infos)
-    return Project(directory.absolutePath, infos.filter { it.isSuccess }.map { it.getOrThrow() })
+            }.map {
+                it.await()
+            }
+    }
 }
+
+private fun toProject(
+    directory: File,
+    infos: List<Result<KotlinFile>>,
+): Project = Project(directory.absolutePath, infos.filter { it.isSuccess }.map { it.getOrThrow() })
 
 private fun extractFileInfo(
     fileName: String,
@@ -68,14 +78,31 @@ private fun extractFileInfo(
         val analysedFile = extract(FilePath(withoutPrefix), fromFile(fileName))
         return Result.success(analysedFile)
     } catch (e: Exception) {
-        logger.error { "parsing '$fileName' yields ${e.message}" }
-        return Result.failure(e)
+        val message = "parsing '$fileName' yields ${e.message}"
+        logger.error { message }
+        return Result.failure(Error(message, e))
     }
 }
 
-internal fun reportErrors(infos: List<Result<KotlinFile>>) {
-    infos.groupBy { it.isSuccess }.forEach {
-        logger.info { "${if (it.key) "Successful" else "With error"}: ${it.value.size}" }
+private fun reportErrors(infos: List<Result<KotlinFile>>) {
+    println(
+        infos
+            .groupBy { it.isSuccess }
+            .map {
+                "${it.value.size} ${if (it.key) "ok" else "exceptions"}"
+            }.joinToString(", "),
+    )
+    val failures = infos.filter { it.isFailure }
+    if (failures.isNotEmpty()) {
+        println("ERROR: The following exceptions occurred:")
+        var count = 1
+        println("------------------------------------------------------------------------------")
+        failures.forEach {
+            val exception = it.exceptionOrNull()
+            println("${count++}. ${exception?.message}")
+            exception?.cause?.printStackTrace(System.out)
+            println("------------------------------------------------------------------------------")
+        }
     }
 }
 

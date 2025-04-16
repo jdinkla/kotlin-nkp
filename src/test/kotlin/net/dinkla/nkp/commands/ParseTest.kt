@@ -2,20 +2,13 @@ package net.dinkla.nkp.commands
 
 import com.github.ajalt.clikt.testing.test
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldEndWith
 import io.kotest.matchers.string.shouldNotContain
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.SOURCE_DIRECTORY
-import net.dinkla.nkp.domain.Package
-import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.Project
-import net.dinkla.nkp.utilities.loadFromJsonFile
-import net.dinkla.nkp.utilities.saveJson
 import kotlin.io.path.createTempFile
 
 class ParseTest :
@@ -52,29 +45,5 @@ class ParseTest :
             val project = Json.decodeFromString<Project>(tmp.toFile().readText())
             project.directory shouldEndWith "src/test/resources"
             project.packages() shouldHaveSize 0
-        }
-
-        "packages should return packages" {
-            val files = readFromDirectory(SOURCE_DIRECTORY)
-            val packages = files.packages()
-            packages.size shouldBe 1
-            packages shouldContainExactly listOf(Package(PackageName("example"), files))
-        }
-
-        "readFromDirectory should read directory" {
-            val files = readFromDirectory(SOURCE_DIRECTORY)
-            files.size shouldBeGreaterThan 0
-        }
-
-        "saveToJsonFile should save to temporary file" {
-            val file = createTempFile().toFile()
-            try {
-                val infos = readFromDirectory(SOURCE_DIRECTORY)
-                file.saveJson(infos)
-                val infos2 = loadFromJsonFile<Project>(file)
-                infos2.size shouldBe infos.size
-            } finally {
-                file.delete()
-            }
         }
     })
