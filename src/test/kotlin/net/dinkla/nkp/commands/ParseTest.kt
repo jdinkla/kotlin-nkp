@@ -16,9 +16,7 @@ import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 import net.dinkla.nkp.utilities.saveJson
-import java.io.File
 import kotlin.io.path.createTempFile
-import kotlin.io.path.name
 
 class ParseTest :
     StringSpec({
@@ -69,14 +67,14 @@ class ParseTest :
         }
 
         "saveToJsonFile should save to temporary file" {
-            val fileName = createTempFile().fileName.name
+            val file = createTempFile().toFile()
             try {
                 val infos = readFromDirectory(SOURCE_DIRECTORY)
-                File(fileName).saveJson(infos)
-                val infos2 = loadFromJsonFile<Project>(fileName)
+                file.saveJson(infos)
+                val infos2 = loadFromJsonFile<Project>(file)
                 infos2.size shouldBe infos.size
             } finally {
-                File(fileName).delete()
+                file.delete()
             }
         }
     })

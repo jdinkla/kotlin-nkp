@@ -22,7 +22,7 @@ class ImportsReport : CliktCommand() {
     private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
 
     override fun run() {
-        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val project = loadFromJsonFile<Project>(model)
         val report =
             if (excludeOtherLibraries) {
                 filteredImports(project)

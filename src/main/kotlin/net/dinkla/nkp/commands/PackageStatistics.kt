@@ -17,7 +17,7 @@ class PackageStatistics : CliktCommand() {
     ).file(mustExist = true, canBeDir = false, canBeFile = true)
 
     override fun run() {
-        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val project = loadFromJsonFile<Project>(model)
         val stats = packageStatistics(project)
         echo(Json.encodeToString(stats))
     }

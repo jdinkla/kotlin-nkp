@@ -21,4 +21,4 @@ private val testDirIdentifiers = listOf("/.idea/", "/test/", "/commonTest/", "/j
 
 inline fun <reified T> File.saveJson(entity: T) = writeText(Json.encodeToString<T>(entity))
 
-inline fun <reified T> loadFromJsonFile(fileName: String): T = Json.decodeFromString<T>(File(fileName).readText())
+inline fun <reified T> loadFromJsonFile(file: File): T = Json.decodeFromString(file.readText())

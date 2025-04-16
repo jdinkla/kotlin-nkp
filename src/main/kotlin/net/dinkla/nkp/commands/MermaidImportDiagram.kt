@@ -28,7 +28,7 @@ class MermaidImportDiagram : CliktCommand() {
     private val excludeOtherLibraries by option(help = "exclude other libraries").flag(default = false)
 
     override fun run() {
-        val project = loadFromJsonFile<Project>(model.absolutePath)
+        val project = loadFromJsonFile<Project>(model)
         val diagram = mermaidImportsFlowDiagram(project, excludeOtherLibraries)
         if (target != null) {
             diagram.save(target!!)
