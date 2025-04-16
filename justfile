@@ -53,6 +53,10 @@ all-tasks REPOSITORY:
     just run mermaid-import-diagram {{model_file}} --exclude-other-libraries {{generated}}/{{prefix}}-mermaid-import-excluded-diagram.html
     just run mermaid-coupling-diagram {{model_file}} --exclude-other-libraries > {{generated}}/{{prefix}}-mermaid-coupling-diagram.mermaid
 
+# run all-task for this repository
+all-tasks-self:
+    just all-tasks ./src/main/kotlin/
+
 # check the generated json files
 check-jsons:
     jq empty {{generated}}/{{prefix}}-inheritance-report.json
