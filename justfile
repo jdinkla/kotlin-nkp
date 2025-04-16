@@ -46,12 +46,9 @@ all-tasks REPOSITORY:
     just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
     just run package-statistics {{model_file}} > {{generated}}/{{prefix}}-package-statistics.json
 
-    just run mermaid-class-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-class-diagram.mermaid
-    just run mermaid-class-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-class-diagram.html
-    just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.mermaid
-    just run mermaid-import-diagram {{model_file}} {{generated}}/{{prefix}}-mermaid-import-diagram.html
-    just run mermaid-import-diagram {{model_file}} --include-all-libraries {{generated}}/{{prefix}}-mermaid-import-all-diagram.mermaid
-    just run mermaid-import-diagram {{model_file}} --include-all-libraries {{generated}}/{{prefix}}-mermaid-import-all-diagram.html
+    just run mermaid-class-diagram {{model_file}} > {{generated}}/{{prefix}}-mermaid-class-diagram.mermaid
+    just run mermaid-import-diagram {{model_file}} >  {{generated}}/{{prefix}}-mermaid-import-diagram.mermaid
+    just run mermaid-import-diagram {{model_file}} --include-all-libraries > {{generated}}/{{prefix}}-mermaid-import-all-diagram.mermaid
     just run mermaid-coupling-diagram {{model_file}} --include-all-libraries > {{generated}}/{{prefix}}-mermaid-coupling-diagram.mermaid
 
 # run all-task for this repository
@@ -78,3 +75,7 @@ check-jsons:
 # convert a mermaid file to svg
 mermaid-to-svg FILE:
     @npx mmdc -i {{FILE}}
+
+# convert a mermaid file to html
+mermaid-convert FILE OUTPUT:
+    @npx mmdc -i {{FILE}} -o {{OUTPUT}}

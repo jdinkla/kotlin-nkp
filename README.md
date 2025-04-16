@@ -39,6 +39,10 @@ One example is the import flow diagram:
 - [just](https://github.com/casey/just)
 - [ktlint](https://github.com/pinterest/ktlint)
 
+Optional, but useful for the mermaid diagrams
+
+- [mermaid-cli](https://github.com/mermaid-js/mermaid-cli)
+
 ## Usage
 
 The first step is to parse the files in a directory to a json file.
