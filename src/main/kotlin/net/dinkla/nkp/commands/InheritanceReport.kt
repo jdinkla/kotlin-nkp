@@ -1,21 +1,11 @@
 package net.dinkla.nkp.commands
 
-import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.Context
-import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.inheritance
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class InheritanceReport : CliktCommand() {
-    override fun help(context: Context) = "Inheritance report"
-
-    private val model by argument(
-        help = "Path to the model file",
-    ).file(mustExist = true, canBeDir = false, canBeFile = true)
-
+class InheritanceReport : AbstractCommand("Inheritance report") {
     override fun run() {
         val project = loadFromJsonFile<Project>(model)
         echo(Json.encodeToString(project.inheritance()))
