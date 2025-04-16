@@ -47,8 +47,6 @@ all-tasks REPOSITORY:
     just run file-imports --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}-file-imports-all.json
     just run file-statistics {{model_file}} > {{generated}}/{{prefix}}-file-statistics.json
 
-    just run outlier-report {{model_file}} > {{generated}}/{{prefix}}-outlier-report.json
-
     just run packages-imports {{model_file}} > {{generated}}/{{prefix}}-packages-imports.json
     just run packages-imports --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}-packages-imports-all.json
     just run packages-report {{model_file}} > {{generated}}/{{prefix}}-packages-report.json

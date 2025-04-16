@@ -11,7 +11,6 @@ import net.dinkla.nkp.commands.FileStatistics
 import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidCouplingDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
-import net.dinkla.nkp.commands.OutlierReport
 import net.dinkla.nkp.commands.PackagesImports
 import net.dinkla.nkp.commands.PackagesReport
 import net.dinkla.nkp.commands.PackagesStatistics
@@ -31,7 +30,6 @@ fun main(args: Array<String>) {
             CouplingReport(),
             FileImports(),
             FileStatistics(),
-            OutlierReport(),
             PackagesImports(),
             PackagesReport(),
             PackagesStatistics(),
