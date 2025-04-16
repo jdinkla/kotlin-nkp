@@ -5,7 +5,7 @@ import net.dinkla.nkp.analysis.inheritance
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class InheritanceReport : AbstractCommand("Inheritance report") {
+class ClassInheritance : AbstractCommand("Class inheritance") {
     override fun run() {
         val project = loadFromJsonFile<Project>(model)
         echo(Json.encodeToString(project.inheritance()))

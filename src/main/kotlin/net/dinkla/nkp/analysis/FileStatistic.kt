@@ -4,12 +4,7 @@ import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.Project
 
-fun fileStatistics(project: Project): FileStatistics = FileStatistics(project.map { FileStatistic.from(project, it) })
-
-@Serializable
-data class FileStatistics(
-    val fileStatistics: List<FileStatistic>,
-)
+fun fileStatistics(project: Project): List<FileStatistic> = project.map { FileStatistic.from(project, it) }
 
 @Serializable
 data class FileStatistic(

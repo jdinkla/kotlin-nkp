@@ -8,7 +8,7 @@ import net.dinkla.nkp.analysis.filteredImports
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class ImportsReport : AbstractCommand("Imports report") {
+class PackagesImports : AbstractCommand("Imports report") {
     private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
 
     override fun run() {

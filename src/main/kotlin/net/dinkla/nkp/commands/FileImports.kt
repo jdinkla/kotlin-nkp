@@ -9,7 +9,7 @@ import net.dinkla.nkp.analysis.fileImports
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class FileImportsReport : AbstractCommand("Imports report") {
+class FileImports : AbstractCommand("Imports report") {
     private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
 
     private val includePrivateDeclarations by option(help = "include private declarations").flag(default = false)

@@ -8,20 +8,13 @@ import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.domain.VisibilityModifier
 
-fun classStatistics(project: Project): ClassStatistics =
-    ClassStatistics(
-        project
-            .flatMap { file ->
-                file.classes.map {
-                    ClassStatistic.from(file.packageName, it)
-                }
-            }.sortedBy { "${it.packageName}-${it.className}" },
-    )
-
-@Serializable
-data class ClassStatistics(
-    val classStatistics: List<ClassStatistic>,
-)
+fun classStatistics(project: Project): List<ClassStatistic> =
+    project
+        .flatMap { file ->
+            file.classes.map {
+                ClassStatistic.from(file.packageName, it)
+            }
+        }.sortedBy { "${it.packageName}-${it.className}" }
 
 @Serializable
 data class ClassStatistic(

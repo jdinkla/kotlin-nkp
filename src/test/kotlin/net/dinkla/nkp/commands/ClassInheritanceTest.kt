@@ -5,14 +5,14 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.analysis.Inheritance
+import net.dinkla.nkp.analysis.ClassInheritance
 
-class InheritanceReportTest :
+class ClassInheritanceTest :
     StringSpec({
         "should return a result for a valid model file" {
-            val result = InheritanceReport().test("src/test/resources/model.json")
+            val result = ClassInheritance().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
-            val inheritance = Json.decodeFromString<List<Inheritance>>(result.output)
-            inheritance shouldHaveAtLeastSize 1
+            val classInheritance = Json.decodeFromString<List<ClassInheritance>>(result.output)
+            classInheritance shouldHaveAtLeastSize 1
         }
     })

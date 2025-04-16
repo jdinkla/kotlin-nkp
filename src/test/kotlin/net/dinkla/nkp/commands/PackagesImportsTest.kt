@@ -7,10 +7,10 @@ import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.Imports
 
-class ImportsReportTest :
+class PackagesImportsTest :
     StringSpec({
         "should return a result for a valid model file" {
-            val result = ImportsReport().test("src/test/resources/model.json")
+            val result = PackagesImports().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
             val packages = Json.decodeFromString<List<Imports>>(result.output)
             packages shouldHaveAtLeastSize 1
