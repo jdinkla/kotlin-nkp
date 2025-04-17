@@ -6,7 +6,7 @@ import net.dinkla.nkp.analysis.MermaidCouplingDiagram
 import net.dinkla.nkp.analysis.allImports
 import net.dinkla.nkp.analysis.combinedReport
 import net.dinkla.nkp.analysis.filteredImports
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidCouplingDiagram : AbstractCommand("Generate a Mermaid coupling diagram from code analysis") {

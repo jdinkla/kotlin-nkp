@@ -1,8 +1,8 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.KotlinFile
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.KotlinFile
+import net.dinkla.nkp.domain.kotlinlang.Project
 
 fun fileStatistics(project: Project): List<FileStatistic> = project.map { FileStatistic.from(project, it) }
 

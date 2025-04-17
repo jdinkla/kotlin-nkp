@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldEndWith
 import io.kotest.matchers.string.shouldNotContain
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import kotlin.io.path.createTempFile
 
 class ParseTest :

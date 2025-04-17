@@ -1,0 +1,11 @@
+package net.dinkla.nkp.domain.kotlinlang
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class MemberModifier(
+    val text: String,
+) {
+    OVERRIDE("override"),
+    LATE_INIT("lateinit"),
+}

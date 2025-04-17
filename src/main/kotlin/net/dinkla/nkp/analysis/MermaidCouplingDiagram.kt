@@ -1,7 +1,7 @@
 package net.dinkla.nkp.analysis
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.kotlinlang.PackageName
 
 private val logger = KotlinLogging.logger {}
 

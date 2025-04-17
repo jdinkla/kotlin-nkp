@@ -14,8 +14,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.domain.FilePath
-import net.dinkla.nkp.domain.KotlinFile
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.KotlinFile
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.extract.extract
 import net.dinkla.nkp.utilities.fromFile
 import net.dinkla.nkp.utilities.getAllKotlinFiles

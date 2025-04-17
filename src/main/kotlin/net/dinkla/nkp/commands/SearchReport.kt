@@ -3,7 +3,7 @@ package net.dinkla.nkp.commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.search
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class SearchReport : AbstractCommand("Search class") {

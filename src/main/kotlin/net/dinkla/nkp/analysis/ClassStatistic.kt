@@ -1,12 +1,12 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.ClassModifier
-import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.InheritanceModifier
-import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Project
-import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.kotlinlang.ClassModifier
+import net.dinkla.nkp.domain.kotlinlang.ClassSignature
+import net.dinkla.nkp.domain.kotlinlang.InheritanceModifier
+import net.dinkla.nkp.domain.kotlinlang.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Project
+import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 
 fun classStatistics(project: Project): List<ClassStatistic> =
     project

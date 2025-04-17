@@ -10,11 +10,11 @@ import net.dinkla.nkp.class3
 import net.dinkla.nkp.class4
 import net.dinkla.nkp.class5
 import net.dinkla.nkp.domain.FilePath
-import net.dinkla.nkp.domain.Import
-import net.dinkla.nkp.domain.ImportedElement
-import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Type
-import net.dinkla.nkp.domain.TypeAlias
+import net.dinkla.nkp.domain.kotlinlang.Import
+import net.dinkla.nkp.domain.kotlinlang.ImportedElement
+import net.dinkla.nkp.domain.kotlinlang.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Type
+import net.dinkla.nkp.domain.kotlinlang.TypeAlias
 import net.dinkla.nkp.enum1
 import net.dinkla.nkp.enum2
 import net.dinkla.nkp.expectedImports

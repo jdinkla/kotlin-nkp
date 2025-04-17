@@ -2,7 +2,7 @@ package net.dinkla.nkp.analysis
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.kotlinlang.PackageName
 
 class CouplingTest :
     StringSpec({

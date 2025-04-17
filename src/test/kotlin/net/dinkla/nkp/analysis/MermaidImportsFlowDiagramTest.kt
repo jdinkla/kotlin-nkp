@@ -4,8 +4,8 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import net.dinkla.nkp.domain.Package
-import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Package
+import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.exampleProject
 
 class MermaidImportsFlowDiagramTest :

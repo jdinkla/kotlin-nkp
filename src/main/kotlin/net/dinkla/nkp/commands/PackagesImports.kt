@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.allImports
 import net.dinkla.nkp.analysis.filteredImports
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class PackagesImports : AbstractCommand("Imports report") {

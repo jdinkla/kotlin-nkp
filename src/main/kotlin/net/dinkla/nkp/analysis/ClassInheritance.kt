@@ -1,8 +1,8 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Project
 
 @Serializable
 data class ClassInheritance(

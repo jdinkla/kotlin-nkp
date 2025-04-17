@@ -6,7 +6,7 @@ import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.DeclarationFilter
 import net.dinkla.nkp.analysis.ImportFilter
 import net.dinkla.nkp.analysis.fileImports
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class FileImports : AbstractCommand("Imports report") {

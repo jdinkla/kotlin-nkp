@@ -1,8 +1,8 @@
 package net.dinkla.nkp.analysis
 
-import net.dinkla.nkp.domain.Package
-import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Package
+import net.dinkla.nkp.domain.kotlinlang.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Project
 
 fun mermaidImportsFlowDiagram(
     project: Project,

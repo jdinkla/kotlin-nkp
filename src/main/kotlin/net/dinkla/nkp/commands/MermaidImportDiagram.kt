@@ -3,7 +3,7 @@ package net.dinkla.nkp.commands
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import net.dinkla.nkp.analysis.mermaidImportsFlowDiagram
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class MermaidImportDiagram : AbstractCommand("Mermaid import diagram") {

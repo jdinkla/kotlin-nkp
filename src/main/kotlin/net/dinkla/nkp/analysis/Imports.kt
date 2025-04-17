@@ -1,9 +1,9 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.Package
-import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Package
+import net.dinkla.nkp.domain.kotlinlang.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Project
 
 fun filteredImports(project: Project): List<Imports> = project.packages().map { Imports.fromFiltered(it) }
 

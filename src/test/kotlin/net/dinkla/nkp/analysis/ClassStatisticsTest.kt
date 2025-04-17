@@ -2,16 +2,16 @@ package net.dinkla.nkp.analysis
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import net.dinkla.nkp.domain.ClassModifier
-import net.dinkla.nkp.domain.ClassParameter
-import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.FunctionSignature
-import net.dinkla.nkp.domain.InheritanceModifier
-import net.dinkla.nkp.domain.PackageName
-import net.dinkla.nkp.domain.Property
-import net.dinkla.nkp.domain.Type
-import net.dinkla.nkp.domain.TypeAlias
-import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.kotlinlang.ClassModifier
+import net.dinkla.nkp.domain.kotlinlang.ClassParameter
+import net.dinkla.nkp.domain.kotlinlang.ClassSignature
+import net.dinkla.nkp.domain.kotlinlang.FunctionSignature
+import net.dinkla.nkp.domain.kotlinlang.InheritanceModifier
+import net.dinkla.nkp.domain.kotlinlang.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Property
+import net.dinkla.nkp.domain.kotlinlang.Type
+import net.dinkla.nkp.domain.kotlinlang.TypeAlias
+import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 
 class ClassStatisticsTest :
     StringSpec({

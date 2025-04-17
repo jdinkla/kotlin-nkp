@@ -6,7 +6,7 @@ import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.allImports
 import net.dinkla.nkp.analysis.combinedReport
 import net.dinkla.nkp.analysis.filteredImports
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class CouplingReport : AbstractCommand("Generate package coupling metrics") {

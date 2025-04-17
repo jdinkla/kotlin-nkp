@@ -1,10 +1,10 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.ClassParameter
-import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.Declaration
-import net.dinkla.nkp.domain.PropertyModifier
-import net.dinkla.nkp.domain.Type
+import net.dinkla.nkp.domain.kotlinlang.ClassParameter
+import net.dinkla.nkp.domain.kotlinlang.ClassSignature
+import net.dinkla.nkp.domain.kotlinlang.Declaration
+import net.dinkla.nkp.domain.kotlinlang.PropertyModifier
+import net.dinkla.nkp.domain.kotlinlang.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {

@@ -1,8 +1,8 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.FunctionParameter
-import net.dinkla.nkp.domain.FunctionSignature
-import net.dinkla.nkp.domain.Type
+import net.dinkla.nkp.domain.kotlinlang.FunctionParameter
+import net.dinkla.nkp.domain.kotlinlang.FunctionSignature
+import net.dinkla.nkp.domain.kotlinlang.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature {

@@ -1,9 +1,9 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.ClassModifier
-import net.dinkla.nkp.domain.InheritanceModifier
-import net.dinkla.nkp.domain.MemberModifier
-import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.kotlinlang.ClassModifier
+import net.dinkla.nkp.domain.kotlinlang.InheritanceModifier
+import net.dinkla.nkp.domain.kotlinlang.MemberModifier
+import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractVisibilityModifier(tree: KotlinParseTree): VisibilityModifier? {

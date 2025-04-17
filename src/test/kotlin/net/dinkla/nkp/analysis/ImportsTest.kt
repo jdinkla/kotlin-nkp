@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.exampleProject
 
 class ImportsTest :

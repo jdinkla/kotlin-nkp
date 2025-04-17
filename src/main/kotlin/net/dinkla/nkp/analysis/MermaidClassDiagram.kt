@@ -1,12 +1,12 @@
 package net.dinkla.nkp.analysis
 
-import net.dinkla.nkp.domain.ClassParameter
-import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.FunctionSignature
-import net.dinkla.nkp.domain.MemberModifier
-import net.dinkla.nkp.domain.Project
-import net.dinkla.nkp.domain.Property
-import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.kotlinlang.ClassParameter
+import net.dinkla.nkp.domain.kotlinlang.ClassSignature
+import net.dinkla.nkp.domain.kotlinlang.FunctionSignature
+import net.dinkla.nkp.domain.kotlinlang.MemberModifier
+import net.dinkla.nkp.domain.kotlinlang.Project
+import net.dinkla.nkp.domain.kotlinlang.Property
+import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 import net.dinkla.nkp.utilities.addSpaceAfter
 import net.dinkla.nkp.utilities.prettyPrint
 

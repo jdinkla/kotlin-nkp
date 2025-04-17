@@ -1,11 +1,11 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.Declaration
 import net.dinkla.nkp.domain.FilePath
-import net.dinkla.nkp.domain.Import
-import net.dinkla.nkp.domain.ImportedElement
-import net.dinkla.nkp.domain.KotlinFile
-import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.kotlinlang.Declaration
+import net.dinkla.nkp.domain.kotlinlang.Import
+import net.dinkla.nkp.domain.kotlinlang.ImportedElement
+import net.dinkla.nkp.domain.kotlinlang.KotlinFile
+import net.dinkla.nkp.domain.kotlinlang.PackageName
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun extract(

@@ -1,6 +1,6 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.ClassSignature
+import net.dinkla.nkp.domain.kotlinlang.ClassSignature
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractObject(tree: KotlinParseTree): ClassSignature {

@@ -1,7 +1,7 @@
 package net.dinkla.nkp.commands
 
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.Project
+import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
 class PackagesReport : AbstractCommand("Packages report") {

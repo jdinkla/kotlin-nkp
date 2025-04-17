@@ -3,11 +3,11 @@ package net.dinkla.nkp.extract
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import net.dinkla.nkp.domain.MemberModifier
-import net.dinkla.nkp.domain.Property
-import net.dinkla.nkp.domain.PropertyModifier
-import net.dinkla.nkp.domain.Type
-import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.kotlinlang.MemberModifier
+import net.dinkla.nkp.domain.kotlinlang.Property
+import net.dinkla.nkp.domain.kotlinlang.PropertyModifier
+import net.dinkla.nkp.domain.kotlinlang.Type
+import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 import net.dinkla.nkp.utilities.fromText
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 

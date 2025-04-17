@@ -1,6 +1,6 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.TypeAlias
+import net.dinkla.nkp.domain.kotlinlang.TypeAlias
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractSimpleIdentifier(tree: KotlinParseTree): String? =

@@ -1,7 +1,7 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.Property
-import net.dinkla.nkp.domain.PropertyModifier
+import net.dinkla.nkp.domain.kotlinlang.Property
+import net.dinkla.nkp.domain.kotlinlang.PropertyModifier
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 fun extractProperty(tree: KotlinParseTree): Property {

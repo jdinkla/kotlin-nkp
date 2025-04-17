@@ -1,6 +1,6 @@
 package net.dinkla.nkp.extract
 
-import net.dinkla.nkp.domain.Type
+import net.dinkla.nkp.domain.kotlinlang.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractType(tree: KotlinParseTree): Type? =

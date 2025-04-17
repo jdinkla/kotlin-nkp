@@ -1,12 +1,12 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.Declaration
 import net.dinkla.nkp.domain.FilePath
-import net.dinkla.nkp.domain.Import
-import net.dinkla.nkp.domain.KotlinFile
-import net.dinkla.nkp.domain.Project
-import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.kotlinlang.Declaration
+import net.dinkla.nkp.domain.kotlinlang.Import
+import net.dinkla.nkp.domain.kotlinlang.KotlinFile
+import net.dinkla.nkp.domain.kotlinlang.Project
+import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 import net.dinkla.nkp.domain.statistics.Coupling
 
 enum class DeclarationFilter(

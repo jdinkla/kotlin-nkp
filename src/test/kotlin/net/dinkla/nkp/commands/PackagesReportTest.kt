@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.Package
+import net.dinkla.nkp.domain.kotlinlang.Package
 
 class PackagesReportTest :
     StringSpec({
