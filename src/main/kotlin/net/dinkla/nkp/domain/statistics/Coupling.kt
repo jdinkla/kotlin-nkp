@@ -1,4 +1,4 @@
-package net.dinkla.nkp.domain
+package net.dinkla.nkp.domain.statistics
 
 import kotlinx.serialization.Serializable
 

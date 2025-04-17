@@ -1,8 +1,8 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
-import net.dinkla.nkp.domain.Coupling
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.statistics.Coupling
 
 fun coupling(importsList: List<Imports>): List<PackageCoupling> =
     importsList.map { imports ->

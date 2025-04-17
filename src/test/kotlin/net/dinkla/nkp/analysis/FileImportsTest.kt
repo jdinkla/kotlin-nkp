@@ -5,7 +5,6 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import net.dinkla.nkp.domain.ClassSignature
-import net.dinkla.nkp.domain.Coupling
 import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.ImportedElement
@@ -13,6 +12,7 @@ import net.dinkla.nkp.domain.KotlinFile
 import net.dinkla.nkp.domain.PackageName
 import net.dinkla.nkp.domain.Project
 import net.dinkla.nkp.domain.VisibilityModifier
+import net.dinkla.nkp.domain.statistics.Coupling
 import net.dinkla.nkp.exampleProject
 import net.dinkla.nkp.kotlinFile
 

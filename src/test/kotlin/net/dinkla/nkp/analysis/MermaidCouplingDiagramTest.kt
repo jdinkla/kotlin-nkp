@@ -4,8 +4,8 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldStartWith
-import net.dinkla.nkp.domain.Coupling
 import net.dinkla.nkp.domain.PackageName
+import net.dinkla.nkp.domain.statistics.Coupling
 
 class MermaidCouplingDiagramTest :
     StringSpec({
