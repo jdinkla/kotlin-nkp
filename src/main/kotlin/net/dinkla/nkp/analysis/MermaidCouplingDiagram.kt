@@ -28,16 +28,17 @@ class MermaidCouplingDiagram(
         // Create nodes with coupling information
         metrics.forEach { metric ->
             val nodeId = packageToNodeId(metric.packageName)
+            val coupling = metric.coupling
             val label = "${metric.packageName.name}\\nI=${formatDouble(
-                metric.instability,
-            )}\\nCa=${metric.afferentCoupling}, Ce=${metric.efferentCoupling}"
+                coupling.instability,
+            )}\\nCa=${coupling.afferentCoupling}, Ce=${coupling.efferentCoupling}"
             sb.appendLine("    $nodeId[\"$label\"]")
 
             // Apply styling based on instability
             val styleClass =
                 when {
-                    metric.instability < METRIC_INSTABILITY_LOWER_BOUND -> "stable"
-                    metric.instability > METRIC_INSTABILITY_UPPER_BOUND -> "unstable"
+                    metric.coupling.instability < METRIC_INSTABILITY_LOWER_BOUND -> "stable"
+                    metric.coupling.instability > METRIC_INSTABILITY_UPPER_BOUND -> "unstable"
                     else -> "balanced"
                 }
             sb.appendLine("    $nodeId:::$styleClass")

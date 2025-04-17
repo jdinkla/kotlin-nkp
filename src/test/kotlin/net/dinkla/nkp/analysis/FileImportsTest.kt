@@ -5,6 +5,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import net.dinkla.nkp.domain.ClassSignature
+import net.dinkla.nkp.domain.Coupling
 import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.Import
 import net.dinkla.nkp.domain.ImportedElement

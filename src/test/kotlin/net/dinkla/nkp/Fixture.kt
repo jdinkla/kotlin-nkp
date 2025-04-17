@@ -22,9 +22,11 @@ import net.dinkla.nkp.domain.VisibilityModifier
 import net.dinkla.nkp.utilities.fromFile
 import java.io.File
 
-private const val KOTLIN_EXAMPLE_FILE = "src/examples/kotlin/examples/HelloWorld.kt"
-
+const val EXAMPLE_MODEL = "src/test/resources/model.json"
+val EXAMPLE_MODEL_FILE = File(EXAMPLE_MODEL)
 val SOURCE_DIRECTORY = File("src/examples/kotlin/")
+
+private const val KOTLIN_EXAMPLE_FILE = "src/examples/kotlin/examples/HelloWorld.kt"
 
 internal val tree = fromFile(KOTLIN_EXAMPLE_FILE)
 

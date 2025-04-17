@@ -19,32 +19,41 @@ class CouplingReportTest :
             report.metrics shouldHaveAtLeastSize 1
         }
 
-        "should return valid coupling metrics" {
+        "all packages should have corresponding metrics" {
             val result = CouplingReport().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
             val report = Json.decodeFromString<CouplingReport>(result.output)
 
-            // Verify that all packages have corresponding metrics
             report.packages.forEach { imports ->
                 val metric = report.metrics.find { it.packageName == imports.packageName }
                 metric shouldNotBe null
             }
+        }
 
-            // Verify that efferent coupling values match imports count
+        "efferent coupling values should match imports count" {
+            val result = CouplingReport().test("src/test/resources/model.json")
+            result.statusCode shouldBe 0
+            val report = Json.decodeFromString<CouplingReport>(result.output)
+
             report.metrics.forEach { metric ->
                 val imports = report.packages.find { it.packageName == metric.packageName }
                 imports shouldNotBe null
-                metric.efferentCoupling shouldBe imports!!.imports.size
+                metric.coupling.efferentCoupling shouldBe imports!!.imports.size
             }
+        }
 
-            // Verify instability calculation is correct
+        "instability calculation should be correct" {
+            val result = CouplingReport().test("src/test/resources/model.json")
+            result.statusCode shouldBe 0
+            val report = Json.decodeFromString<CouplingReport>(result.output)
+
             report.metrics.forEach { metric ->
-                val totalCoupling = metric.afferentCoupling + metric.efferentCoupling
+                val totalCoupling = metric.coupling.afferentCoupling + metric.coupling.efferentCoupling
                 if (totalCoupling > 0) {
-                    val expectedInstability = metric.efferentCoupling.toDouble() / totalCoupling
-                    (metric.instability - expectedInstability).absoluteValue shouldBe 0.0
+                    val expectedInstability = metric.coupling.efferentCoupling.toDouble() / totalCoupling
+                    (metric.coupling.instability - expectedInstability).absoluteValue shouldBe 0.0
                 } else {
-                    metric.instability shouldBe 0.0
+                    metric.coupling.instability shouldBe 0.0
                 }
             }
         }

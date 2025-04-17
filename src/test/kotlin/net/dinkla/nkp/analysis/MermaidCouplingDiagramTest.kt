@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldStartWith
+import net.dinkla.nkp.domain.Coupling
 import net.dinkla.nkp.domain.PackageName
 
 class MermaidCouplingDiagramTest :
@@ -20,9 +21,9 @@ class MermaidCouplingDiagramTest :
 
             val metrics =
                 listOf(
-                    PackageCoupling(PackageName("pkg.a"), 0, 2, 1.0),
-                    PackageCoupling(PackageName("pkg.b"), 1, 1, 0.5),
-                    PackageCoupling(PackageName("pkg.c"), 2, 0, 0.0),
+                    PackageCoupling(PackageName("pkg.a"), Coupling(0, 2, 1.0)),
+                    PackageCoupling(PackageName("pkg.b"), Coupling(1, 1, 0.5)),
+                    PackageCoupling(PackageName("pkg.c"), Coupling(2, 0, 0.0)),
                 )
 
             val diagram = MermaidCouplingDiagram(packages, metrics)
@@ -72,8 +73,8 @@ class MermaidCouplingDiagramTest :
 
             val metrics =
                 listOf(
-                    PackageCoupling(PackageName("pkg.a"), 0, 0, 0.0),
-                    PackageCoupling(PackageName("pkg.b"), 0, 0, 0.0),
+                    PackageCoupling(PackageName("pkg.a"), Coupling(0, 0, 0.0)),
+                    PackageCoupling(PackageName("pkg.b"), Coupling(0, 0, 0.0)),
                 )
 
             val diagram = MermaidCouplingDiagram(packages, metrics)

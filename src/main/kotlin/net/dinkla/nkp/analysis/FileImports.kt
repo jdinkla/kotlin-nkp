@@ -1,6 +1,7 @@
 package net.dinkla.nkp.analysis
 
 import kotlinx.serialization.Serializable
+import net.dinkla.nkp.domain.Coupling
 import net.dinkla.nkp.domain.Declaration
 import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.Import
@@ -74,20 +75,3 @@ data class FileImports(
     val declarations: List<GeneralDeclaration>,
     val coupling: Coupling,
 )
-
-@Serializable
-data class Coupling(
-    val afferentCoupling: Int,
-    val efferentCoupling: Int,
-    val instability: Double,
-) {
-    constructor(afferentCoupling: Int, efferentCoupling: Int) : this(
-        afferentCoupling,
-        efferentCoupling,
-        if (efferentCoupling + afferentCoupling > 0) {
-            efferentCoupling.toDouble() / (efferentCoupling + afferentCoupling)
-        } else {
-            0.0
-        },
-    )
-}
