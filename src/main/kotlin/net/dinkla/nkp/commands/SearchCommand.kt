@@ -6,7 +6,7 @@ import net.dinkla.nkp.analysis.search
 import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class SearchReport : AbstractCommand("Search class") {
+class SearchCommand : AbstractCommand("Search for a class by name", "search") {
     private val className by argument(help = "class name")
 
     override fun run() {

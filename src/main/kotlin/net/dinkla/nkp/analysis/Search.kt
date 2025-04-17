@@ -7,13 +7,13 @@ import net.dinkla.nkp.domain.kotlinlang.Project
 @Serializable
 data class Search(
     val classes: List<ClassSignature>,
-    val hierarchy: List<ClassSignature>,
-    val implementers: List<ClassSignature>,
+    val superClasses: List<ClassSignature>,
+    val subClasses: List<ClassSignature>,
 )
 
 fun Project.search(className: String): Search {
-    val clazz = getClass(className)
-    val hier = getInheritanceHierarchy(className)
-    val implementations = getImplementationsOf(className)
-    return Search(clazz, hier, implementations)
+    val classes = getClass(className)
+    val superClasses = getSuperClasses(className)
+    val subClasses = getSubClasses(className)
+    return Search(classes, superClasses, subClasses)
 }

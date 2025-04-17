@@ -24,15 +24,15 @@ class Project(
         flatMap { it.classes }
             .filter { it.name == className }
 
-    fun getInheritanceHierarchy(className: String): List<ClassSignature> {
+    fun getSuperClasses(className: String): List<ClassSignature> {
         val clazz = getClass(className)
         return clazz +
             clazz
                 .flatMap { it.superTypes }
-                .flatMap { getInheritanceHierarchy(it) }
+                .flatMap { getSuperClasses(it) }
     }
 
-    fun getImplementationsOf(className: String): List<ClassSignature> =
+    fun getSubClasses(className: String): List<ClassSignature> =
         flatMap { it.classes }
             .filter { it.superTypes.contains(className) }
 }

@@ -7,7 +7,8 @@ import com.github.ajalt.clikt.parameters.types.file
 
 abstract class AbstractCommand(
     val help: String,
-) : CliktCommand() {
+    name: String? = null,
+) : CliktCommand(name) {
     override fun help(context: Context) = help
 
     protected val model by argument(

@@ -8,8 +8,8 @@ import net.dinkla.nkp.domain.kotlinlang.Project
 data class ClassInheritance(
     val className: String,
     val packageName: PackageName,
-    val numberOfSuperClasses: Int,
-    val numberOfSubClasses: Int,
+    val superClassCount: Int,
+    val subClassCount: Int,
 )
 
 internal fun Project.inheritance(): List<ClassInheritance> =
@@ -20,7 +20,7 @@ internal fun Project.inheritance(): List<ClassInheritance> =
     }.flatten()
         .map {
             val name = it.second.name
-            val h = getInheritanceHierarchy(name)
-            val l = getImplementationsOf(name)
-            ClassInheritance(name, it.first, h.size - 1, l.size)
-        }.sortedByDescending { it.numberOfSuperClasses + it.numberOfSubClasses }
+            val superClassCount = getSuperClasses(name).size - 1
+            val subClassCount = getSubClasses(name).size
+            ClassInheritance(name, it.first, superClassCount, subClassCount)
+        }.sortedByDescending { it.superClassCount + it.subClassCount }

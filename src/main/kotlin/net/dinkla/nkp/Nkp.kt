@@ -15,7 +15,7 @@ import net.dinkla.nkp.commands.PackagesImports
 import net.dinkla.nkp.commands.PackagesReport
 import net.dinkla.nkp.commands.PackagesStatistics
 import net.dinkla.nkp.commands.Parse
-import net.dinkla.nkp.commands.SearchReport
+import net.dinkla.nkp.commands.SearchCommand
 
 class Nkp : CliktCommand(name = "nkp") {
     override fun run() = Unit
@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
             PackagesImports(),
             PackagesReport(),
             PackagesStatistics(),
-            SearchReport(),
+            SearchCommand(),
             MermaidClassDiagram(),
             MermaidCouplingDiagram(),
             MermaidImportDiagram(),

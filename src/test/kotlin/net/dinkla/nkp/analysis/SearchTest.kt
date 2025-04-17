@@ -15,8 +15,8 @@ class SearchTest :
             val search = project.search("Declaration")
 
             search.classes shouldHaveAtLeastSize 1
-            search.hierarchy shouldNotBe null
-            search.implementers shouldNotBe null
+            search.superClasses shouldNotBe null
+            search.subClasses shouldNotBe null
         }
 
         "should return an empty result for a non-existent class name" {
@@ -24,7 +24,7 @@ class SearchTest :
             val search = project.search("NonExistentClass")
 
             search.classes shouldHaveSize 0
-            search.hierarchy shouldHaveSize 0
-            search.implementers shouldHaveSize 0
+            search.superClasses shouldHaveSize 0
+            search.subClasses shouldHaveSize 0
         }
     })
