@@ -8,49 +8,71 @@ import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 
-fun classStatistics(project: Project): List<ClassStatistic> =
-    project
-        .flatMap { file ->
-            file.classes.map {
-                ClassStatistic.from(file.packageName, it)
-            }
-        }.sortedBy { "${it.packageName}-${it.className}" }
-
 @Serializable
-data class ClassStatistic(
+data class ClassStatistics(
     val className: String,
     val packageName: PackageName,
-    val parameters: Int = 0,
-    val superTypes: Int = 0,
     val visibilityModifier: VisibilityModifier? = null,
     val elementType: ClassSignature.Type = ClassSignature.Type.CLASS,
     val classModifier: ClassModifier? = null,
     val inheritanceModifier: InheritanceModifier? = null,
-    val declarations: Int = 0,
-    val classes: Int = 0,
-    val functions: Int = 0,
-    val properties: Int = 0,
-    val aliases: Int = 0,
+    val metrics: ClassMetrics = ClassMetrics.default(),
 ) {
     companion object {
-        fun from(
+        fun from(project: Project): List<ClassStatistics> =
+            project
+                .flatMap { file ->
+                    file.classes.map {
+                        from(project, file.packageName, it)
+                    }
+                }.sortedBy { "${it.packageName}-${it.className}" }
+
+        private fun from(
+            project: Project,
             packageName: PackageName,
             clazz: ClassSignature,
-        ): ClassStatistic =
-            ClassStatistic(
+        ): ClassStatistics =
+            ClassStatistics(
                 className = clazz.name,
                 packageName = packageName,
-                parameters = clazz.parameters.size,
-                superTypes = clazz.superTypes.size,
                 visibilityModifier = clazz.visibilityModifier,
                 elementType = clazz.elementType,
                 classModifier = clazz.classModifier,
                 inheritanceModifier = clazz.inheritanceModifier,
+                metrics = ClassMetrics.from(project, clazz),
+            )
+    }
+}
+
+@Serializable
+data class ClassMetrics(
+    val parameters: Int,
+    val superTypes: Int,
+    val declarations: Int,
+    val classes: Int,
+    val functions: Int,
+    val properties: Int,
+    val aliases: Int,
+    val superClasses: Int,
+    val subClasses: Int,
+) {
+    companion object {
+        fun from(
+            project: Project,
+            clazz: ClassSignature,
+        ): ClassMetrics =
+            ClassMetrics(
+                parameters = clazz.parameters.size,
+                superTypes = clazz.superTypes.size,
                 declarations = clazz.declarations.size,
                 classes = clazz.classes.size,
                 functions = clazz.functions.size,
                 properties = clazz.properties.size,
                 aliases = clazz.typeAliases.size,
+                superClasses = project.getSuperClasses(clazz.name).size - 1,
+                subClasses = project.getSubClasses(clazz.name).size,
             )
+
+        fun default(): ClassMetrics = ClassMetrics(0, 0, 0, 0, 0, 0, 0, 0, 0)
     }
 }

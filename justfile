@@ -37,7 +37,6 @@ run *args:
 all-tasks REPOSITORY:
     just run parse {{REPOSITORY}} {{model_file}}
 
-    just run class-inheritance {{model_file}} > {{generated}}/{{prefix}}class-inheritance.json
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}class-statistics.json
 
     just run coupling-report {{model_file}} > {{generated}}/{{prefix}}coupling-report.json

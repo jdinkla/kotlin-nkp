@@ -3,8 +3,7 @@ package net.dinkla.nkp
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
-import net.dinkla.nkp.commands.ClassInheritance
-import net.dinkla.nkp.commands.ClassStatistics
+import net.dinkla.nkp.commands.ClassStatisticsCommand
 import net.dinkla.nkp.commands.CouplingReport
 import net.dinkla.nkp.commands.FileImports
 import net.dinkla.nkp.commands.FileStatistics
@@ -25,8 +24,7 @@ fun main(args: Array<String>) {
     Nkp()
         .subcommands(
             Parse(),
-            ClassInheritance(),
-            ClassStatistics(),
+            ClassStatisticsCommand(),
             CouplingReport(),
             FileImports(),
             FileStatistics(),

@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 
 class NkpTest :
     StringSpec({
-        "Nkp command without subcommand does nothing" {
+        "Nkp command without subcommand should do nothing" {
             val result = Nkp().test("")
             result.statusCode shouldBe 0
         }
