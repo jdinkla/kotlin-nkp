@@ -26,10 +26,9 @@ class MermaidCouplingDiagram(
 
         // Create nodes with coupling information
         items.forEach { item ->
-            val metric = item.coupling
-            val nodeId = packageToNodeId(metric.packageName)
-            val coupling = metric.coupling
-            val label = "${metric.packageName.name}\\nI=${formatDouble(
+            val nodeId = packageToNodeId(item.packageName)
+            val coupling = item.coupling
+            val label = "${item.packageName.name}\\nI=${formatDouble(
                 coupling.instability,
             )}\\nCa=${coupling.afferentCoupling}, Ce=${coupling.efferentCoupling}"
             sb.appendLine("    $nodeId[\"$label\"]")
@@ -37,8 +36,8 @@ class MermaidCouplingDiagram(
             // Apply styling based on instability
             val styleClass =
                 when {
-                    metric.coupling.instability < METRIC_INSTABILITY_LOWER_BOUND -> "stable"
-                    metric.coupling.instability > METRIC_INSTABILITY_UPPER_BOUND -> "unstable"
+                    item.coupling.instability < METRIC_INSTABILITY_LOWER_BOUND -> "stable"
+                    item.coupling.instability > METRIC_INSTABILITY_UPPER_BOUND -> "unstable"
                     else -> "balanced"
                 }
             sb.appendLine("    $nodeId:::$styleClass")
@@ -47,11 +46,11 @@ class MermaidCouplingDiagram(
         // Add dependencies with varying line thickness based on importance
         sb.appendLine("\n    %% Dependencies")
         items.forEach { item ->
-            val sourceId = packageToNodeId(item.imports.packageName)
+            val sourceId = packageToNodeId(item.packageName)
 
-            item.imports.imports.forEach { imported ->
+            item.imports.forEach { imported ->
                 // Only draw edges between packages in our metrics list
-                if (items.any { it.coupling.packageName == imported }) {
+                if (items.any { it.packageName == imported }) {
                     val targetId = packageToNodeId(imported)
                     sb.appendLine("    $sourceId --> $targetId")
                 }

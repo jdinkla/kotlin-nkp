@@ -12,27 +12,24 @@ class MermaidCouplingDiagramTest :
 
         "should generate a valid Mermaid diagram with packages and metrics" {
             // Arrange
-            val imports =
-                listOf(
-                    Imports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.c"), setOf()),
-                )
-
-            val metrics =
-                listOf(
-                    PackageCoupling(PackageName("pkg.a"), Coupling(0, 2, 1.0)),
-                    PackageCoupling(PackageName("pkg.b"), Coupling(1, 1, 0.5)),
-                    PackageCoupling(PackageName("pkg.c"), Coupling(2, 0, 0.0)),
-                )
-
             val reportItems =
-                imports.mapIndexed { index, import ->
+                listOf(
                     CouplingReportItem(
-                        imports = import,
-                        coupling = metrics[index],
-                    )
-                }
+                        packageName = PackageName("pkg.a"),
+                        imports = setOf(PackageName("pkg.b"), PackageName("pkg.c")),
+                        coupling = Coupling(0, 2, 1.0),
+                    ),
+                    CouplingReportItem(
+                        packageName = PackageName("pkg.b"),
+                        imports = setOf(PackageName("pkg.c")),
+                        coupling = Coupling(1, 1, 0.5),
+                    ),
+                    CouplingReportItem(
+                        packageName = PackageName("pkg.c"),
+                        imports = setOf(),
+                        coupling = Coupling(2, 0, 0.0),
+                    ),
+                )
 
             val diagram = MermaidCouplingDiagram(reportItems)
 
@@ -73,25 +70,19 @@ class MermaidCouplingDiagramTest :
 
         "should handle empty dependency list" {
             // Arrange
-            val imports =
-                listOf(
-                    Imports(PackageName("pkg.a"), setOf()),
-                    Imports(PackageName("pkg.b"), setOf()),
-                )
-
-            val metrics =
-                listOf(
-                    PackageCoupling(PackageName("pkg.a"), Coupling(0, 0, 0.0)),
-                    PackageCoupling(PackageName("pkg.b"), Coupling(0, 0, 0.0)),
-                )
-
             val reportItems =
-                imports.mapIndexed { index, import ->
+                listOf(
                     CouplingReportItem(
-                        imports = import,
-                        coupling = metrics[index],
-                    )
-                }
+                        packageName = PackageName("pkg.a"),
+                        imports = setOf(),
+                        coupling = Coupling(0, 0, 0.0),
+                    ),
+                    CouplingReportItem(
+                        packageName = PackageName("pkg.b"),
+                        imports = setOf(),
+                        coupling = Coupling(0, 0, 0.0),
+                    ),
+                )
 
             val diagram = MermaidCouplingDiagram(reportItems)
 
