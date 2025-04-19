@@ -39,11 +39,11 @@ all-tasks REPOSITORY:
 
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}class-statistics.json
 
-    just run file-statistics --include-private-declarations {{model_file}} > {{generated}}/{{prefix}}file-statistics-private.json
+    just run file-statistics --include-private-declarations {{model_file}} > {{generated}}/{{prefix}}file-statistics.json
 
     just run package-coupling {{model_file}} > {{generated}}/{{prefix}}package-coupling.json
-    just run packages-report {{model_file}} > {{generated}}/{{prefix}}packages-report.json
     just run package-statistics {{model_file}} > {{generated}}/{{prefix}}package-statistics.json
+    just run packages {{model_file}} > {{generated}}/{{prefix}}packages.json
 
     just run search {{model_file}} Declaration > {{generated}}/{{prefix}}search.json
 
