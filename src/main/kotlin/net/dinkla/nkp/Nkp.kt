@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.core.subcommands
 import net.dinkla.nkp.commands.ClassStatisticsCommand
 import net.dinkla.nkp.commands.CouplingReport
 import net.dinkla.nkp.commands.FileImports
-import net.dinkla.nkp.commands.FileStatistics
+import net.dinkla.nkp.commands.FileStatisticsCommand
 import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidCouplingDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
             ClassStatisticsCommand(),
             CouplingReport(),
             FileImports(),
-            FileStatistics(),
+            FileStatisticsCommand(),
             PackagesImports(),
             PackagesReport(),
             PackagesStatistics(),

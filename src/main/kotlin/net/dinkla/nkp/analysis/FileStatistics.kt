@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.kotlinlang.KotlinFile
 import net.dinkla.nkp.domain.kotlinlang.Project
 
-fun fileStatistics(project: Project): List<FileStatistic> = project.map { FileStatistic.from(project, it) }
+fun fileStatistics(project: Project): List<FileStatistics> = project.map { FileStatistics.from(project, it) }
 
 @Serializable
-data class FileStatistic(
+data class FileStatistics(
     val file: String,
     val imports: Int,
     val classes: Int,
@@ -18,7 +18,7 @@ data class FileStatistic(
         fun from(
             project: Project,
             file: KotlinFile,
-        ) = FileStatistic(
+        ) = FileStatistics(
             file = project.relativePath(file.filePath.path),
             imports = file.imports.size,
             classes = file.classes.size,

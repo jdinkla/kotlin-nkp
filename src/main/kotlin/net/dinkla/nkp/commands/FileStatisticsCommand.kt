@@ -5,7 +5,7 @@ import net.dinkla.nkp.analysis.fileStatistics
 import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class FileStatistics : AbstractCommand("File statistics") {
+class FileStatisticsCommand : AbstractCommand("File statistics") {
     override fun run() {
         val project = loadFromJsonFile<Project>(model)
         val stats = fileStatistics(project)

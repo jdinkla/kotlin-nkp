@@ -5,14 +5,14 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.analysis.FileStatistic
+import net.dinkla.nkp.analysis.FileStatistics
 
-class FileStatisticsTest :
+class FileStatisticsCommandTest :
     StringSpec({
         "should return a result for a valid model file" {
-            val result = FileStatistics().test("src/test/resources/model.json")
+            val result = FileStatisticsCommand().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
-            val files = Json.decodeFromString<List<FileStatistic>>(result.output)
+            val files = Json.decodeFromString<List<FileStatistics>>(result.output)
             files shouldHaveAtLeastSize 10
         }
     })
