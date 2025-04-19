@@ -3,6 +3,7 @@ package net.dinkla.nkp.analysis
 import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.kotlinlang.Declaration
+import net.dinkla.nkp.domain.kotlinlang.DeclarationContainer
 import net.dinkla.nkp.domain.kotlinlang.Import
 import net.dinkla.nkp.domain.kotlinlang.KotlinFile
 import net.dinkla.nkp.domain.kotlinlang.Project
@@ -14,10 +15,8 @@ data class FileStatistics(
     val filePath: FilePath,
     val imports: List<Import>,
     val declarations: List<GeneralDeclaration>,
+    val metrics: FileMetrics,
     val coupling: Coupling,
-    val classesCount: Int,
-    val functionsCount: Int,
-    val propertiesCount: Int,
 ) {
     companion object {
         fun from(
@@ -36,6 +35,20 @@ data class GeneralDeclaration(
     val name: String,
     val visibilityModifier: VisibilityModifier?,
 )
+
+@Serializable
+data class FileMetrics(
+    val imports: Int,
+    val declarations: Int,
+    val classes: Int,
+    val functions: Int,
+    val properties: Int,
+    val aliases: Int,
+) {
+    companion object {
+        fun default() = FileMetrics(0, 0, 0, 0, 0, 0)
+    }
+}
 
 enum class DeclarationFilter(
     val filter: (Declaration) -> Boolean,
@@ -69,20 +82,32 @@ private fun fileStatistics(
     importFilter: ImportFilter,
 ): FileStatistics {
     val pname = file.packageName.toString()
-    val declarations =
+    val filteredDeclarations =
         file.declarations
             .filter { declarationFilter.filter(it) }
+    val declaredElements =
+        filteredDeclarations
             .map { GeneralDeclaration("$pname.${it.name}", it.visibilityModifier) }
+    val declarations =
+        object : DeclarationContainer {
+            override val declarations: List<Declaration>
+                get() = filteredDeclarations
+        }
     val imports =
         file.imports.filter { importFilter.filter(file, it) }
-
     return FileStatistics(
         filePath = file.filePath,
         imports = imports,
-        declarations = declarations,
+        declarations = declaredElements,
+        metrics =
+            FileMetrics(
+                imports = imports.size,
+                declarations = declarations.size,
+                classes = declarations.classes.size,
+                functions = declarations.functions.size,
+                properties = declarations.properties.size,
+                aliases = declarations.typeAliases.size,
+            ),
         coupling = Coupling(declarations.size, imports.size),
-        classesCount = file.classes.size,
-        functionsCount = file.functions.size,
-        propertiesCount = file.properties.size,
     )
 }

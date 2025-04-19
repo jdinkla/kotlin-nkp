@@ -22,6 +22,7 @@ class FileStatisticsTest :
             val result = FileStatistics.from(exampleProject).sortedBy { it.filePath }
             result shouldHaveSize 3
             result[0].filePath shouldBe kotlinFile.filePath
+            result[0].metrics shouldBe FileMetrics(2, 5, 1, 2, 1, 1)
             result[0].coupling shouldBe Coupling(5, 2, 2.0 / (5 + 2))
         }
 
@@ -32,6 +33,7 @@ class FileStatisticsTest :
                     .sortedBy { it.filePath }
             result shouldHaveSize 3
             result[0].filePath shouldBe kotlinFile.filePath
+            result[0].metrics shouldBe FileMetrics(2, 4, 1, 1, 1, 1)
             result[0].coupling shouldBe Coupling(4, 2, 2.0 / (4 + 2))
         }
 
@@ -42,6 +44,7 @@ class FileStatisticsTest :
                     .sortedBy { it.filePath }
             result shouldHaveSize 3
             result[0].filePath shouldBe kotlinFile.filePath
+            result[0].metrics shouldBe FileMetrics(0, 5, 1, 2, 1, 1)
             result[0].coupling shouldBe Coupling(5, 0, 0.0)
         }
 
@@ -76,10 +79,8 @@ class FileStatisticsTest :
                             GeneralDeclaration("my.pack.A", VisibilityModifier.INTERNAL),
                             GeneralDeclaration("my.pack.C", null),
                         ),
+                    metrics = FileMetrics(1, 2, 2, 0, 0, 0),
                     coupling = Coupling(2, 1, 1.0 / (2 + 1)),
-                    classesCount = 3,
-                    functionsCount = 0,
-                    propertiesCount = 0,
                 )
             val project = Project("/base", listOf(kotlinFile))
             val result =

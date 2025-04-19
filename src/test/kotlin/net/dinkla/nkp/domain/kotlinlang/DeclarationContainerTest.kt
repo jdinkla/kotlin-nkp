@@ -8,7 +8,7 @@ import net.dinkla.nkp.f2
 import net.dinkla.nkp.p1
 import net.dinkla.nkp.ta1
 
-class HasDeclarationsTest :
+class DeclarationContainerTest :
     StringSpec({
         "should return functions" {
             example.functions shouldBe listOf(f1, f2)
@@ -24,6 +24,10 @@ class HasDeclarationsTest :
 
         "should return type aliases" {
             example.typeAliases shouldBe listOf(ta1)
+        }
+
+        "should return size" {
+            example.size shouldBe 5
         }
     })
 
