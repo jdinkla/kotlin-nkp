@@ -4,7 +4,6 @@ import com.github.ajalt.clikt.testing.test
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.CouplingReport
 import kotlin.math.absoluteValue
@@ -15,8 +14,7 @@ class CouplingReportTest :
             val result = CouplingReport().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
             val report = Json.decodeFromString<CouplingReport>(result.output)
-            report.packages shouldHaveAtLeastSize 1
-            report.metrics shouldHaveAtLeastSize 1
+            report.items shouldHaveAtLeastSize 1
         }
 
         "all packages should have corresponding metrics" {
@@ -24,9 +22,8 @@ class CouplingReportTest :
             result.statusCode shouldBe 0
             val report = Json.decodeFromString<CouplingReport>(result.output)
 
-            report.packages.forEach { imports ->
-                val metric = report.metrics.find { it.packageName == imports.packageName }
-                metric shouldNotBe null
+            report.items.forEach { item ->
+                item.coupling.packageName shouldBe item.imports.packageName
             }
         }
 
@@ -35,10 +32,8 @@ class CouplingReportTest :
             result.statusCode shouldBe 0
             val report = Json.decodeFromString<CouplingReport>(result.output)
 
-            report.metrics.forEach { metric ->
-                val imports = report.packages.find { it.packageName == metric.packageName }
-                imports shouldNotBe null
-                metric.coupling.efferentCoupling shouldBe imports!!.imports.size
+            report.items.forEach { item ->
+                item.coupling.coupling.efferentCoupling shouldBe item.imports.imports.size
             }
         }
 
@@ -47,7 +42,8 @@ class CouplingReportTest :
             result.statusCode shouldBe 0
             val report = Json.decodeFromString<CouplingReport>(result.output)
 
-            report.metrics.forEach { metric ->
+            report.items.forEach { item ->
+                val metric = item.coupling
                 val totalCoupling = metric.coupling.afferentCoupling + metric.coupling.efferentCoupling
                 if (totalCoupling > 0) {
                     val expectedInstability = metric.coupling.efferentCoupling.toDouble() / totalCoupling

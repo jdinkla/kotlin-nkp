@@ -12,7 +12,7 @@ class MermaidCouplingDiagramTest :
 
         "should generate a valid Mermaid diagram with packages and metrics" {
             // Arrange
-            val packages =
+            val imports =
                 listOf(
                     Imports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
                     Imports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
@@ -26,7 +26,15 @@ class MermaidCouplingDiagramTest :
                     PackageCoupling(PackageName("pkg.c"), Coupling(2, 0, 0.0)),
                 )
 
-            val diagram = MermaidCouplingDiagram(packages, metrics)
+            val reportItems =
+                imports.mapIndexed { index, import ->
+                    CouplingReportItem(
+                        imports = import,
+                        coupling = metrics[index],
+                    )
+                }
+
+            val diagram = MermaidCouplingDiagram(reportItems)
 
             // Act
             val result = diagram.generate()
@@ -65,7 +73,7 @@ class MermaidCouplingDiagramTest :
 
         "should handle empty dependency list" {
             // Arrange
-            val packages =
+            val imports =
                 listOf(
                     Imports(PackageName("pkg.a"), setOf()),
                     Imports(PackageName("pkg.b"), setOf()),
@@ -77,7 +85,15 @@ class MermaidCouplingDiagramTest :
                     PackageCoupling(PackageName("pkg.b"), Coupling(0, 0, 0.0)),
                 )
 
-            val diagram = MermaidCouplingDiagram(packages, metrics)
+            val reportItems =
+                imports.mapIndexed { index, import ->
+                    CouplingReportItem(
+                        imports = import,
+                        coupling = metrics[index],
+                    )
+                }
+
+            val diagram = MermaidCouplingDiagram(reportItems)
 
             // Act
             val result = diagram.generate()

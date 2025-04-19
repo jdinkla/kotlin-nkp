@@ -21,11 +21,7 @@ class MermaidCouplingDiagram : AbstractCommand("Generate a Mermaid coupling diag
                 allImports(project)
             }
         val report = combinedReport(imports)
-        val diagram =
-            MermaidCouplingDiagram(
-                packages = report.packages,
-                metrics = report.metrics,
-            )
+        val diagram = MermaidCouplingDiagram(items = report.items)
         echo(diagram.generate())
     }
 }

@@ -10,8 +10,7 @@ private const val METRIC_INSTABILITY_LOWER_BOUND = 0.3
 private const val METRIC_INSTABILITY_UPPER_BOUND = 0.7
 
 class MermaidCouplingDiagram(
-    private val packages: List<Imports>,
-    private val metrics: List<PackageCoupling>,
+    private val items: List<CouplingReportItem>,
 ) {
     fun generate(): String {
         logger.debug { "Generating Mermaid coupling diagram" }
@@ -26,7 +25,8 @@ class MermaidCouplingDiagram(
         sb.appendLine("    classDef unstable fill:#ffcccc,stroke:#333,stroke-width:1px")
 
         // Create nodes with coupling information
-        metrics.forEach { metric ->
+        items.forEach { item ->
+            val metric = item.coupling
             val nodeId = packageToNodeId(metric.packageName)
             val coupling = metric.coupling
             val label = "${metric.packageName.name}\\nI=${formatDouble(
@@ -46,12 +46,12 @@ class MermaidCouplingDiagram(
 
         // Add dependencies with varying line thickness based on importance
         sb.appendLine("\n    %% Dependencies")
-        packages.forEach { pkg ->
-            val sourceId = packageToNodeId(pkg.packageName)
+        items.forEach { item ->
+            val sourceId = packageToNodeId(item.imports.packageName)
 
-            pkg.imports.forEach { imported ->
+            item.imports.imports.forEach { imported ->
                 // Only draw edges between packages in our metrics list
-                if (metrics.any { it.packageName == imported }) {
+                if (items.any { it.coupling.packageName == imported }) {
                     val targetId = packageToNodeId(imported)
                     sb.appendLine("    $sourceId --> $targetId")
                 }
