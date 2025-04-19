@@ -42,10 +42,7 @@ all-tasks REPOSITORY:
     just run coupling-report {{model_file}} > {{generated}}/{{prefix}}coupling-report.json
     just run coupling-report --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}coupling-all-report.json
 
-    just run file-statistics {{model_file}} > {{generated}}/{{prefix}}file-statistics.json
-    just run file-statistics --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}file-statistics-all-libs.json
     just run file-statistics --include-private-declarations {{model_file}} > {{generated}}/{{prefix}}file-statistics-private.json
-    just run file-statistics --include-all-libraries --include-private-declarations {{model_file}} > {{generated}}/{{prefix}}file-statistics-all-private.json
 
     just run packages-imports {{model_file}} > {{generated}}/{{prefix}}packages-imports.json
     just run packages-imports --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}packages-imports-all.json
