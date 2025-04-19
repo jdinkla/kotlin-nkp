@@ -14,17 +14,17 @@ class MermaidCouplingDiagramTest :
             // Arrange
             val reportItems =
                 listOf(
-                    CouplingReportItem(
+                    PackageCouplingItem(
                         packageName = PackageName("pkg.a"),
                         imports = setOf(PackageName("pkg.b"), PackageName("pkg.c")),
                         coupling = Coupling(0, 2, 1.0),
                     ),
-                    CouplingReportItem(
+                    PackageCouplingItem(
                         packageName = PackageName("pkg.b"),
                         imports = setOf(PackageName("pkg.c")),
                         coupling = Coupling(1, 1, 0.5),
                     ),
-                    CouplingReportItem(
+                    PackageCouplingItem(
                         packageName = PackageName("pkg.c"),
                         imports = setOf(),
                         coupling = Coupling(2, 0, 0.0),
@@ -72,12 +72,12 @@ class MermaidCouplingDiagramTest :
             // Arrange
             val reportItems =
                 listOf(
-                    CouplingReportItem(
+                    PackageCouplingItem(
                         packageName = PackageName("pkg.a"),
                         imports = setOf(),
                         coupling = Coupling(0, 0, 0.0),
                     ),
-                    CouplingReportItem(
+                    PackageCouplingItem(
                         packageName = PackageName("pkg.b"),
                         imports = setOf(),
                         coupling = Coupling(0, 0, 0.0),

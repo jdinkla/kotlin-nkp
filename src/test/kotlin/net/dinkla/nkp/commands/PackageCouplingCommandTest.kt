@@ -6,22 +6,22 @@ import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.analysis.CouplingReportItem
+import net.dinkla.nkp.analysis.PackageCouplingItem
 import kotlin.math.absoluteValue
 
-class CouplingReportTest :
+class PackageCouplingCommandTest :
     StringSpec({
         "should return a result for a valid model file" {
-            val result = CouplingReport().test("src/test/resources/model.json")
+            val result = PackageCouplingCommand().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
-            val reportItems = Json.decodeFromString<List<CouplingReportItem>>(result.output)
+            val reportItems = Json.decodeFromString<List<PackageCouplingItem>>(result.output)
             reportItems shouldHaveAtLeastSize 1
         }
 
         "all packages should have corresponding metrics" {
-            val result = CouplingReport().test("src/test/resources/model.json")
+            val result = PackageCouplingCommand().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
-            val reportItems = Json.decodeFromString<List<CouplingReportItem>>(result.output)
+            val reportItems = Json.decodeFromString<List<PackageCouplingItem>>(result.output)
 
             reportItems.forEach { item ->
                 // Verify that the coupling metrics exist
@@ -30,9 +30,9 @@ class CouplingReportTest :
         }
 
         "efferent coupling values should match imports count" {
-            val result = CouplingReport().test("src/test/resources/model.json")
+            val result = PackageCouplingCommand().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
-            val reportItems = Json.decodeFromString<List<CouplingReportItem>>(result.output)
+            val reportItems = Json.decodeFromString<List<PackageCouplingItem>>(result.output)
 
             reportItems.forEach { item ->
                 item.coupling.efferentCoupling shouldBe item.imports.size
@@ -40,9 +40,9 @@ class CouplingReportTest :
         }
 
         "instability calculation should be correct" {
-            val result = CouplingReport().test("src/test/resources/model.json")
+            val result = PackageCouplingCommand().test("src/test/resources/model.json")
             result.statusCode shouldBe 0
-            val reportItems = Json.decodeFromString<List<CouplingReportItem>>(result.output)
+            val reportItems = Json.decodeFromString<List<PackageCouplingItem>>(result.output)
 
             reportItems.forEach { item ->
                 val totalCoupling = item.coupling.afferentCoupling + item.coupling.efferentCoupling

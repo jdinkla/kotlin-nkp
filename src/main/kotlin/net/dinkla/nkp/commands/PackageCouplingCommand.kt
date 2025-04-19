@@ -8,7 +8,7 @@ import net.dinkla.nkp.analysis.combinedReport
 import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.utilities.loadFromJsonFile
 
-class CouplingReport : AbstractCommand("Generate package coupling metrics") {
+class PackageCouplingCommand : AbstractCommand("Generate package coupling metrics", "package-coupling") {
     private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
 
     override fun run() {

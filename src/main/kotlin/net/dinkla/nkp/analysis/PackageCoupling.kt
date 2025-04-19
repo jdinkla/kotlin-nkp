@@ -4,12 +4,25 @@ import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.domain.statistics.Coupling
 
-fun combinedReport(imports: List<PackageImports>): List<CouplingReportItem> {
+@Serializable
+class PackageCoupling(
+    val packageName: PackageName,
+    val coupling: Coupling,
+)
+
+@Serializable
+data class PackageCouplingItem(
+    val packageName: PackageName,
+    val imports: Set<PackageName>,
+    val coupling: Coupling,
+)
+
+fun combinedReport(imports: List<PackageImports>): List<PackageCouplingItem> {
     val couplings = coupling(imports)
     return imports.map { import ->
         val matchingCoupling = couplings.find { it.packageName == import.packageName }
         check(matchingCoupling != null) { "No coupling found for package ${import.packageName}" }
-        CouplingReportItem(
+        PackageCouplingItem(
             packageName = import.packageName,
             imports = import.imports,
             coupling = matchingCoupling.coupling,
@@ -30,16 +43,3 @@ internal fun coupling(importsList: List<PackageImports>): List<PackageCoupling> 
             coupling = Coupling(afferentCoupling, efferentCoupling),
         )
     }
-
-@Serializable
-class PackageCoupling(
-    val packageName: PackageName,
-    val coupling: Coupling,
-)
-
-@Serializable
-data class CouplingReportItem(
-    val packageName: PackageName,
-    val imports: Set<PackageName>,
-    val coupling: Coupling,
-)

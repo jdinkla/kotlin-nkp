@@ -4,11 +4,11 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import net.dinkla.nkp.commands.ClassStatisticsCommand
-import net.dinkla.nkp.commands.CouplingReport
 import net.dinkla.nkp.commands.FileStatisticsCommand
 import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidCouplingDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
+import net.dinkla.nkp.commands.PackageCouplingCommand
 import net.dinkla.nkp.commands.PackagesReport
 import net.dinkla.nkp.commands.PackagesStatistics
 import net.dinkla.nkp.commands.Parse
@@ -23,8 +23,8 @@ fun main(args: Array<String>) {
         .subcommands(
             Parse(),
             ClassStatisticsCommand(),
-            CouplingReport(),
             FileStatisticsCommand(), // Now includes FileImports functionality
+            PackageCouplingCommand(),
             PackagesReport(),
             PackagesStatistics(),
             SearchCommand(),

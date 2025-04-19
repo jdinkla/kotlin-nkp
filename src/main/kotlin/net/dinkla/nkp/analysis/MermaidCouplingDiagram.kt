@@ -10,7 +10,7 @@ private const val METRIC_INSTABILITY_LOWER_BOUND = 0.3
 private const val METRIC_INSTABILITY_UPPER_BOUND = 0.7
 
 class MermaidCouplingDiagram(
-    private val items: List<CouplingReportItem>,
+    private val items: List<PackageCouplingItem>,
 ) {
     fun generate(): String {
         logger.debug { "Generating Mermaid coupling diagram" }

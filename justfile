@@ -39,11 +39,9 @@ all-tasks REPOSITORY:
 
     just run class-statistics {{model_file}} > {{generated}}/{{prefix}}class-statistics.json
 
-    just run coupling-report {{model_file}} > {{generated}}/{{prefix}}coupling-report.json
-    just run coupling-report --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}coupling-all-report.json
-
     just run file-statistics --include-private-declarations {{model_file}} > {{generated}}/{{prefix}}file-statistics-private.json
 
+    just run package-coupling {{model_file}} > {{generated}}/{{prefix}}package-coupling.json
     just run packages-report {{model_file}} > {{generated}}/{{prefix}}packages-report.json
     just run packages-statistics {{model_file}} > {{generated}}/{{prefix}}packages-statistics.json
 
