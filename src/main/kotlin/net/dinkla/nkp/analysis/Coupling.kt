@@ -18,18 +18,16 @@ fun coupling(importsList: List<Imports>): List<PackageCoupling> =
         )
     }
 
-fun combinedReport(imports: List<Imports>): CouplingReport {
+fun combinedReport(imports: List<Imports>): List<CouplingReportItem> {
     val couplings = coupling(imports)
-    val reportItems =
-        imports.map { import ->
-            val matchingCoupling = couplings.find { it.packageName == import.packageName }
-            check(matchingCoupling != null) { "No coupling found for package ${import.packageName}" }
-            CouplingReportItem(
-                imports = import,
-                coupling = matchingCoupling,
-            )
-        }
-    return CouplingReport(reportItems)
+    return imports.map { import ->
+        val matchingCoupling = couplings.find { it.packageName == import.packageName }
+        check(matchingCoupling != null) { "No coupling found for package ${import.packageName}" }
+        CouplingReportItem(
+            imports = import,
+            coupling = matchingCoupling,
+        )
+    }
 }
 
 @Serializable
@@ -42,9 +40,4 @@ class PackageCoupling(
 data class CouplingReportItem(
     val imports: Imports,
     val coupling: PackageCoupling,
-)
-
-@Serializable
-data class CouplingReport(
-    val items: List<CouplingReportItem>,
 )

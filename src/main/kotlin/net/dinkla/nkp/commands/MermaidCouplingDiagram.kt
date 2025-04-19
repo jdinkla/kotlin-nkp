@@ -20,8 +20,8 @@ class MermaidCouplingDiagram : AbstractCommand("Generate a Mermaid coupling diag
             } else {
                 allImports(project)
             }
-        val report = combinedReport(imports)
-        val diagram = MermaidCouplingDiagram(items = report.items)
+        val reportItems = combinedReport(imports)
+        val diagram = MermaidCouplingDiagram(items = reportItems)
         echo(diagram.generate())
     }
 }

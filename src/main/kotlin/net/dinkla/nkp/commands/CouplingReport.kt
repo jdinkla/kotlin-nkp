@@ -20,7 +20,7 @@ class CouplingReport : AbstractCommand("Generate package coupling metrics") {
             } else {
                 allImports(project)
             }
-        val report = combinedReport(imports)
-        echo(Json.encodeToString(report))
+        val reportItems = combinedReport(imports)
+        echo(Json.encodeToString(reportItems))
     }
 }
