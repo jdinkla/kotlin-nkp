@@ -16,13 +16,33 @@ import net.dinkla.nkp.domain.statistics.Coupling
 import net.dinkla.nkp.exampleProject
 import net.dinkla.nkp.kotlinFile
 
-class FileImportsTest :
+class FileStatisticsTest :
     StringSpec({
         "should return the imports for every package" {
-            val result = fileImports(exampleProject).sortedBy { it.filePath }
+            val result = FileStatistics.from(exampleProject).sortedBy { it.filePath }
             result shouldHaveSize 3
             result[0].filePath shouldBe kotlinFile.filePath
             result[0].coupling shouldBe Coupling(5, 2, 2.0 / (5 + 2))
+        }
+
+        "should return the imports when declarations are filtered" {
+            val result =
+                FileStatistics
+                    .from(exampleProject, DeclarationFilter.EXCLUDE_PRIVATE_DECLARATIONS)
+                    .sortedBy { it.filePath }
+            result shouldHaveSize 3
+            result[0].filePath shouldBe kotlinFile.filePath
+            result[0].coupling shouldBe Coupling(4, 2, 2.0 / (4 + 2))
+        }
+
+        "should return the imports when imports are filtered" {
+            val result =
+                FileStatistics
+                    .from(exampleProject, importFilter = ImportFilter.EXCLUDE_IMPORTS_FROM_OTHER_PACKAGES)
+                    .sortedBy { it.filePath }
+            result shouldHaveSize 3
+            result[0].filePath shouldBe kotlinFile.filePath
+            result[0].coupling shouldBe Coupling(5, 0, 0.0)
         }
 
         "should return the imports for filtered packages" {
@@ -48,7 +68,7 @@ class FileImportsTest :
                         ),
                 )
             val expected =
-                FileImports(
+                FileStatistics(
                     filePath = filePath,
                     imports = listOf(theImport),
                     declarations =
@@ -57,16 +77,20 @@ class FileImportsTest :
                             GeneralDeclaration("my.pack.C", null),
                         ),
                     coupling = Coupling(2, 1, 1.0 / (2 + 1)),
+                    classesCount = 3,
+                    functionsCount = 0,
+                    propertiesCount = 0,
                 )
             val project = Project("/base", listOf(kotlinFile))
             val result =
-                fileImports(
-                    project,
-                    DeclarationFilter.EXCLUDE_PRIVATE_DECLARATIONS,
-                    ImportFilter.EXCLUDE_IMPORTS_FROM_OTHER_PACKAGES,
-                ).sortedBy {
-                    it.filePath
-                }
+                FileStatistics
+                    .from(
+                        project,
+                        DeclarationFilter.EXCLUDE_PRIVATE_DECLARATIONS,
+                        ImportFilter.EXCLUDE_IMPORTS_FROM_OTHER_PACKAGES,
+                    ).sortedBy {
+                        it.filePath
+                    }
             result[0].imports shouldBe expected.imports
             result[0].declarations shouldBe expected.declarations
             result[0].coupling shouldBe expected.coupling
