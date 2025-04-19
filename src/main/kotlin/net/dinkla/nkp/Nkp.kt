@@ -9,8 +9,8 @@ import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidCouplingDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
 import net.dinkla.nkp.commands.PackageCouplingCommand
+import net.dinkla.nkp.commands.PackageStatisticsCommand
 import net.dinkla.nkp.commands.PackagesReport
-import net.dinkla.nkp.commands.PackagesStatistics
 import net.dinkla.nkp.commands.Parse
 import net.dinkla.nkp.commands.SearchCommand
 
@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
             FileStatisticsCommand(), // Now includes FileImports functionality
             PackageCouplingCommand(),
             PackagesReport(),
-            PackagesStatistics(),
+            PackageStatisticsCommand(),
             SearchCommand(),
             MermaidClassDiagram(),
             MermaidCouplingDiagram(),

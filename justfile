@@ -43,7 +43,7 @@ all-tasks REPOSITORY:
 
     just run package-coupling {{model_file}} > {{generated}}/{{prefix}}package-coupling.json
     just run packages-report {{model_file}} > {{generated}}/{{prefix}}packages-report.json
-    just run packages-statistics {{model_file}} > {{generated}}/{{prefix}}packages-statistics.json
+    just run package-statistics {{model_file}} > {{generated}}/{{prefix}}package-statistics.json
 
     just run search {{model_file}} Declaration > {{generated}}/{{prefix}}search.json
 
