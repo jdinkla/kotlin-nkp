@@ -44,8 +44,6 @@ all-tasks REPOSITORY:
 
     just run file-statistics --include-private-declarations {{model_file}} > {{generated}}/{{prefix}}file-statistics-private.json
 
-    just run packages-imports {{model_file}} > {{generated}}/{{prefix}}packages-imports.json
-    just run packages-imports --include-all-libraries {{model_file}} > {{generated}}/{{prefix}}packages-imports-all.json
     just run packages-report {{model_file}} > {{generated}}/{{prefix}}packages-report.json
     just run packages-statistics {{model_file}} > {{generated}}/{{prefix}}packages-statistics.json
 

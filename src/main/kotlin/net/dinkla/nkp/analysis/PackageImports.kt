@@ -5,24 +5,20 @@ import net.dinkla.nkp.domain.kotlinlang.Package
 import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.domain.kotlinlang.Project
 
-fun filteredImports(project: Project): List<Imports> = project.packages().map { Imports.fromFiltered(it) }
-
-fun allImports(project: Project): List<Imports> = project.packages().map { Imports.from(it) }
-
 @Serializable
-data class Imports(
+data class PackageImports(
     val packageName: PackageName,
     val imports: Set<PackageName>,
 ) {
     companion object {
-        fun from(p: Package): Imports =
-            Imports(
+        fun from(p: Package): PackageImports =
+            PackageImports(
                 packageName = p.packageName,
                 imports = p.imports().map { it.name.packageName }.toSortedSet(compareBy { it.name }),
             )
 
-        fun fromFiltered(p: Package): Imports =
-            Imports(
+        fun fromFiltered(p: Package): PackageImports =
+            PackageImports(
                 packageName = p.packageName,
                 imports =
                     p
@@ -32,5 +28,9 @@ data class Imports(
                         }.map { it.name.packageName }
                         .toSortedSet(compareBy { it.name }),
             )
+
+        fun filteredImports(project: Project): List<PackageImports> = project.packages().map { fromFiltered(it) }
+
+        fun allImports(project: Project): List<PackageImports> = project.packages().map { from(it) }
     }
 }

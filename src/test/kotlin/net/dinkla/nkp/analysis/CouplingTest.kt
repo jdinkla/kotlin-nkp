@@ -11,9 +11,9 @@ class CouplingTest :
             // Arrange
             val packages =
                 listOf(
-                    Imports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.c"), setOf()),
+                    PackageImports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
+                    PackageImports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
+                    PackageImports(PackageName("pkg.c"), setOf()),
                 )
 
             // Act
@@ -33,9 +33,9 @@ class CouplingTest :
             // Arrange
             val packages =
                 listOf(
-                    Imports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.c"), setOf()),
+                    PackageImports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
+                    PackageImports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
+                    PackageImports(PackageName("pkg.c"), setOf()),
                 )
 
             // Act
@@ -55,9 +55,9 @@ class CouplingTest :
             // Arrange
             val packages =
                 listOf(
-                    Imports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
-                    Imports(PackageName("pkg.c"), setOf()),
+                    PackageImports(PackageName("pkg.a"), setOf(PackageName("pkg.b"), PackageName("pkg.c"))),
+                    PackageImports(PackageName("pkg.b"), setOf(PackageName("pkg.c"))),
+                    PackageImports(PackageName("pkg.c"), setOf()),
                 )
 
             // Act
@@ -82,8 +82,8 @@ class CouplingTest :
             // Arrange
             val packages =
                 listOf(
-                    Imports(PackageName("pkg.a"), setOf()),
-                    Imports(PackageName("pkg.b"), setOf()),
+                    PackageImports(PackageName("pkg.a"), setOf()),
+                    PackageImports(PackageName("pkg.b"), setOf()),
                 )
 
             // Act
@@ -102,7 +102,7 @@ class CouplingTest :
             // Arrange - package referring to itself shouldn't count in coupling
             val packages =
                 listOf(
-                    Imports(PackageName("pkg.a"), setOf(PackageName("pkg.a"))),
+                    PackageImports(PackageName("pkg.a"), setOf(PackageName("pkg.a"))),
                 )
 
             // Act

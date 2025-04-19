@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.domain.statistics.Coupling
 
-fun combinedReport(imports: List<Imports>): List<CouplingReportItem> {
+fun combinedReport(imports: List<PackageImports>): List<CouplingReportItem> {
     val couplings = coupling(imports)
     return imports.map { import ->
         val matchingCoupling = couplings.find { it.packageName == import.packageName }
@@ -17,7 +17,7 @@ fun combinedReport(imports: List<Imports>): List<CouplingReportItem> {
     }
 }
 
-internal fun coupling(importsList: List<Imports>): List<PackageCoupling> =
+internal fun coupling(importsList: List<PackageImports>): List<PackageCoupling> =
     importsList.map { imports ->
         val packageName = imports.packageName
         val efferentCoupling = imports.imports.size
