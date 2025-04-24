@@ -17,7 +17,7 @@ data class PackageImports(
                 imports = p.imports().map { it.name.packageName }.toSortedSet(compareBy { it.name }),
             )
 
-        fun fromFiltered(p: Package): PackageImports =
+        private fun fromFiltered(p: Package): PackageImports =
             PackageImports(
                 packageName = p.packageName,
                 imports =

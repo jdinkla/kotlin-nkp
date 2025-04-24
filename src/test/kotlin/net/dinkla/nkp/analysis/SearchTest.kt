@@ -6,12 +6,12 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldNotBe
 import net.dinkla.nkp.EXAMPLE_MODEL_FILE
 import net.dinkla.nkp.domain.kotlinlang.Project
-import net.dinkla.nkp.utilities.loadFromJsonFile
+import net.dinkla.nkp.utilities.loadJson
 
 class SearchTest :
     StringSpec({
         "should return search results for a valid class name" {
-            val project = loadFromJsonFile<Project>(EXAMPLE_MODEL_FILE)
+            val project = EXAMPLE_MODEL_FILE.loadJson<Project>()
             val search = project.search("Declaration")
 
             search.classes shouldHaveAtLeastSize 1
@@ -20,7 +20,7 @@ class SearchTest :
         }
 
         "should return an empty result for a non-existent class name" {
-            val project = loadFromJsonFile<Project>(EXAMPLE_MODEL_FILE)
+            val project = EXAMPLE_MODEL_FILE.loadJson<Project>()
             val search = project.search("NonExistentClass")
 
             search.classes shouldHaveSize 0

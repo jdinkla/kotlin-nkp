@@ -7,14 +7,14 @@ import net.dinkla.nkp.analysis.DeclarationFilter
 import net.dinkla.nkp.analysis.FileStatistics
 import net.dinkla.nkp.analysis.ImportFilter
 import net.dinkla.nkp.domain.kotlinlang.Project
-import net.dinkla.nkp.utilities.loadFromJsonFile
+import net.dinkla.nkp.utilities.loadJson
 
 class FileStatisticsCommand : AbstractCommand("File statistics and imports report") {
     private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
     private val includePrivateDeclarations by option(help = "include private declarations").flag(default = false)
 
     override fun run() {
-        val project = loadFromJsonFile<Project>(model)
+        val project = model.loadJson<Project>()
         val declarationFilter = DeclarationFilter.select(includePrivateDeclarations)
         val importFilter = ImportFilter.select(includeAllLibraries)
         val stats = FileStatistics.from(project, declarationFilter, importFilter)

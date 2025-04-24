@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 
 abstract class AbstractCommand(
-    val help: String,
+    private val help: String,
     name: String? = null,
 ) : CliktCommand(name) {
     override fun help(context: Context) = help

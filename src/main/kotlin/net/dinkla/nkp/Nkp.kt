@@ -23,13 +23,13 @@ fun main(args: Array<String>) {
         .subcommands(
             Parse(),
             ClassStatisticsCommand(),
-            FileStatisticsCommand(), // Now includes FileImports functionality
+            FileStatisticsCommand(),
+            MermaidClassDiagram(),
+            MermaidCouplingDiagram(),
+            MermaidImportDiagram(),
             PackageCouplingCommand(),
             PackageStatisticsCommand(),
             PackagesCommand(),
             SearchCommand(),
-            MermaidClassDiagram(),
-            MermaidCouplingDiagram(),
-            MermaidImportDiagram(),
         ).main(args)
 }

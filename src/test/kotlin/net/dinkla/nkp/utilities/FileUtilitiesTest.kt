@@ -36,7 +36,7 @@ class FileUtilitiesTest :
             try {
                 val testObject = Test("Some")
                 file.saveJson(testObject)
-                loadFromJsonFile<Test>(file) shouldBe testObject
+                file.loadJson<Test>() shouldBe testObject
             } finally {
                 file.delete()
             }
