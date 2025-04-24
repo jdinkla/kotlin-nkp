@@ -11,13 +11,13 @@ data class PackageImports(
     val imports: Set<PackageName>,
 ) {
     companion object {
-        fun from(p: Package): PackageImports =
+        fun from(p: Package) =
             PackageImports(
                 packageName = p.packageName,
                 imports = p.imports().map { it.name.packageName }.toSortedSet(compareBy { it.name }),
             )
 
-        private fun fromFiltered(p: Package): PackageImports =
+        private fun fromFiltered(p: Package) =
             PackageImports(
                 packageName = p.packageName,
                 imports =

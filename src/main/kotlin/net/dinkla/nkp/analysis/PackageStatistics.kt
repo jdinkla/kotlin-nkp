@@ -5,8 +5,9 @@ import net.dinkla.nkp.domain.kotlinlang.ImportedElement
 import net.dinkla.nkp.domain.kotlinlang.Package
 import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.domain.kotlinlang.Project
+import net.dinkla.nkp.analysis.AnalyzedPackage as AnalyzedPackage1
 
-fun packagesStatistics(project: Project): List<AnalyzedPackage> = AnalyzedPackage.from(project)
+fun packagesStatistics(project: Project): List<AnalyzedPackage1> = AnalyzedPackage1.from(project)
 
 @Serializable
 data class AnalyzedPackage(
@@ -16,16 +17,21 @@ data class AnalyzedPackage(
     val declarationStatistics: DeclarationStatistics,
 ) {
     companion object {
-        fun from(project: Project): List<AnalyzedPackage> =
+        fun from(project: Project): List<AnalyzedPackage1> =
             project.packages().map { from(it) }.sortedBy { it.packageName.name }
 
-        fun from(p: Package): AnalyzedPackage {
-            val name = p.packageName
-            val elements = p.imports().map { it.name }.sortedBy { it.name }
-            val importStatistics = ImportStatistics.from(p)
-            val declarationStatistics = DeclarationStatistics.from(p)
-            return AnalyzedPackage(name, elements.toSet(), importStatistics, declarationStatistics)
-        }
+        fun from(p: Package) =
+            AnalyzedPackage1(
+                packageName = p.packageName,
+                importedElements =
+                    p
+                        .imports()
+                        .map { it.name }
+                        .sortedBy { it.name }
+                        .toSet(),
+                importStatistics = ImportStatistics.from(p),
+                declarationStatistics = DeclarationStatistics.from(p),
+            )
     }
 }
 
@@ -43,12 +49,12 @@ data class ImportStatistics(
             val imports = p.imports()
             val packages = imports.map { it.name.packageName }.toSet()
             return ImportStatistics(
-                imports.distinctBy { it.name.name }.size,
-                packages.size,
-                packages.count { it.isSubPackageOf(p.packageName) },
-                packages.count { it.isSuperPackage(p.packageName) },
-                packages.count { it.isSidePackage(p.packageName) },
-                packages.count { it.isOtherPackage(p.packageName) },
+                total = imports.distinctBy { it.name.name }.size,
+                distinct = packages.size,
+                fromSubPackage = packages.count { it.isSubPackageOf(p.packageName) },
+                fromSuperPackage = packages.count { it.isSuperPackage(p.packageName) },
+                fromSidePackage = packages.count { it.isSidePackage(p.packageName) },
+                fromOtherPackage = packages.count { it.isOtherPackage(p.packageName) },
             )
         }
     }
@@ -63,13 +69,13 @@ data class DeclarationStatistics(
     val typeAliases: Int,
 ) {
     companion object {
-        fun from(p: Package): DeclarationStatistics {
-            val files = p.files.size
-            val functions = p.functions.size
-            val properties = p.properties.size
-            val classes = p.classes.size
-            val typeAliases = p.typeAliases.size
-            return DeclarationStatistics(files, functions, properties, classes, typeAliases)
-        }
+        fun from(p: Package) =
+            DeclarationStatistics(
+                files = p.files.size,
+                functions = p.functions.size,
+                properties = p.properties.size,
+                classes = p.classes.size,
+                typeAliases = p.typeAliases.size,
+            )
     }
 }
