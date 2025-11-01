@@ -6,15 +6,15 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [versions]
 
-kotlinVersion = "2.1.20"
+kotlinVersion = "2.2.21"
 kotlinx-coroutines = "1.10.2"
-kotlinx-serialization = "1.8.1"
+kotlinx-serialization = "1.9.0"
 clikt = "5.0.3"
-archunit = "1.4.0"
-kotlin-logging-jvm = "7.0.7"
+archunit = "1.4.1"
+kotlin-logging-jvm = "7.0.13"
 slf4j-api = "2.0.17"
-logback-classic = "1.5.18"
-kotest = "5.9.1"
+logback-classic = "1.5.20"
+kotest = "6.0.4"
 kotlin-grammar-tools = "0.1"
 detekt = "1.23.8"
 
@@ -31,5 +31,4 @@ slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
 kotlin-grammar-tools = { module = "org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools", version.ref = "kotlin-grammar-tools" }

@@ -21,6 +21,13 @@ clean:
 lint:
     @ktlint -F src/
 
+# refresh the dependencies
+refresh:
+    @{{gradle}} refreshVersions       
+
+# run the unit tests
+test: build
+
 # opens the coverage report in the default browser
 coverage-report:
     open build/reports/jacoco/test/html/index.html
