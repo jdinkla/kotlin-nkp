@@ -86,10 +86,10 @@ mermaid-to-svg FILE:
     @npx mmdc -i {{FILE}}
 
 # convert a mermaid file to html
-mermaid-convert FILE OUTPUT:
-    @npx mmdc -i {{FILE}} -o {{OUTPUT}}
+convert-mermaid MERMAID_FILE OUTPUT_FILE:
+    @npx mmdc -i {{MERMAID_FILE}} -o {{OUTPUT_FILE}}
 
-
+# show a json file in nu shell
 nu-json FILE:
     #!/usr/bin/env nu
     open {{FILE}}

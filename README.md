@@ -81,10 +81,6 @@ Commands:
   search                    Search for a class by name
 ```
 
-One example is the import flow diagram:
-
-![import diagram](docs/import-diagram.webp)
-
 ## Installation
 
 ### Prerequisites
@@ -156,18 +152,26 @@ List packages:
 $ bin/nkp.sh packages generated/model.json > generated/packages.json
 ```
 
+### Examples of the mermaid diagrams
+
+#### Coupling diagram
+
+![mermaid-coupling-diagram.webp](docs/mermaid-coupling-diagram.webp)
+
+#### Import diagram
+
+![mermaid-import-diagram.webp](docs/mermaid-import-diagram.webp)
+
+#### Class diagram
+
+![mermaid-class-diagram.webp](docs/mermaid-class-diagram.webp)
+
 ## Building and Developing
 
-### Build the Project
+### Build the project and run the tests
 
 ```sh
-$ ./gradlew build
-```
-
-### Run Tests
-
-```sh
-$ ./gradlew test
+$ ./gradlew check
 ```
 
 ### View Test Coverage
