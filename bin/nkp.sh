@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-gradle run --quiet --args="$*"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+"$DIR/gradlew" run --quiet --args="$*"
