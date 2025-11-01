@@ -3,6 +3,7 @@ package net.dinkla.nkp
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.parameters.options.versionOption
 import net.dinkla.nkp.commands.ClassStatisticsCommand
 import net.dinkla.nkp.commands.FileStatisticsCommand
 import net.dinkla.nkp.commands.MermaidClassDiagram
@@ -15,6 +16,9 @@ import net.dinkla.nkp.commands.Parse
 import net.dinkla.nkp.commands.SearchCommand
 
 class Nkp : CliktCommand(name = "nkp") {
+    init {
+        versionOption("0.1", names = setOf("-v", "--version"))
+    }
     override fun run() = Unit
 }
 
