@@ -19,6 +19,7 @@ class Nkp : CliktCommand(name = "nkp") {
     init {
         versionOption("0.1", names = setOf("-v", "--version"))
     }
+
     override fun run() = Unit
 }
 

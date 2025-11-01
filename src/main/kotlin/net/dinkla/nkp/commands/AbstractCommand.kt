@@ -19,8 +19,8 @@ abstract class AbstractCommand(
         help = "Path to the model file",
     ).file(mustExist = true, canBeDir = false, canBeFile = true)
 
-    protected fun loadProject(): Project {
-        return try {
+    protected fun loadProject(): Project =
+        try {
             model.loadJson<Project>()
         } catch (e: SerializationException) {
             echo("ERROR: Failed to parse JSON file '${model.absolutePath}'", err = true)
@@ -31,5 +31,4 @@ abstract class AbstractCommand(
             echo("       ${e.message}", err = true)
             throw ProgramResult(1)
         }
-    }
 }

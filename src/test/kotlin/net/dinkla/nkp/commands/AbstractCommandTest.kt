@@ -41,9 +41,10 @@ class AbstractCommandTest :
         }
 
         "should return an error for invalid JSON format" {
-            val tmp = createTempFile("nkp", ".json").apply {
-                writeText("not json at all")
-            }
+            val tmp =
+                createTempFile("nkp", ".json").apply {
+                    writeText("not json at all")
+                }
             val result = CommandWithLoadProject().test(tmp.toAbsolutePath().toString())
             result.statusCode shouldNotBe 0
             result.output shouldContain "ERROR: Failed to parse JSON file"
@@ -51,9 +52,10 @@ class AbstractCommandTest :
         }
 
         "should return an error for JSON with unknown keys" {
-            val tmp = createTempFile("nkp", ".json").apply {
-                writeText("""{"invalid": "key", "unknown": "field"}""")
-            }
+            val tmp =
+                createTempFile("nkp", ".json").apply {
+                    writeText("""{"invalid": "key", "unknown": "field"}""")
+                }
             val result = CommandWithLoadProject().test(tmp.toAbsolutePath().toString())
             result.statusCode shouldNotBe 0
             result.output shouldContain "ERROR: Failed to parse JSON file"
@@ -61,9 +63,10 @@ class AbstractCommandTest :
         }
 
         "should return an error for malformed JSON" {
-            val tmp = createTempFile("nkp", ".json").apply {
-                writeText("""{"directory": "test", "files": [""")
-            }
+            val tmp =
+                createTempFile("nkp", ".json").apply {
+                    writeText("""{"directory": "test", "files": [""")
+                }
             val result = CommandWithLoadProject().test(tmp.toAbsolutePath().toString())
             result.statusCode shouldNotBe 0
             result.output shouldContain "ERROR: Failed to parse JSON file"
