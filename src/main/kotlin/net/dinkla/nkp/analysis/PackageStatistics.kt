@@ -5,9 +5,8 @@ import net.dinkla.nkp.domain.kotlinlang.ImportedElement
 import net.dinkla.nkp.domain.kotlinlang.Package
 import net.dinkla.nkp.domain.kotlinlang.PackageName
 import net.dinkla.nkp.domain.kotlinlang.Project
-import net.dinkla.nkp.analysis.AnalyzedPackage as AnalyzedPackage1
 
-fun packagesStatistics(project: Project): List<AnalyzedPackage1> = AnalyzedPackage1.from(project)
+fun packagesStatistics(project: Project): List<AnalyzedPackage> = AnalyzedPackage.from(project)
 
 @Serializable
 data class AnalyzedPackage(
@@ -17,11 +16,11 @@ data class AnalyzedPackage(
     val declarationStatistics: DeclarationStatistics,
 ) {
     companion object {
-        fun from(project: Project): List<AnalyzedPackage1> =
+        fun from(project: Project): List<AnalyzedPackage> =
             project.packages().map { from(it) }.sortedBy { it.packageName.name }
 
         fun from(p: Package) =
-            AnalyzedPackage1(
+            AnalyzedPackage(
                 packageName = p.packageName,
                 importedElements =
                     p
