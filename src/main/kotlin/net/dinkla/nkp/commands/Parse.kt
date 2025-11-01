@@ -50,6 +50,28 @@ class Parse : CliktCommand(name = "parse") {
             echo(json)
         }
     }
+
+    private fun reportErrors(infos: List<Result<KotlinFile>>) {
+        echo(
+            infos
+                .groupBy { it.isSuccess }
+                .map {
+                    "${it.value.size} ${if (it.key) "ok" else "exceptions"}"
+                }.joinToString(", "),
+        )
+        val failures = infos.filter { it.isFailure }
+        if (failures.isNotEmpty()) {
+            echo("ERROR: The following exceptions occurred:")
+            var count = 1
+            echo("------------------------------------------------------------------------------")
+            failures.forEach {
+                val exception = it.exceptionOrNull()
+                echo("${count++}. ${exception?.message}")
+                exception?.cause?.printStackTrace(System.out)
+                echo("------------------------------------------------------------------------------")
+            }
+        }
+    }
 }
 
 private fun readFiles(directory: File): List<Result<KotlinFile>> {
@@ -83,28 +105,6 @@ private fun extractFileInfo(
         val message = "parsing '$fileName' yields ${e.message}"
         logger.error { message }
         return Result.failure(Error(message, e))
-    }
-}
-
-private fun reportErrors(infos: List<Result<KotlinFile>>) {
-    println(
-        infos
-            .groupBy { it.isSuccess }
-            .map {
-                "${it.value.size} ${if (it.key) "ok" else "exceptions"}"
-            }.joinToString(", "),
-    )
-    val failures = infos.filter { it.isFailure }
-    if (failures.isNotEmpty()) {
-        println("ERROR: The following exceptions occurred:")
-        var count = 1
-        println("------------------------------------------------------------------------------")
-        failures.forEach {
-            val exception = it.exceptionOrNull()
-            println("${count++}. ${exception?.message}")
-            exception?.cause?.printStackTrace(System.out)
-            println("------------------------------------------------------------------------------")
-        }
     }
 }
 
