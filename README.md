@@ -1,8 +1,60 @@
 # kotlin-nkp
 
-Kotlin-NKP is a project for static analysis of Kotlin programs (nkp is for aNalysis of Kotlin Programs). 
+Kotlin-NKP is a static analysis tool for Kotlin programs (nkp stands for aNalysis of Kotlin Programs). 
 
-It can generate some metrics and create diagrams.
+## Introduction
+
+**nkp** helps you understand and assess the architecture and structure of your Kotlin codebase by analyzing package dependencies, class hierarchies, and import relationships. It generates metrics and visual diagrams that aid in architectural decision-making, identifying coupling issues, and planning refactoring efforts.
+
+### How to Use nkp
+
+1. **Parse your project** - Convert your Kotlin source code into an analyzable JSON model
+2. **Generate metrics** - Calculate package coupling, class statistics, and file-level metrics
+3. **Visualize dependencies** - Create Mermaid diagrams showing class hierarchies, import flows, and package coupling
+4. **Analyze architecture** - Use the metrics to identify unstable packages, high coupling, and architectural issues
+
+### Use Cases
+
+- **Architectural Assessment**: Understand package structure and dependencies in your codebase
+- **Refactoring Planning**: Identify unstable packages and high coupling that need attention
+- **Documentation**: Generate visual diagrams of your code structure
+- **Code Review**: Get insights into package organization and dependencies
+- **Migration Planning**: Understand dependencies before large-scale refactoring
+
+## Capabilities
+
+| Capability | Supported | Not Supported |
+|-----------|----------|---------------|
+| **Architectural Analysis** |
+| Package dependency analysis | ✅ | |
+| Package coupling metrics (Ca, Ce, I) | ✅ | |
+| Import dependency tracking | ✅ | |
+| Class hierarchy analysis | ✅ | |
+| **Code Quality Metrics** |
+| Class-level statistics | ✅ | |
+| File-level statistics | ✅ | |
+| Cyclomatic complexity | | ❌ |
+| Lines of code metrics | | ❌ |
+| Code duplication detection | | ❌ |
+| **Dependency Analysis** |
+| Package import relationships | ✅ | |
+| Class inheritance trees | ✅ | |
+| Circular dependency detection | | ❌ |
+| Unused import detection | | ❌ |
+| Dependency distance metrics | | ❌ |
+| **Visualization** |
+| Mermaid class diagrams | ✅ | |
+| Mermaid import flow diagrams | ✅ | |
+| Mermaid coupling diagrams | ✅ | |
+| **Temporal Analysis** |
+| Change frequency analysis | | ❌ |
+| Historical metric trends | | ❌ |
+| **Code Smells** |
+| Large class detection | | ❌ |
+| Long method detection | | ❌ |
+| Deep inheritance detection | | ❌ |
+
+**Summary**: nkp excels at **architectural and structural analysis** (package coupling, dependencies, class hierarchies) but does not provide **code quality metrics** (complexity, size, code smells) or **temporal analysis** (change history, trends).
 
 ## Features
 
@@ -13,7 +65,8 @@ $ bin/nkp.sh -h
 Usage: nkp [<options>] <command> [<args>]...
 
 Options:
-  -h, --help  Show this message and exit
+  -v, --version  Show the version and exit
+  -h, --help     Show this message and exit
 
 Commands:
   parse                     Parse a source directory and generate a model file.
