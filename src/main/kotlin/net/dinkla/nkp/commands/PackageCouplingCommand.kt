@@ -5,14 +5,12 @@ import com.github.ajalt.clikt.parameters.options.option
 import kotlinx.serialization.json.Json
 import net.dinkla.nkp.analysis.PackageImports
 import net.dinkla.nkp.analysis.combinedReport
-import net.dinkla.nkp.domain.kotlinlang.Project
-import net.dinkla.nkp.utilities.loadJson
 
 class PackageCouplingCommand : AbstractCommand("Generate package coupling metrics", "package-coupling") {
     private val includeAllLibraries by option(help = "include all libraries").flag(default = false)
 
     override fun run() {
-        val project = model.loadJson<Project>()
+        val project = loadProject()
         val imports =
             if (!includeAllLibraries) {
                 PackageImports.filteredImports(project)
