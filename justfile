@@ -88,3 +88,8 @@ mermaid-to-svg FILE:
 # convert a mermaid file to html
 mermaid-convert FILE OUTPUT:
     @npx mmdc -i {{FILE}} -o {{OUTPUT}}
+
+
+nu-json FILE:
+    #!/usr/bin/env nu
+    open {{FILE}}
