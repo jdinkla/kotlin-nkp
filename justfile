@@ -81,13 +81,9 @@ check-jsons:
     jq empty {{generated}}/{{prefix}}file-statistics.json
     jq empty {{generated}}/{{prefix}}package-statistics.json
 
-# convert a mermaid file to svg
-mermaid-to-svg FILE:
-    @npx mmdc -i {{FILE}}
-
-# convert a mermaid file to html
+# convert a mermaid file (installs mermaid-cli on the fly if needed)
 convert-mermaid MERMAID_FILE OUTPUT_FILE:
-    @npx mmdc -i {{MERMAID_FILE}} -o {{OUTPUT_FILE}}
+    @npx -p @mermaid-js/mermaid-cli mmdc -i {{MERMAID_FILE}} -o {{OUTPUT_FILE}}
 
 # show a json file in nu shell
 nu-json FILE:
