@@ -3,6 +3,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
     jacoco
     application
 }
@@ -45,7 +46,7 @@ tasks.test {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
-    reports  {
+    reports {
         xml.required.set(true)
         html.required.set(true)
     }
