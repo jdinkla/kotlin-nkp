@@ -26,7 +26,7 @@ refresh:
     @{{gradle}} refreshVersions       
 
 # run the unit tests
-test: build
+test: clean build
 
 # opens the coverage report in the default browser
 coverage-report:
