@@ -24,7 +24,7 @@ import java.io.File
 
 const val EXAMPLE_MODEL = "src/test/resources/model.json"
 val EXAMPLE_MODEL_FILE = File(EXAMPLE_MODEL)
-val SOURCE_DIRECTORY = File("src/examples/kotlin/")
+val SOURCE_DIRECTORY = File("src/examples/kotlin/examples")
 
 private const val KOTLIN_EXAMPLE_FILE = "src/examples/kotlin/examples/HelloWorld.kt"
 

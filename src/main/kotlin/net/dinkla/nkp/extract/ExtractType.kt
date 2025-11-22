@@ -3,8 +3,12 @@ package net.dinkla.nkp.extract
 import net.dinkla.nkp.domain.kotlinlang.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
-internal fun extractType(tree: KotlinParseTree): Type? =
-    when (val subtype = tree.children[0].name) {
+@Suppress("LongMethod")
+internal fun extractType(tree: KotlinParseTree): Type? {
+    if (tree.children.isEmpty()) {
+        return null
+    }
+    return when (val subtype = tree.children[0].name) {
         "nullableType" -> {
             tree.children[0].findName("Identifier")?.let {
                 Type("${it.text}?")
@@ -21,10 +25,25 @@ internal fun extractType(tree: KotlinParseTree): Type? =
                 rest =
                     typeArguments.children.map {
                         when (it.name) {
-                            "LANGLE" -> "<"
-                            "RANGLE" -> ">"
-                            "COMMA" -> ","
-                            else -> extractType(it.children[0])?.name ?: "ERROR IN extractType"
+                            "LANGLE" -> {
+                                "<"
+                            }
+
+                            "RANGLE" -> {
+                                ">"
+                            }
+
+                            "COMMA" -> {
+                                ","
+                            }
+
+                            else -> {
+                                if (it.children.isNotEmpty()) {
+                                    extractType(it.children[0])?.name ?: "ERROR IN extractType"
+                                } else {
+                                    "ERROR IN extractType"
+                                }
+                            }
                         }
                     }
             }
@@ -46,5 +65,8 @@ internal fun extractType(tree: KotlinParseTree): Type? =
             Type("($params) -> $returnType")
         }
 
-        else -> throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")
+        else -> {
+            throw IllegalArgumentException("Unknown subtype '$subtype' in '$tree'")
+        }
     }
+}
