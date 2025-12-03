@@ -191,4 +191,42 @@ To update dependency versions:
 $ ./gradlew refreshVersions
 ```
 
+## Appendix: Generated Outputs
+
+### `generated/model.json`
+- Root `directory` plus a `files` array. Each entry captures a Kotlin file with `filePath`, `packageName`, `imports`, and `declarations` (classes, functions, properties, type aliases). Declarations are serialized using the domain model (`ClassSignature`, `FunctionSignature`, etc.), matching the Kotlin AST produced by the parser.
+
+### `generated/class-statistics.json`
+- JSON array where each item summarizes a class-like declaration. Fields: `className`, `packageName`, optional `classModifier`/`inheritanceModifier`/`visibilityModifier`, and a `metrics` object with counts (parameters, superTypes, declarations, classes, functions, properties, aliases, superClasses, subClasses).
+
+### `generated/file-statistics.json`
+- JSON array of per-file summaries. Each item includes `filePath`, `imports` (list of fully qualified names), `declarations` with names and optional `visibilityModifier`, `metrics` (counts of imports, declarations, classes, functions, properties, aliases), and `coupling` (afferentCoupling, efferentCoupling, instability).
+
+### `generated/package-statistics.json`
+- JSON array of package-level rollups. Each entry has `packageName`, `importedElements` (distinct imports), `importStatistics` (total/distinct and per-relationship counts), and `declarationStatistics` (files, functions, properties, classes, typeAliases).
+
+### `generated/package-coupling.json`
+- JSON array listing each package with its `imports` (packages it depends on) and a `coupling` object (afferentCoupling, efferentCoupling, instability). Useful for spotting stable/unstable packages.
+
+### `generated/packages.json`
+- JSON array of packages. Each package contains `packageName` and its `files`; every file repeats `filePath`, `packageName`, `imports`, and fully expanded `declarations` (including nested declarations), mirroring the source structure.
+
+### `generated/search.json`
+- JSON object that captures a search result: `classes` (matches), `superClasses`, and `subClasses`, each expressed as serialized class signatures with parameters, supertypes, and modifiers.
+
+### `generated/mermaid-class-diagram.mermaid`
+- Mermaid definition for the class diagram of the analyzed project. Shows classes, properties, and relationships; ready for `mermaid-cli` or any Mermaid renderer.
+
+### `generated/mermaid-import-diagram.mermaid`
+- Mermaid graph describing import relationships between packages in the project, excluding external libraries.
+
+### `generated/mermaid-import-all-diagram.mermaid`
+- Same structure as the import diagram but includes external/library packages to show full dependency edges.
+
+### `generated/mermaid-coupling-diagram.mermaid`
+- Mermaid graph showing package-level coupling within the project, annotated with instability ranges.
+
+### `generated/mermaid-coupling-all-diagram.mermaid`
+- Coupling diagram that also includes external/library packages, useful for seeing outbound dependencies beyond the codebase.
+
 (c) 2023 - 2025 Jörn Dinkla https://www.dinkla.net
