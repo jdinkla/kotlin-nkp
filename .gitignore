@@ -1,3 +1,4 @@
+.idea/copilot*
 node_modules/
 /venv
 /generated
