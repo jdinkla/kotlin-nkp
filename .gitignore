@@ -1,4 +1,4 @@
-.idea/copilot*
+
 node_modules/
 /venv
 /generated
@@ -174,3 +174,5 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,intellij,gradle
+/.idea/copilot.data.*.xml
+.claude/settings.local.json

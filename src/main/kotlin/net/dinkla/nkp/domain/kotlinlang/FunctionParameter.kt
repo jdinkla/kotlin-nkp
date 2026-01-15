@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class FunctionParameter(
     val name: String,
     val type: Type,
+    val modifier: ParameterModifier? = null,
 )

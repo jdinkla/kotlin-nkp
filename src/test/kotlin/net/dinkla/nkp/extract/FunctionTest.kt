@@ -4,9 +4,11 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import net.dinkla.nkp.domain.kotlinlang.FunctionModifier
 import net.dinkla.nkp.domain.kotlinlang.FunctionParameter
 import net.dinkla.nkp.domain.kotlinlang.FunctionSignature
 import net.dinkla.nkp.domain.kotlinlang.MemberModifier
+import net.dinkla.nkp.domain.kotlinlang.ParameterModifier
 import net.dinkla.nkp.domain.kotlinlang.Type
 import net.dinkla.nkp.domain.kotlinlang.VisibilityModifier
 import net.dinkla.nkp.function1
@@ -88,6 +90,7 @@ class FunctionTest :
                         "plus",
                         Type("Int"),
                         listOf(FunctionParameter("x", Type("Int")), FunctionParameter("y", Type("Int"))),
+                        functionModifiers = listOf(FunctionModifier.OPERATOR),
                     ),
                 )
         }
@@ -138,6 +141,120 @@ class FunctionTest :
                         Type("Int"),
                         listOf(FunctionParameter("x", Type("Int"))),
                         memberModifier = MemberModifier.OVERRIDE,
+                    ),
+                )
+        }
+
+        "extractFunctions should handle extension function with simple receiver type" {
+            val functions = extractFunctions(fromText("fun String.toUpper(): String = this.uppercase()"))
+            functions shouldBe
+                listOf(
+                    FunctionSignature("toUpper", Type("String"), listOf(), extensionOf = "String"),
+                )
+        }
+
+        "extractFunctions should handle extension function with generic receiver type" {
+            val functions = extractFunctions(fromText("fun List<String>.first(): String = this[0]"))
+            functions shouldBe
+                listOf(
+                    FunctionSignature("first", Type("String"), listOf(), extensionOf = "List<String>"),
+                )
+        }
+
+        "extractFunctions should handle extension function with nullable receiver type" {
+            val functions = extractFunctions(fromText("fun String?.orEmpty(): String = this ?: \"\""))
+            functions shouldBe
+                listOf(
+                    FunctionSignature("orEmpty", Type("String"), listOf(), extensionOf = "String?"),
+                )
+        }
+
+        "extractFunctions should handle extension function with complex generic receiver type" {
+            val functions = extractFunctions(fromText("fun Map<String,Int>.keys(): Set<String> = this.keys"))
+            functions shouldBe
+                listOf(
+                    FunctionSignature("keys", Type("Set<String>"), listOf(), extensionOf = "Map<String,Int>"),
+                )
+        }
+
+        "extractFunctions should handle suspend functions" {
+            val functions = extractFunctions(fromText("suspend fun loadData(id: Int): String = \"\""))
+            functions shouldBe
+                listOf(
+                    FunctionSignature(
+                        "loadData",
+                        Type("String"),
+                        listOf(FunctionParameter("id", Type("Int"))),
+                        functionModifiers = listOf(FunctionModifier.SUSPEND),
+                    ),
+                )
+        }
+
+        "extractFunctions should handle inline functions" {
+            val functions = extractFunctions(fromText("inline fun measure(block: () -> Unit) = block()"))
+            functions shouldBe
+                listOf(
+                    FunctionSignature(
+                        "measure",
+                        null,
+                        listOf(FunctionParameter("block", Type("() -> Unit"))),
+                        functionModifiers = listOf(FunctionModifier.INLINE),
+                    ),
+                )
+        }
+
+        "extractFunctions should handle infix functions" {
+            val functions = extractFunctions(fromText("infix fun Int.add(other: Int): Int = this + other"))
+            functions shouldBe
+                listOf(
+                    FunctionSignature(
+                        "add",
+                        Type("Int"),
+                        listOf(FunctionParameter("other", Type("Int"))),
+                        extensionOf = "Int",
+                        functionModifiers = listOf(FunctionModifier.INFIX),
+                    ),
+                )
+        }
+
+        "extractFunctions should handle tailrec functions" {
+            val code =
+                "tailrec fun factorial(n: Int, acc: Int): Int = " +
+                    "if (n <= 1) acc else factorial(n - 1, n * acc)"
+            val functions = extractFunctions(fromText(code))
+            functions shouldBe
+                listOf(
+                    FunctionSignature(
+                        "factorial",
+                        Type("Int"),
+                        listOf(FunctionParameter("n", Type("Int")), FunctionParameter("acc", Type("Int"))),
+                        functionModifiers = listOf(FunctionModifier.TAILREC),
+                    ),
+                )
+        }
+
+        "extractFunctions should handle vararg parameters" {
+            val code = "fun printAll(vararg messages: String) = messages.forEach { println(it) }"
+            val functions = extractFunctions(fromText(code))
+            functions shouldBe
+                listOf(
+                    FunctionSignature(
+                        "printAll",
+                        null,
+                        listOf(FunctionParameter("messages", Type("String"), ParameterModifier.VARARG)),
+                    ),
+                )
+        }
+
+        "extractFunctions should handle multiple function modifiers" {
+            val functions = extractFunctions(fromText("suspend inline fun measure(block: () -> Unit) = block()"))
+            functions shouldBe
+                listOf(
+                    FunctionSignature(
+                        "measure",
+                        null,
+                        listOf(FunctionParameter("block", Type("() -> Unit"))),
+                        functionModifiers = listOf(FunctionModifier.SUSPEND, FunctionModifier.INLINE),
                     ),
                 )
         }

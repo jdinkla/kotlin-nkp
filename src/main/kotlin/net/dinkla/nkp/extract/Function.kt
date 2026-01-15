@@ -8,13 +8,13 @@ import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature {
     val memberModifier = extractMemberModifier(tree)
     val visibility = extractVisibilityModifier(tree)
+    val functionModifiers = extractFunctionModifiers(tree)
     val name = extractSimpleIdentifier(tree)!!
     val parameters =
         tree.children
             .find { it.name == "functionValueParameters" }
             ?.children
             ?.filter { it.name == "functionValueParameter" }
-            ?.map { it.children[0] }
             ?.map(::extractFunctionParameter)
             ?: listOf()
     val returnType =
@@ -23,21 +23,28 @@ internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature 
         }
     val receiverType =
         tree.children.find { it.name == "receiverType" }?.let {
-            extractIdentifier(
-                it.children[0]
-                    .children[0]
-                    .children[0]
-                    .children[0],
-            )
+            // receiverType contains a type node, use extractType for complex types (generics, nullable)
+            extractType(it.children[0])?.name
         }
-    return FunctionSignature(name, returnType, parameters, receiverType, visibility, memberModifier.firstOrNull())
+    return FunctionSignature(
+        name,
+        returnType,
+        parameters,
+        receiverType,
+        visibility,
+        memberModifier.firstOrNull(),
+        functionModifiers,
+    )
 }
 
 private fun extractFunctionParameter(tree: KotlinParseTree): FunctionParameter {
-    val paramName = extractSimpleIdentifier(tree) ?: "ERROR PARAM NAME"
+    // tree is functionValueParameter which contains: [parameterModifiers?] parameter
+    val parameterNode = tree.children.find { it.name == "parameter" } ?: tree.children[0]
+    val paramName = extractSimpleIdentifier(parameterNode) ?: "ERROR PARAM NAME"
     val paramType =
-        tree.children.find { it.name == "type" }?.let {
+        parameterNode.children.find { it.name == "type" }?.let {
             extractType(it)
         } ?: Type("ERROR PARAM TYPE")
-    return FunctionParameter(paramName, paramType)
+    val modifier = extractParameterModifier(tree)
+    return FunctionParameter(paramName, paramType, modifier)
 }
