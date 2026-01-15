@@ -3,7 +3,7 @@ package net.dinkla.nkp.utilities
 import kotlinx.serialization.json.Json
 import java.io.File
 
-internal fun getAllKotlinFiles(directory: File): List<String> =
+fun getAllKotlinFiles(directory: File): List<String> =
     if (directory.isDirectory) {
         directory
             .walk()

@@ -54,6 +54,22 @@ net.dinkla.nkp
 1. **Parse**: Kotlin source → AST → Domain models → `model.json`
 2. **Analyze**: Load `model.json` → Run analysis commands → Output metrics/diagrams
 
+### Supported Kotlin Constructs
+
+**Functions:**
+- Regular and extension functions (including generic/nullable receiver types)
+- Function modifiers: `suspend`, `inline`, `infix`, `tailrec`, `operator`, `external`
+- Parameter modifiers: `vararg`, `noinline`, `crossinline`
+
+**Types:**
+- Simple types, generics, nullable types
+- Function types as parameters/return types
+
+**Not yet supported:**
+- `suspend` function types as parameters (e.g., `suspend () -> Unit`)
+- Context receivers
+- Secondary constructors
+
 ### Key Patterns
 
 - **Commands**: Extend `AbstractCommand` which provides `loadProject()` for model loading

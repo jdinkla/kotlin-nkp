@@ -117,6 +117,14 @@ The first step is to parse the files in a directory to a JSON file.
 $ bin/nkp.sh parse /repositories/ray-tracer-challenge/src/main/kotlin generated/model.json
 ```
 
+### Multi-Source Directory Support
+
+For projects with multiple source directories (e.g., Kotlin Multiplatform), use the `--sources` option:
+
+```sh
+$ bin/nkp.sh parse src/main/kotlin --sources=src/commonMain/kotlin,src/jvmMain/kotlin generated/model.json
+```
+
 Use this JSON file in the analysis steps as input.
 
 ### Examples
@@ -165,6 +173,70 @@ $ bin/nkp.sh packages generated/model.json > generated/packages.json
 #### Class diagram
 
 ![mermaid-class-diagram.webp](docs/mermaid-class-diagram.webp)
+
+## Gradle Plugin
+
+NKP is also available as a Gradle plugin for easy integration into your build process.
+
+### Installation
+
+Add the plugin to your project's `build.gradle.kts`:
+
+```kotlin
+plugins {
+    id("net.dinkla.nkp") version "0.1"
+}
+```
+
+**Note:** The plugin requires the kotlin-grammar-tools library to be available in mavenLocal. Run `bin/install-libs.sh` first.
+
+### Configuration
+
+```kotlin
+nkp {
+    // Source directories to analyze (defaults to src/main/kotlin)
+    sourceDirs.set(listOf(
+        file("src/main/kotlin"),
+        file("src/commonMain/kotlin")
+    ))
+
+    // Output directory (defaults to build/nkp)
+    outputDir.set(layout.buildDirectory.dir("nkp"))
+
+    // Configure which reports to generate
+    reports {
+        classStatistics.set(true)       // JSON class statistics
+        fileStatistics.set(true)        // JSON file statistics
+        packageStatistics.set(true)     // JSON package statistics
+        packageCoupling.set(true)       // JSON coupling metrics
+        packages.set(false)             // JSON packages report
+        mermaidClassDiagram.set(true)   // Mermaid class diagram
+        mermaidImportDiagram.set(true)  // Mermaid import diagram
+        mermaidCouplingDiagram.set(true) // Mermaid coupling diagram
+        includeAllLibraries.set(false)  // Include external libraries in diagrams
+        includePrivateDeclarations.set(false) // Include private declarations
+    }
+}
+```
+
+### Tasks
+
+| Task | Description |
+|------|-------------|
+| `nkp` | Run all NKP tasks (parse + analyze) |
+| `nkpParse` | Parse Kotlin source files and generate model.json |
+| `nkpAnalyze` | Run all configured analyses on the parsed model |
+
+### Example
+
+```sh
+# Run all NKP analysis
+./gradlew nkp
+
+# Output is in build/nkp/
+ls build/nkp/
+# model.json class-statistics.json file-statistics.json ...
+```
 
 ## Building and Developing
 

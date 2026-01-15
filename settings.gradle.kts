@@ -15,6 +15,8 @@ plugins {
 
 rootProject.name = "kotlin-nkp"
 
+include("gradle-plugin")
+
 refreshVersions {
     rejectVersionIf {
         candidate.stabilityLevel != StabilityLevel.Stable

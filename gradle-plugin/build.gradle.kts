@@ -1,0 +1,37 @@
+plugins {
+    `java-gradle-plugin`
+    `kotlin-dsl`
+    `maven-publish`
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
+}
+
+group = "net.dinkla"
+version = "0.1"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation(project(":"))
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.coroutines)
+    implementation(libs.kotlin.grammar.tools)
+}
+
+gradlePlugin {
+    plugins {
+        create("nkp") {
+            id = "net.dinkla.nkp"
+            implementationClass = "net.dinkla.nkp.gradle.NkpPlugin"
+            displayName = "Kotlin NKP Analysis Plugin"
+            description = "Static analysis for Kotlin programs - package dependencies, class hierarchies, and metrics"
+        }
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
+}
