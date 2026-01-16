@@ -39,7 +39,7 @@ Kotlin-NKP is a static analysis tool for Kotlin programs (nkp stands for aNalysi
 | **Dependency Analysis** |
 | Package import relationships | ✅ | |
 | Class inheritance trees | ✅ | |
-| Circular dependency detection | | ❌ |
+| Circular dependency detection | ✅ | |
 | Unused import detection | | ❌ |
 | Dependency distance metrics | | ❌ |
 | **Visualization** |
@@ -70,6 +70,7 @@ Options:
 
 Commands:
   parse                     Parse a source directory and generate a model file.
+  circular-dependencies     Detect circular dependencies between packages
   class-statistics          Class statistics
   file-statistics           File statistics and imports report
   mermaid-class-diagram     Mermaid class diagram
@@ -153,6 +154,12 @@ $ bin/nkp.sh mermaid-coupling-diagram --include-all-libraries generated/model.js
 Search for classes:
 ```sh
 $ bin/nkp.sh search generated/model.json MyClass
+```
+
+Detect circular dependencies:
+```sh
+$ bin/nkp.sh circular-dependencies generated/model.json > generated/circular-dependencies.json
+$ bin/nkp.sh circular-dependencies --include-all-libraries generated/model.json > generated/circular-dependencies-all.json
 ```
 
 List packages:
@@ -285,6 +292,14 @@ $ ./gradlew refreshVersions
 
 ### `generated/search.json`
 - JSON object that captures a search result: `classes` (matches), `superClasses`, and `subClasses`, each expressed as serialized class signatures with parameters, supertypes, and modifiers.
+
+### `generated/circular-dependencies.json`
+- JSON object containing circular dependency analysis results:
+  - `cycles`: Array of detected cycles, each containing a list of `packages` involved in the cycle
+  - `hasCycles`: Boolean indicating if any cycles were found
+  - `totalCycles`: Number of cycles detected
+  - `packagesInCycles`: Set of all packages that participate in at least one cycle
+- Uses Tarjan's algorithm to find strongly connected components (SCCs) in the package dependency graph
 
 ### `generated/mermaid-class-diagram.mermaid`
 - Mermaid definition for the class diagram of the analyzed project. Shows classes, properties, and relationships; ready for `mermaid-cli` or any Mermaid renderer.

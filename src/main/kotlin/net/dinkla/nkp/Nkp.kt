@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
+import net.dinkla.nkp.commands.CircularDependenciesCommand
 import net.dinkla.nkp.commands.ClassStatisticsCommand
 import net.dinkla.nkp.commands.FileStatisticsCommand
 import net.dinkla.nkp.commands.MermaidClassDiagram
@@ -27,6 +28,7 @@ fun main(args: Array<String>) {
     Nkp()
         .subcommands(
             Parse(),
+            CircularDependenciesCommand(),
             ClassStatisticsCommand(),
             FileStatisticsCommand(),
             MermaidClassDiagram(),
