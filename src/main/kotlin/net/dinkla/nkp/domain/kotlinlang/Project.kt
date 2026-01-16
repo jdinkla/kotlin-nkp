@@ -7,6 +7,7 @@ class Project(
     val directory: String,
     val files: List<KotlinFile>,
     val directories: List<String> = listOf(directory),
+    val parseTimestamp: Long = 0L,
 ) : List<KotlinFile> by files {
     fun packages(): List<Package> =
         files

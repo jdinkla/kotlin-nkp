@@ -11,11 +11,13 @@ import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 fun extract(
     filePath: FilePath,
     tree: KotlinParseTree,
+    lastModified: Long = 0L,
+    fileSize: Long = 0L,
 ): KotlinFile {
     val packageName = extractPackageName(tree)
     val imports = extractImports(tree)
     val declarations = extractDefinitions(tree)
-    return KotlinFile(filePath, packageName, imports, declarations)
+    return KotlinFile(filePath, packageName, imports, declarations, lastModified, fileSize)
 }
 
 internal fun extractPackageName(tree: KotlinParseTree): PackageName {
