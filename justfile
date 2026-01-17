@@ -40,6 +40,10 @@ example-model:
 run *args:
     @{{gradle}} run --quiet --args="{{args}}"
 
+# generate html report for the given model file
+html-report MODEL_FILE OUTPUT_FILE="generated/report.html":
+    @{{gradle}} run --quiet --args="html-report {{MODEL_FILE}} -o {{OUTPUT_FILE}}"
+
 # run all the tasks for the given REPOSITORY
 all-tasks REPOSITORY:
     just run parse {{REPOSITORY}} {{model_file}}
@@ -59,6 +63,8 @@ all-tasks REPOSITORY:
     just run mermaid-import-diagram {{model_file}} --include-all-libraries > {{generated}}/{{prefix}}mermaid-import-all-diagram.mermaid
     just run mermaid-coupling-diagram {{model_file}} > {{generated}}/{{prefix}}mermaid-coupling-diagram.mermaid
     just run mermaid-coupling-diagram {{model_file}} --include-all-libraries > {{generated}}/{{prefix}}mermaid-coupling-all-diagram.mermaid
+
+    just run html-report {{model_file}} -o {{generated}}/{{prefix}}report.html
 
 # run all-task for this repository
 all-tasks-self:

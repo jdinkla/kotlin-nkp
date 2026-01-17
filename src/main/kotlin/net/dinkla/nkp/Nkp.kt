@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.options.versionOption
 import net.dinkla.nkp.commands.CircularDependenciesCommand
 import net.dinkla.nkp.commands.ClassStatisticsCommand
 import net.dinkla.nkp.commands.FileStatisticsCommand
+import net.dinkla.nkp.commands.HtmlReportCommand
 import net.dinkla.nkp.commands.MermaidClassDiagram
 import net.dinkla.nkp.commands.MermaidCouplingDiagram
 import net.dinkla.nkp.commands.MermaidImportDiagram
@@ -31,6 +32,7 @@ fun main(args: Array<String>) {
             CircularDependenciesCommand(),
             ClassStatisticsCommand(),
             FileStatisticsCommand(),
+            HtmlReportCommand(),
             MermaidClassDiagram(),
             MermaidCouplingDiagram(),
             MermaidImportDiagram(),
