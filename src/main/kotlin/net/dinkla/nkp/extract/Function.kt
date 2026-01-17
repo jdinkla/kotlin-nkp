@@ -6,9 +6,7 @@ import net.dinkla.nkp.domain.kotlinlang.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature {
-    val memberModifier = extractMemberModifier(tree)
-    val visibility = extractVisibilityModifier(tree)
-    val functionModifiers = extractFunctionModifiers(tree)
+    val modifiers = extractAllModifiers(tree)
     val name = extractSimpleIdentifier(tree)!!
     val parameters =
         tree.children
@@ -31,9 +29,9 @@ internal fun extractFunctionSignature(tree: KotlinParseTree): FunctionSignature 
         returnType,
         parameters,
         receiverType,
-        visibility,
-        memberModifier.firstOrNull(),
-        functionModifiers,
+        modifiers.visibility,
+        modifiers.member.firstOrNull(),
+        modifiers.function,
     )
 }
 

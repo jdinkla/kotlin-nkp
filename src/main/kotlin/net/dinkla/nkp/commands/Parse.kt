@@ -5,24 +5,27 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.arguments.optional
+import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.split
+import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import net.dinkla.nkp.domain.FilePath
 import net.dinkla.nkp.domain.kotlinlang.KotlinFile
 import net.dinkla.nkp.domain.kotlinlang.Project
 import net.dinkla.nkp.extract.ChangeStatus
 import net.dinkla.nkp.extract.detectChanges
-import net.dinkla.nkp.extract.extract
 import net.dinkla.nkp.extract.filterFilesToParse
 import net.dinkla.nkp.extract.reuseFromCache
-import net.dinkla.nkp.utilities.fromFile
+import net.dinkla.nkp.parser.GrammarToolsParser
+import net.dinkla.nkp.parser.KotlinParser
+import net.dinkla.nkp.parser.ParserType
+import net.dinkla.nkp.parser.PsiParser
 import net.dinkla.nkp.utilities.getAllKotlinFiles
 import java.io.File
 
@@ -49,14 +52,27 @@ class Parse : CliktCommand(name = "parse") {
 
     private val silent by option(help = "no output").flag(default = false)
 
-    private val incremental by option(
-        "--incremental",
-        "-i",
-        help = "Only parse files that changed since last run",
+    private val full by option(
+        "--full",
+        "-f",
+        help = "Force full parse, ignoring cached results",
     ).flag(default = false)
 
+    private val parserType by option(
+        "--parser",
+        "-p",
+        help = "Parser to use: PSI (faster, default) or GRAMMAR (ANTLR-based)",
+    ).enum<ParserType>().default(ParserType.PSI)
+
+    private val parser: KotlinParser by lazy {
+        when (parserType) {
+            ParserType.PSI -> PsiParser()
+            ParserType.GRAMMAR -> GrammarToolsParser()
+        }
+    }
+
     override fun run() {
-        if (incremental && target?.exists() == true) {
+        if (!full && target?.exists() == true) {
             runIncremental()
         } else {
             runFull()
@@ -65,7 +81,7 @@ class Parse : CliktCommand(name = "parse") {
 
     private fun runFull() {
         val allSources = listOf(source) + (additionalSources ?: emptyList())
-        val allFiles = allSources.flatMap { readFiles(it) }
+        val allFiles = allSources.flatMap { readFiles(it, parser) }
         if (!silent) {
             reportErrors(allFiles)
         }
@@ -86,7 +102,7 @@ class Parse : CliktCommand(name = "parse") {
 
         val parsedFiles =
             if (filesToParse.isNotEmpty()) {
-                allSources.flatMap { dir -> readFilesSelective(dir, filesToParse) }
+                allSources.flatMap { dir -> readFilesSelective(dir, filesToParse, parser) }
             } else {
                 emptyList()
             }
@@ -183,13 +199,20 @@ class Parse : CliktCommand(name = "parse") {
     }
 }
 
-private fun readFiles(directory: File): List<Result<KotlinFile>> {
+private fun readFiles(
+    directory: File,
+    parser: KotlinParser,
+): List<Result<KotlinFile>> {
     val files = getAllKotlinFiles(directory)
-    return runBlocking(Dispatchers.Default) {
+    return runBlocking(Dispatchers.IO) {
         files
-            .map {
+            .map { filePath ->
                 async {
-                    extractFileInfo(it, directory.absolutePath)
+                    val startTime = System.currentTimeMillis()
+                    val result = parser.parseFile(filePath, directory.absolutePath)
+                    val elapsed = System.currentTimeMillis() - startTime
+                    logger.debug { "$filePath: total=${elapsed}ms" }
+                    result
                 }
             }.map {
                 it.await()
@@ -200,14 +223,19 @@ private fun readFiles(directory: File): List<Result<KotlinFile>> {
 private fun readFilesSelective(
     directory: File,
     filesToParse: List<File>,
+    parser: KotlinParser,
 ): List<Result<KotlinFile>> {
     val directoryPath = directory.absolutePath
     val filesInDirectory = filesToParse.filter { it.absolutePath.startsWith(directoryPath) }
-    return runBlocking(Dispatchers.Default) {
+    return runBlocking(Dispatchers.IO) {
         filesInDirectory
-            .map {
+            .map { file ->
                 async {
-                    extractFileInfo(it.absolutePath, directoryPath)
+                    val startTime = System.currentTimeMillis()
+                    val result = parser.parseFile(file.absolutePath, directoryPath)
+                    val elapsed = System.currentTimeMillis() - startTime
+                    logger.debug { "${file.absolutePath}: total=${elapsed}ms" }
+                    result
                 }
             }.map {
                 it.await()
@@ -226,28 +254,6 @@ private fun toProject(
         directories = absolutePaths,
         parseTimestamp = System.currentTimeMillis(),
     )
-}
-
-private fun extractFileInfo(
-    fileName: String,
-    prefix: String,
-): Result<KotlinFile> {
-    try {
-        val file = File(fileName)
-        val withoutPrefix = fileName.removePrefix(prefix)
-        val analysedFile =
-            extract(
-                FilePath(withoutPrefix),
-                fromFile(fileName),
-                lastModified = file.lastModified(),
-                fileSize = file.length(),
-            )
-        return Result.success(analysedFile)
-    } catch (e: Exception) {
-        val message = "parsing '$fileName' yields ${e.message}"
-        logger.error { message }
-        return Result.failure(Error(message, e))
-    }
 }
 
 private val logger = KotlinLogging.logger {}

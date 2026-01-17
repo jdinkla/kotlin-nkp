@@ -1,12 +1,45 @@
 # kotlin-nkp Remaining Work
 
-**Last Updated:** 2026-01-16
+**Last Updated:** 2026-01-17
 
-## High Priority (Next)
+## Performance Investigation Findings (2026-01-17)
 
-| Item | Description | Effort |
-|------|-------------|--------|
-| **Check/update grammar-tools** | Review upstream activity, consider alternatives (PSI, kotlin-analysis-api, Tree-sitter) | Low |
+### Profiling Results
+
+Timing instrumentation confirmed the bottleneck:
+
+| Phase | Time | Percentage |
+|-------|------|------------|
+| Parse (kotlin-grammar-tools) | 500-2500ms per file | **~99%** |
+| Extract (our code) | 0-16ms per file | ~1% |
+
+**Conclusion:** The ANTLR-based kotlin-grammar-tools parser is the bottleneck. Optimizing extraction code has negligible impact.
+
+### Completed Optimizations
+
+- [x] Added timing instrumentation (`logger.debug` with parse/extract times)
+- [x] Changed `Dispatchers.Default` → `Dispatchers.IO` (now uses 64+ worker threads)
+- [x] Refactored modifier extraction to single-pass (minor improvement)
+- [x] Made incremental parsing default (use `--full` to force full parse)
+
+### PSI Parser Implementation (2026-01-17)
+
+Replaced kotlin-grammar-tools with PSI-based parser using `kotlin-compiler-embeddable`.
+
+**Benchmark Results:**
+| Parser | Time (65 files) | Speedup |
+|--------|-----------------|---------|
+| PSI (new default) | 71ms | **25.9x faster** |
+| Grammar (ANTLR) | 1839ms | baseline |
+
+**Usage:**
+```bash
+# PSI parser (default, faster)
+./gradlew run --args="parse src/main/kotlin"
+
+# ANTLR parser (original)
+./gradlew run --args="parse --parser GRAMMAR src/main/kotlin"
+```
 
 ## Medium Priority
 
@@ -42,4 +75,6 @@
 - [x] Multi-source directory support
 - [x] Gradle plugin
 - [x] Circular dependency detection
-- [x] Incremental parsing (`--incremental` flag)
+- [x] Incremental parsing (now default, use `--full` to override)
+- [x] Performance profiling & parallelization improvements (2026-01-17)
+- [x] **PSI-based parser (25.9x speedup)** - Replaced ANTLR with kotlin-compiler-embeddable (2026-01-17)

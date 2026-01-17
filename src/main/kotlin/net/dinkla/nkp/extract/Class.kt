@@ -8,9 +8,7 @@ import net.dinkla.nkp.domain.kotlinlang.Type
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 
 internal fun extractClass(tree: KotlinParseTree): ClassSignature {
-    val visibilityModifier = extractVisibilityModifier(tree)
-    val inheritanceModifier = extractInheritanceModifier(tree)
-    val classModifier = extractClassModifier(tree)
+    val modifiers = extractAllModifiers(tree)
     val elementType = extractInterfaceOrClassType(tree)!!
     val name = extractSimpleIdentifier(tree)!!
     val params = extractClassParameters(tree)
@@ -20,10 +18,10 @@ internal fun extractClass(tree: KotlinParseTree): ClassSignature {
         name,
         params,
         inheritedFrom,
-        visibilityModifier,
+        modifiers.visibility,
         elementType,
-        classModifier,
-        inheritanceModifier,
+        modifiers.classModifier,
+        modifiers.inheritance,
         declarations,
     )
 }
@@ -49,9 +47,9 @@ private fun extractClassParameters(tree: KotlinParseTree): List<ClassParameter> 
     } ?: listOf()
 
 private fun extractClassParameter(tree: KotlinParseTree): ClassParameter {
-    val visibilityModifier = extractVisibilityModifier(tree)
+    val modifiers = extractAllModifiers(tree)
     val propertyModifier =
-        when (tree.children[if (visibilityModifier == null) 0 else 1].name) {
+        when (tree.children[if (modifiers.visibility == null) 0 else 1].name) {
             "VAL" -> PropertyModifier.VAL
             "VAR" -> PropertyModifier.VAR
             else -> null
@@ -61,7 +59,7 @@ private fun extractClassParameter(tree: KotlinParseTree): ClassParameter {
         tree.children.find { it.name == "type" }?.let {
             extractType(it)
         } ?: Type("ERROR PARAM TYPE")
-    return ClassParameter(paramName, paramType, visibilityModifier, propertyModifier)
+    return ClassParameter(paramName, paramType, modifiers.visibility, propertyModifier)
 }
 
 private fun extractSuperClasses(tree: KotlinParseTree): List<String> =

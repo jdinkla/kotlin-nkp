@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.kotlinx.serialization)
     implementation(libs.clikt)
     implementation(libs.kotlin.grammar.tools)
+    implementation(libs.kotlin.compiler.embeddable)
     implementation(libs.kotlin.logging.jvm)
     implementation(libs.slf4j.api)
     implementation(libs.logback.classic)
