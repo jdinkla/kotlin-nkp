@@ -366,5 +366,7 @@ private fun createTempFile(name: String): File {
     return file
 }
 
-@Suppress("DEPRECATION")
-private fun createTempDir(): File = kotlin.io.createTempDir("incremental-test")
+private fun createTempDir(): File =
+    kotlin.io.path
+        .createTempDirectory("incremental-test")
+        .toFile()

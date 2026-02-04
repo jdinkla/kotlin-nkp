@@ -7,17 +7,17 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
 [versions]
 
-kotlinVersion = "2.2.21"
+kotlinVersion = "2.3.0"
 kotlinx-coroutines = "1.10.2"
-kotlinx-serialization = "1.9.0"
-clikt = "5.0.3"
+kotlinx-serialization = "1.10.0"
+clikt = "5.1.0"
 archunit = "1.4.1"
-kotlin-logging-jvm = "7.0.13"
+kotlin-logging-jvm = "7.0.14"
 slf4j-api = "2.0.17"
-logback-classic = "1.5.21"
-kotest = "6.0.5"
+logback-classic = "1.5.27"
+kotest = "6.1.2"
 kotlin-grammar-tools = "0.1"
-kotlin-compiler = "2.1.0"
+kotlin-compiler = "2.3.0"
 detekt = "1.23.8"
 ktlint = "14.0.1"
 
